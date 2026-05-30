@@ -1,4 +1,4 @@
-# SmokeFree Pro Headless
+# All In One Store Headless
 
 Tienda headless en Next.js 14 conectada a Shopify Storefront API.
 

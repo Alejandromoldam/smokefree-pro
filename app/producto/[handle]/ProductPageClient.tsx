@@ -411,7 +411,7 @@ export default function ProductPage() {
 
   const currentImage = useMemo(() => {
     if (!product?.images?.length) {
-      return { url: "/producto-real.png", altText: "Producto SmokeFree Pro" };
+      return { url: "/producto-real.png", altText: "Producto All In One Store" };
     }
     return product.images[Math.min(activeImage, product.images.length - 1)];
   }, [activeImage, product]);
@@ -459,7 +459,7 @@ export default function ProductPage() {
   }, [selectedVariant]);
 
   const stickyShortTitle = useMemo(
-    () => shortenTitle(product?.title || "Producto SmokeFree Pro"),
+    () => shortenTitle(product?.title || "Producto All In One Store"),
     [product?.title]
   );
 
@@ -866,7 +866,7 @@ export default function ProductPage() {
                 </p>
 
                 <p className="mt-4 text-xs uppercase tracking-[0.12em] text-gray-400">
-                  {product.vendor || "SmokeFree Pro"} - {product.productType || "Tecnologia premium"}
+                  {product.vendor || "All In One"} - {product.productType || "Tecnologia premium"}
                 </p>
 
                 {cartMessage ? (

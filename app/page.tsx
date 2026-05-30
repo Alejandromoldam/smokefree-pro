@@ -1,5 +1,6 @@
 ﻿import Image from "next/image";
 import Link from "next/link";
+import type { Metadata } from "next";
 import CatalogSection from "@/components/CatalogSection";
 import NavbarCartButton from "@/components/NavbarCartButton";
 
@@ -233,10 +234,34 @@ const premiumTrustSignals: Array<{
   { title: "Productos verificados", icon: "badge" },
 ];
 
-export const metadata = {
-  title: "SmokeFree Pro | Landing Premium",
+export const metadata: Metadata = {
+  title: "All In One Store | Tecnología premium para la vida moderna",
   description:
-    "Landing ultra premium para SmokeFree Pro con diseno minimalista futurista, responsive y enfocada en conversion.",
+    "All In One reúne productos tecnológicos y soluciones innovadoras seleccionadas para mejorar tu experiencia diaria.",
+  alternates: {
+    canonical: "https://allinonestore.lat",
+  },
+  openGraph: {
+    title: "All In One Store | Tecnología premium para la vida moderna",
+    description:
+      "All In One reúne productos tecnológicos y soluciones innovadoras seleccionadas para mejorar tu experiencia diaria.",
+    url: "https://allinonestore.lat",
+    siteName: "All In One Store",
+    type: "website",
+    images: [
+      {
+        url: "/producto-real.png",
+        alt: "All In One Store",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "All In One Store | Tecnología premium para la vida moderna",
+    description:
+      "All In One reúne productos tecnológicos y soluciones innovadoras seleccionadas para mejorar tu experiencia diaria.",
+    images: ["/producto-real.png"],
+  },
 };
 
 function BenefitIcon({ type }: { type: BenefitIconType }) {
@@ -444,7 +469,7 @@ export default function Home() {
       <nav className="glass-nav sticky inset-x-0 top-0 z-50 border-b border-white/10">
         <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-3 sm:px-6 sm:py-4 lg:px-8">
           <Link href="/" className="tracking-brand text-sm font-semibold uppercase text-white">
-            SmokeFree Pro
+            ALL IN ONE
           </Link>
 
           <div className="hidden items-center gap-6 text-sm text-white/70 md:flex">
@@ -496,12 +521,12 @@ export default function Home() {
           </p>
 
           <h1 className="reveal-2 max-w-[14ch] text-[clamp(2.2rem,5.8vw,4.75rem)] font-semibold leading-[1.14] text-white">
-            Tecnologia limpia con estetica de alto nivel
+            Tecnología premium para la vida moderna
           </h1>
 
           <p className="reveal-3 mt-6 max-w-[34rem] text-[0.99rem] leading-8 text-gray-300 sm:text-lg sm:leading-8">
-            SmokeFree Pro integra diseno industrial, flujo de aire inteligente y
-            experiencia de compra confiable para entornos exigentes.
+            All In One reúne productos tecnológicos y soluciones innovadoras
+            seleccionadas para mejorar tu experiencia diaria.
           </p>
 
           <div className="reveal-4 mt-8 flex flex-wrap items-center gap-3">
@@ -547,7 +572,7 @@ export default function Home() {
             <div className="fx-product-smoke" />
             <Image
               src="/producto-real.png"
-              alt="SmokeFree Pro producto"
+              alt="Producto destacado All In One"
               width={1200}
               height={1200}
               priority
@@ -661,7 +686,7 @@ export default function Home() {
               Producto estrella
             </p>
             <h2 className="mt-3 text-3xl font-semibold leading-tight text-white sm:text-4xl">
-              SmokeFree Pro 360 Edition
+              SmokeFree Pro 360 Edition (Producto destacado)
             </h2>
             <p className="mt-4 max-w-xl text-sm leading-relaxed text-gray-300 sm:text-base">
               Tecnologia avanzada, estetica minimalista y construccion premium para
@@ -704,7 +729,7 @@ export default function Home() {
             <div className="overflow-hidden rounded-[2rem] border border-white/12 bg-black/40 p-3">
               <Image
                 src="/producto-real.png"
-                alt="SmokeFree Pro detalle"
+                alt="Producto destacado All In One"
                 width={1000}
                 height={1000}
                 className="h-auto w-full rounded-[1.4rem] object-cover"
@@ -849,7 +874,7 @@ export default function Home() {
               <p className="text-xs uppercase tracking-[0.12em] text-emerald-200/90">
                 Email
               </p>
-              <p className="mt-2 text-sm text-white">support@smokefreepro.co</p>
+              <p className="mt-2 text-sm text-white">support@allinonestore.lat</p>
             </article>
             <article className="trust-card rounded-2xl p-4">
               <p className="text-xs uppercase tracking-[0.12em] text-emerald-200/90">
@@ -945,7 +970,7 @@ export default function Home() {
 
       <footer className="border-t border-white/10 bg-[#070707]/90">
         <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 px-4 py-10 text-sm text-gray-400 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
-          <p>Copyright {new Date().getFullYear()} SmokeFree Pro. All rights reserved.</p>
+          <p>Copyright {new Date().getFullYear()} All In One Store. All rights reserved.</p>
           <div className="flex flex-wrap gap-4">
             <a href={CATALOG_LINK} target="_blank" rel="noreferrer" className="nav-link">
               Catalogo

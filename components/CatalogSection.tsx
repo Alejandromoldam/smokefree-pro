@@ -468,7 +468,7 @@ export default function CatalogSection() {
             Catalogo
           </p>
           <h2 className="mt-3 text-3xl font-semibold text-white sm:text-4xl">
-            Catálogo SmokeFree Pro
+            Catálogo All In One
           </h2>
           <p className="mt-2 text-sm text-gray-300">
             {hasLiveCatalog

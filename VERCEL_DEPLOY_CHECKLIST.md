@@ -1,4 +1,4 @@
-# Vercel Deploy Checklist (SmokeFree Pro)
+# Vercel Deploy Checklist (All In One Store)
 
 ## 1) Build de producción
 
@@ -16,7 +16,7 @@
 - [ ] `SHOPIFY_STOREFRONT_PRIVATE_TOKEN` (recomendado)
 - [ ] `SHOPIFY_STOREFRONT_ACCESS_TOKEN` (opcional alternativo)
 - [ ] `SHOPIFY_API_VERSION` (ej. `2025-04`)
-- [ ] `SITE_URL` (dominio final, ej. `https://smokefreepro.com`)
+- [ ] `SITE_URL` (dominio final, ej. `https://allinonestore.lat`)
 
 ## 3) Seguridad de tokens
 
@@ -50,7 +50,7 @@
 
 ## 8) SEO dinámico
 
-- [ ] `title`: `Nombre del producto | SmokeFree Pro`.
+- [ ] `title`: `Nombre del producto | All In One Store`.
 - [ ] `meta description` real recortada 150-160 chars.
 - [ ] Open Graph con imagen real del producto.
 - [ ] Twitter card `summary_large_image`.

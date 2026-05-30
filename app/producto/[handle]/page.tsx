@@ -3,9 +3,9 @@ import ProductPageClient from "./ProductPageClient";
 
 const DEFAULT_API_VERSION = "2025-04";
 const DEFAULT_STORE_DOMAIN = "all-in-one-22092396.myshopify.com";
-const FALLBACK_TITLE = "Producto premium | SmokeFree Pro";
+const FALLBACK_TITLE = "Producto premium";
 const FALLBACK_DESCRIPTION =
-  "Descubre tecnologia premium para un entorno mas limpio. Compra con seguridad en SmokeFree Pro, con checkout cifrado y soporte especializado.";
+  "All In One Store reúne productos tecnológicos y soluciones innovadoras seleccionadas para mejorar tu experiencia diaria.";
 
 type ShopifySeoResponse = {
   data?: {
@@ -51,7 +51,7 @@ function normalizeStoreDomain(rawDomain: string) {
     .trim();
 }
 
-function getSiteUrl(storeDomain: string) {
+function getSiteUrl() {
   const rawSiteUrl =
     process.env.NEXT_PUBLIC_SITE_URL || process.env.SITE_URL || "";
 
@@ -67,7 +67,7 @@ function getSiteUrl(storeDomain: string) {
     return "http://localhost:4020";
   }
 
-  return `https://${storeDomain}`;
+  return "https://allinonestore.lat";
 }
 
 function compactDescription(rawText: string, maxLength = 160) {
@@ -183,18 +183,12 @@ export async function generateMetadata({
 }: {
   params: { handle: string };
 }): Promise<Metadata> {
-  const domain = normalizeStoreDomain(
-    process.env.SHOPIFY_STORE_DOMAIN ||
-      process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN ||
-      DEFAULT_STORE_DOMAIN
-  );
-  const siteUrl = getSiteUrl(domain);
+  const siteUrl = getSiteUrl();
   const fallbackImage = `${siteUrl}/producto-real.png`;
 
   const seoProduct = await fetchSeoProduct(params.handle);
-  const title = seoProduct
-    ? `${seoProduct.title} | SmokeFree Pro`
-    : FALLBACK_TITLE;
+  const title = seoProduct?.title || FALLBACK_TITLE;
+  const socialTitle = `${title} | All In One Store`;
   const description = compactDescription(seoProduct?.description || "");
   const productPathHandle = seoProduct?.handle || params.handle;
   const productPageUrl = `${siteUrl}/producto/${productPathHandle}`;
@@ -207,20 +201,20 @@ export async function generateMetadata({
       canonical: productPageUrl,
     },
     openGraph: {
-      title,
+      title: socialTitle,
       description,
       type: "website",
       url: productPageUrl,
       images: [
         {
           url: imageUrl,
-          alt: seoProduct?.imageAlt || "Producto SmokeFree Pro",
+          alt: seoProduct?.imageAlt || "Producto All In One Store",
         },
       ],
     },
     twitter: {
       card: "summary_large_image",
-      title,
+      title: socialTitle,
       description,
       images: [imageUrl],
     },
