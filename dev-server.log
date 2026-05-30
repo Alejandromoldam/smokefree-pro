@@ -1,0 +1,237 @@
+
+> smokefree-pro-headless@0.1.0 dev
+> next dev --port 4020
+
+  ▲ Next.js 14.2.5
+  - Local:        http://localhost:4020
+  - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 5.5s
+ ○ Compiling /api/catalog ...
+ ✓ Compiled /api/catalog in 916ms (53 modules)
+ GET /api/catalog 200 in 1997ms
+ ○ Compiling /api/cart/create ...
+ ✓ Compiled /api/cart/create in 1876ms (56 modules)
+ POST /api/cart/create 200 in 2824ms
+ ○ Compiling / ...
+ ✓ Compiled / in 6.1s (581 modules)
+ ✓ Compiled in 587ms (274 modules)
+ GET / 200 in 6812ms
+ ○ Compiling /api/catalog ...
+ ✓ Compiled /api/catalog in 1932ms (326 modules)
+ GET /api/catalog 200 in 3170ms
+ GET /api/catalog 200 in 3201ms
+ ○ Compiling /favicon.ico ...
+ ✓ Compiled /favicon.ico in 11s (353 modules)
+ GET /favicon.ico 200 in 11296ms
+ ✓ Compiled in 782ms (274 modules)
+ ✓ Compiled in 1166ms (572 modules)
+ ✓ Compiled in 871ms (575 modules)
+ ✓ Compiled in 940ms (575 modules)
+ ✓ Compiled in 1566ms (575 modules)
+ ✓ Compiled /api/catalog in 312ms (328 modules)
+ GET /api/catalog 200 in 726ms
+ GET /api/catalog 200 in 738ms
+ GET /api/catalog 200 in 289ms
+ GET /api/catalog 200 in 298ms
+ ✓ Compiled in 1008ms (603 modules)
+ GET /api/catalog 200 in 332ms
+ GET /api/catalog 200 in 347ms
+ GET /api/catalog 200 in 288ms
+ GET /api/catalog 200 in 326ms
+ ✓ Compiled in 882ms (603 modules)
+ GET /api/catalog 200 in 277ms
+ GET /api/catalog 200 in 324ms
+ ✓ Compiled in 936ms (603 modules)
+ GET /api/catalog 200 in 340ms
+ GET /api/catalog 200 in 295ms
+ GET /api/catalog 200 in 311ms
+ GET / 200 in 405ms
+ GET /api/catalog 200 in 345ms
+ GET / 200 in 251ms
+ GET /api/catalog 200 in 371ms
+ GET / 200 in 151ms
+ ○ Compiling /favicon.ico ...
+ ✓ Compiled /favicon.ico in 1081ms (355 modules)
+ GET /favicon.ico 200 in 1615ms
+ GET /api/catalog 200 in 1381ms
+ GET /api/catalog 200 in 1482ms
+ ○ Compiling /api/cart/create ...
+ ✓ Compiled /api/cart/create in 833ms (329 modules)
+ POST /api/cart/create 200 in 1712ms
+ GET / 200 in 259ms
+ ✓ Compiled /api/catalog in 226ms (331 modules)
+ GET /api/catalog 200 in 609ms
+ GET /api/catalog 200 in 650ms
+ ○ Compiling /producto/[handle] ...
+ ✓ Compiled /producto/[handle] in 1503ms (599 modules)
+ GET /producto/wireless-bluetooth-thermal-shipping-label-printer-4x6-support-android-mac-iphone-windows-shipping-label-printer 200 in 3087ms
+ ✓ Compiled /api/product/[handle] in 332ms (336 modules)
+ GET /api/product/wireless-bluetooth-thermal-shipping-label-printer-4x6-support-android-mac-iphone-windows-shipping-label-printer 200 in 2634ms
+ GET /api/product/wireless-bluetooth-thermal-shipping-label-printer-4x6-support-android-mac-iphone-windows-shipping-label-printer 200 in 2640ms
+ GET / 200 in 655ms
+ GET /api/catalog 200 in 318ms
+ GET /api/catalog 200 in 346ms
+ GET / 200 in 108ms
+ GET /api/catalog 200 in 274ms
+ GET /api/catalog 200 in 412ms
+ ✓ Compiled /api/cart/create in 384ms (337 modules)
+ POST /api/cart/create 200 in 1027ms
+ POST /api/cart/create 200 in 610ms
+ GET / 200 in 305ms
+ GET /api/catalog 200 in 287ms
+ GET /api/catalog 200 in 297ms
+ GET /api/catalog 200 in 246ms
+ GET /api/catalog 200 in 259ms
+ POST /api/cart/create 400 in 380ms
+ POST /api/cart/create 200 in 528ms
+ GET / 200 in 121ms
+ ○ Compiling /favicon.ico ...
+ ✓ Compiled /favicon.ico in 1339ms (364 modules)
+ GET /favicon.ico 200 in 2114ms
+ GET /api/catalog 200 in 1872ms
+ GET /api/catalog 200 in 1879ms
+ ✓ Compiled in 1710ms (585 modules)
+ GET / 200 in 286ms
+ ✓ Compiled /api/catalog in 328ms (334 modules)
+ GET /api/catalog 200 in 835ms
+ GET /api/catalog 200 in 896ms
+ GET /producto/wireless-bluetooth-thermal-shipping-label-printer-4x6-support-android-mac-iphone-windows-shipping-label-printer 200 in 409ms
+ ✓ Compiled in 872ms (613 modules)
+ GET / 200 in 326ms
+ GET /api/catalog 200 in 603ms
+ GET / 200 in 174ms
+ ○ Compiling /favicon.ico ...
+ ✓ Compiled /favicon.ico in 759ms (361 modules)
+ GET /favicon.ico 200 in 942ms
+ GET /api/catalog 200 in 504ms
+ GET /api/catalog 200 in 958ms
+ GET /producto/wireless-bluetooth-thermal-shipping-label-printer-4x6-support-android-mac-iphone-windows-shipping-label-printer 200 in 619ms
+ ○ Compiling /api/product/[handle] ...
+ ✓ Compiled /api/product/[handle] in 801ms (363 modules)
+ GET /api/product/wireless-bluetooth-thermal-shipping-label-printer-4x6-support-android-mac-iphone-windows-shipping-label-printer 200 in 1497ms
+ GET /api/product/wireless-bluetooth-thermal-shipping-label-printer-4x6-support-android-mac-iphone-windows-shipping-label-printer 200 in 1533ms
+ ✓ Compiled in 1418ms (585 modules)
+ ✓ Compiled in 1081ms (585 modules)
+ ✓ Compiled in 700ms (585 modules)
+ ✓ Compiled in 681ms (585 modules)
+ ✓ Compiled in 989ms (585 modules)
+ ✓ Compiled in 1492ms (585 modules)
+ GET / 200 in 259ms
+ ✓ Compiled /api/catalog in 373ms (334 modules)
+ GET /api/catalog 200 in 1257ms
+ GET / 200 in 307ms
+ GET /api/catalog 200 in 320ms
+ GET /producto/wireless-bluetooth-thermal-shipping-label-printer-4x6-support-android-mac-iphone-windows-shipping-label-printer 200 in 64ms
+ GET /api/catalog 200 in 337ms
+ GET /api/catalog 200 in 347ms
+ ✓ Compiled in 1100ms (585 modules)
+ ✓ Compiled in 1482ms (585 modules)
+ ✓ Compiled /api/catalog in 211ms (334 modules)
+ GET /api/catalog 200 in 611ms
+ GET /api/catalog 200 in 618ms
+ GET / 200 in 373ms
+ GET /api/catalog 200 in 302ms
+ GET /producto/wireless-bluetooth-thermal-shipping-label-printer-4x6-support-android-mac-iphone-windows-shipping-label-printer 200 in 77ms
+ ○ Compiling /api/cart/create ...
+ ✓ Compiled /api/cart/create in 558ms (335 modules)
+ POST /api/cart/create 200 in 1353ms
+ GET / 200 in 335ms
+ ✓ Compiled /api/catalog in 222ms (337 modules)
+ GET /api/catalog 200 in 597ms
+ GET /api/catalog 200 in 619ms
+ ✓ Compiled in 1928ms (585 modules)
+ GET / 200 in 241ms
+ ✓ Compiled /api/catalog in 184ms (334 modules)
+ GET /api/catalog 200 in 651ms
+ GET /producto/wireless-bluetooth-thermal-shipping-label-printer-4x6-support-android-mac-iphone-windows-shipping-label-printer 200 in 316ms
+ GET / 200 in 186ms
+ ○ Compiling /favicon.ico ...
+ ✓ Compiled /favicon.ico in 811ms (361 modules)
+ GET /favicon.ico 200 in 1552ms
+ GET /api/catalog 200 in 1323ms
+ GET /api/catalog 200 in 1326ms
+ GET / 200 in 274ms
+ GET /api/catalog 200 in 302ms
+ ✓ Compiled in 1200ms (613 modules)
+ GET / 200 in 192ms
+ GET /producto/wireless-bluetooth-thermal-shipping-label-printer-4x6-support-android-mac-iphone-windows-shipping-label-printer 200 in 105ms
+ GET /api/catalog 200 in 355ms
+ GET / 200 in 257ms
+ ○ Compiling /favicon.ico ...
+ ✓ Compiled /favicon.ico in 743ms (361 modules)
+ GET /favicon.ico 200 in 964ms
+ GET /api/catalog 200 in 630ms
+ GET /api/catalog 200 in 648ms
+ ✓ Compiled in 2.5s (585 modules)
+ ✓ Compiled in 1229ms (585 modules)
+ ✓ Compiled in 5.3s (585 modules)
+ GET / 200 in 301ms
+ ✓ Compiled /api/catalog in 177ms (334 modules)
+ GET /api/catalog 200 in 711ms
+ GET /producto/wireless-bluetooth-thermal-shipping-label-printer-4x6-support-android-mac-iphone-windows-shipping-label-printer 200 in 169ms
+ GET / 200 in 276ms
+ ○ Compiling /api/catalog ...
+ ✓ Compiled /api/catalog in 1189ms (336 modules)
+ ✓ Compiled (361 modules)
+ GET /favicon.ico 200 in 2300ms
+ GET /api/catalog 200 in 2258ms
+ GET /api/catalog 200 in 2366ms
+ ✓ Compiled in 1399ms (585 modules)
+ ✓ Compiled in 1381ms (585 modules)
+ GET / 200 in 325ms
+ ✓ Compiled /api/catalog in 193ms (334 modules)
+ GET /api/catalog 200 in 854ms
+ GET /producto/wireless-bluetooth-thermal-shipping-label-printer-4x6-support-android-mac-iphone-windows-shipping-label-printer 200 in 280ms
+ ✓ Compiled in 651ms (279 modules)
+ ○ Compiling /_error ...
+ GET / 500 in 105ms
+ GET /producto/wireless-bluetooth-thermal-shipping-label-printer-4x6-support-android-mac-iphone-windows-shipping-label-printer 500 in 31ms
+ GET / 500 in 26ms
+ ✓ Compiled /_not-found in 3.2s (798 modules)
+ GET / 200 in 230ms
+ GET /_next/static/webpack/b5fceeb35996fdad.webpack.hot-update.json 404 in 1889ms
+ GET / 200 in 247ms
+ ✓ Compiled /favicon.ico in 438ms (377 modules)
+ GET /favicon.ico 200 in 553ms
+ ✓ Compiled /api/catalog in 274ms (402 modules)
+ GET /api/catalog 200 in 667ms
+ GET /api/catalog 200 in 837ms
+ GET / 200 in 383ms
+ GET /producto/wireless-bluetooth-thermal-shipping-label-printer-4x6-support-android-mac-iphone-windows-shipping-label-printer 200 in 668ms
+ GET /api/catalog 200 in 310ms
+ GET /producto/wireless-bluetooth-thermal-shipping-label-printer-4x6-support-android-mac-iphone-windows-shipping-label-printer 200 in 346ms
+ GET /producto/wireless-bluetooth-thermal-shipping-label-printer-4x6-support-android-mac-iphone-windows-shipping-label-printer 200 in 378ms
+ GET /api/catalog 200 in 306ms
+ GET /producto/wireless-bluetooth-thermal-shipping-label-printer-4x6-support-android-mac-iphone-windows-shipping-label-printer 200 in 312ms
+ GET / 200 in 253ms
+ GET /favicon.ico 200 in 287ms
+ GET /api/catalog 200 in 420ms
+ GET /api/catalog 200 in 451ms
+ ✓ Compiled in 1734ms (807 modules)
+ ✓ Compiled in 941ms (807 modules)
+ GET / 200 in 288ms
+ ✓ Compiled /api/catalog in 313ms (374 modules)
+ GET /producto/wireless-bluetooth-thermal-shipping-label-printer-4x6-support-android-mac-iphone-windows-shipping-label-printer 200 in 1397ms
+ GET /api/catalog 200 in 1492ms
+ GET / 200 in 296ms
+ ○ Compiling /favicon.ico ...
+ ✓ Compiled /api/catalog in 1117ms (376 modules)
+ ✓ Compiled (401 modules)
+ GET /favicon.ico 200 in 1900ms
+ GET /api/catalog 200 in 1692ms
+ GET /api/catalog 200 in 1725ms
+ ○ Compiling /_error ...
+ GET /api/catalog 200 in 851ms
+ GET /api/catalog 200 in 857ms
+ ✓ Compiled /_error in 1037ms (837 modules)
+ GET / 500 in 1211ms
+ GET / 500 in 48ms
+ ○ Compiling /_not-found ...
+ ✓ Compiled /_not-found in 763ms (826 modules)
+ GET /_next/static/chunks/fallback/webpack.js 404 in 1199ms
+ GET /_next/static/chunks/fallback/main.js 404 in 1188ms
+ GET /_next/static/chunks/fallback/react-refresh.js 404 in 1182ms
+ GET /_next/static/chunks/fallback/pages/_app.js 404 in 52ms
+ GET /_next/static/chunks/fallback/pages/_error.js 404 in 48ms

@@ -16,7 +16,26 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={`${inter.className} relative overflow-x-hidden`}>
+        <div className="electric-background" aria-hidden="true">
+          <div className="electric-fog" />
+          <div className="electric-circuit-grid" />
+
+          <div className="electric-lines">
+            {Array.from({ length: 6 }).map((_, idx) => (
+              <span key={`line-${idx}`} className={`electric-line line-${idx + 1}`} />
+            ))}
+          </div>
+
+          <div className="electric-particles">
+            {Array.from({ length: 32 }).map((_, idx) => (
+              <span key={`particle-${idx}`} className={`electric-particle p-${idx + 1}`} />
+            ))}
+          </div>
+        </div>
+
+        <div className="app-content">{children}</div>
+      </body>
     </html>
   );
 }

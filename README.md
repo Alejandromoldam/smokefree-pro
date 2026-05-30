@@ -1,36 +1,56 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# SmokeFree Pro Headless
 
-## Getting Started
+Tienda headless en Next.js 14 conectada a Shopify Storefront API.
 
-First, run the development server:
+## Requisitos
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Node.js 18+ (recomendado 20 LTS)
+- Variables de entorno configuradas en `.env.local`
+
+## Variables de entorno
+
+Usa variables **server-side** (sin `NEXT_PUBLIC` para tokens):
+
+```env
+SHOPIFY_STORE_DOMAIN=all-in-one-22092396.myshopify.com
+SHOPIFY_STOREFRONT_PRIVATE_TOKEN=your_headless_private_token_here
+# opcional alternativo:
+# SHOPIFY_STOREFRONT_ACCESS_TOKEN=your_storefront_access_token_here
+SHOPIFY_API_VERSION=2025-04
+SITE_URL=https://tu-dominio.com
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Notas:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Usa token de Storefront (Headless), no token `atkn_`.
+- No expongas tokens en variables `NEXT_PUBLIC_*`.
+- `SITE_URL` se usa para metadatos SEO canónicos/OpenGraph.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Desarrollo local
 
-## Learn More
+```bash
+npm install
+npm run dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+Vista local: [http://localhost:4020](http://localhost:4020) si corres en puerto 4020, o el puerto que asigne Next.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Validaciones recomendadas
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+```bash
+npm run lint
+npm run build
+```
 
-## Deploy on Vercel
+## Endpoints clave
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `GET /api/catalog` catálogo real Shopify
+- `GET /api/product/[handle]` detalle real del producto
+- `POST /api/cart/create` crea carrito Shopify y devuelve `checkoutUrl`
+- `POST /api/cart/add|update|remove` operaciones de carrito
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Deploy en Vercel
+
+Sigue el checklist de producción en:
+
+- [VERCEL_DEPLOY_CHECKLIST.md](./VERCEL_DEPLOY_CHECKLIST.md)
