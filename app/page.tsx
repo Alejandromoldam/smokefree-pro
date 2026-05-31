@@ -200,20 +200,24 @@ const trustItems = [
   {
     title: "Envio rapido",
     text: "Seguimiento activo desde despacho hasta entrega.",
+    icon: "truck",
   },
   {
     title: "Pago seguro",
     text: "Checkout protegido con infraestructura de Shopify.",
+    icon: "shield",
   },
   {
     title: "Garantia",
     text: "Soporte y acompanamiento postventa para tu compra.",
+    icon: "spark",
   },
   {
-    title: "Soporte 24/7",
-    text: "Atencion continua para resolver dudas antes y despues de comprar.",
+    title: "Atencion personalizada",
+    text: "Ayuda rapida antes y despues de comprar.",
+    icon: "support",
   },
-];
+] as const;
 
 type TrustSignalIconType =
   | "shield"
@@ -570,6 +574,31 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="section-reveal mx-auto w-full max-w-7xl px-4 pb-24 sm:px-6 lg:px-8">
+        <div className="mb-8">
+          <p className="text-xs uppercase tracking-[0.2em] text-cyan-200/85 sm:text-sm">
+            Confianza premium
+          </p>
+          <h2 className="mt-3 text-3xl font-semibold text-white sm:text-4xl">
+            Compra con confianza en All In One
+          </h2>
+        </div>
+
+        <div className="glass-card rounded-3xl border border-white/12 bg-[rgba(4,10,20,0.72)] p-5 backdrop-blur-xl sm:p-7">
+          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            {trustItems.map((item) => (
+              <article key={item.title} className="trust-card rounded-2xl p-4 sm:p-5">
+                <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-xl border border-cyan-300/35 bg-cyan-300/10 text-cyan-100">
+                  <TrustSignalIcon icon={item.icon} className="h-5 w-5" />
+                </div>
+                <h3 className="text-lg font-semibold text-white">{item.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-gray-300">{item.text}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <CatalogSection />
 
       <section className="section-reveal mx-auto w-full max-w-7xl px-4 pb-24 sm:px-6 lg:px-8">
@@ -621,23 +650,6 @@ export default function Home() {
               </p>
             </article>
           ))}
-        </div>
-      </section>
-
-      <section className="section-reveal mx-auto w-full max-w-7xl px-4 pb-24 sm:px-6 lg:px-8">
-        <div className="glass-card rounded-3xl border border-white/12 p-5 sm:p-7">
-          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-            {trustItems.map((item) => (
-              <article key={item.title} className="trust-card rounded-2xl p-4 sm:p-5">
-                <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-emerald-300/40 bg-emerald-300/10 px-3 py-1 text-[0.68rem] uppercase tracking-[0.14em] text-emerald-100">
-                  <CheckIcon />
-                  Verificado
-                </div>
-                <h3 className="text-lg font-semibold text-white">{item.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-gray-300">{item.text}</p>
-              </article>
-            ))}
-          </div>
         </div>
       </section>
 
