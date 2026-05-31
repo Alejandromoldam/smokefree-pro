@@ -1894,3 +1894,305 @@ body {
     animation: none !important;
   }
 }
+
+.assistant-root {
+  position: fixed;
+  left: 1rem;
+  bottom: max(calc(env(safe-area-inset-bottom) + 5.9rem), 5.9rem);
+  z-index: 74;
+  pointer-events: none;
+}
+
+.assistant-launcher {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  border-radius: 999px;
+  border: 1px solid rgba(165, 243, 252, 0.35);
+  background: linear-gradient(
+    135deg,
+    rgba(7, 18, 36, 0.92),
+    rgba(8, 30, 56, 0.92)
+  );
+  padding: 0.72rem 1rem;
+  color: #dff7ff;
+  box-shadow:
+    0 0 0 1px rgba(34, 211, 238, 0.16) inset,
+    0 16px 32px rgba(0, 0, 0, 0.45),
+    0 0 28px rgba(59, 130, 246, 0.28);
+  backdrop-filter: blur(18px);
+  transition:
+    transform 240ms ease,
+    box-shadow 240ms ease,
+    border-color 240ms ease;
+}
+
+.assistant-launcher:hover {
+  transform: translateY(-2px);
+  border-color: rgba(103, 232, 249, 0.6);
+  box-shadow:
+    0 0 0 1px rgba(34, 211, 238, 0.24) inset,
+    0 18px 34px rgba(0, 0, 0, 0.5),
+    0 0 34px rgba(34, 211, 238, 0.3);
+}
+
+.assistant-launcher-dot {
+  width: 0.65rem;
+  height: 0.65rem;
+  border-radius: 999px;
+  background: radial-gradient(circle, #67e8f9 0%, #22d3ee 65%, #0ea5e9 100%);
+  box-shadow: 0 0 14px rgba(34, 211, 238, 0.7);
+}
+
+.assistant-launcher-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.assistant-panel {
+  pointer-events: auto;
+  width: min(24rem, calc(100vw - 2rem));
+  max-height: min(78vh, 40rem);
+  display: flex;
+  flex-direction: column;
+  border-radius: 1.3rem;
+  border: 1px solid rgba(165, 243, 252, 0.28);
+  background: linear-gradient(
+    180deg,
+    rgba(4, 14, 30, 0.92) 0%,
+    rgba(5, 17, 34, 0.95) 100%
+  );
+  box-shadow:
+    0 0 0 1px rgba(34, 211, 238, 0.15) inset,
+    0 24px 42px rgba(0, 0, 0, 0.55),
+    0 0 36px rgba(56, 189, 248, 0.2);
+  backdrop-filter: blur(16px);
+  overflow: hidden;
+}
+
+.assistant-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  align-items: flex-start;
+  padding: 0.85rem 0.95rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.assistant-eyebrow {
+  margin: 0;
+  font-size: 0.64rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(165, 243, 252, 0.9);
+}
+
+.assistant-title {
+  margin: 0.15rem 0 0 0;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #f8fafc;
+}
+
+.assistant-close {
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.34rem 0.62rem;
+  color: #d1d5db;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  transition: border-color 200ms ease, color 200ms ease;
+}
+
+.assistant-close:hover {
+  border-color: rgba(103, 232, 249, 0.55);
+  color: #ecfeff;
+}
+
+.assistant-messages {
+  overflow-y: auto;
+  padding: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.assistant-msg {
+  border-radius: 1rem;
+  padding: 0.7rem 0.75rem;
+  border: 1px solid transparent;
+}
+
+.assistant-msg.ai {
+  background: rgba(15, 23, 42, 0.8);
+  border-color: rgba(125, 211, 252, 0.26);
+}
+
+.assistant-msg.user {
+  background: rgba(6, 30, 43, 0.9);
+  border-color: rgba(34, 211, 238, 0.32);
+}
+
+.assistant-msg-text {
+  margin: 0;
+  color: #e5e7eb;
+  font-size: 0.8rem;
+  line-height: 1.45;
+  white-space: pre-line;
+}
+
+.assistant-suggestions {
+  margin-top: 0.58rem;
+  display: grid;
+  gap: 0.42rem;
+}
+
+.assistant-suggestion-card {
+  display: block;
+  border-radius: 0.82rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(15, 23, 42, 0.8);
+  padding: 0.5rem 0.55rem;
+  text-decoration: none;
+  transition: border-color 200ms ease, transform 200ms ease;
+}
+
+.assistant-suggestion-card:hover {
+  border-color: rgba(103, 232, 249, 0.62);
+  transform: translateY(-1px);
+}
+
+.assistant-suggestion-title {
+  margin: 0;
+  color: #f3f4f6;
+  font-size: 0.76rem;
+  line-height: 1.3;
+  font-weight: 600;
+}
+
+.assistant-suggestion-meta {
+  margin: 0.28rem 0 0 0;
+  color: #cbd5e1;
+  font-size: 0.69rem;
+}
+
+.assistant-whatsapp-link,
+.assistant-footer-link {
+  margin-top: 0.55rem;
+  display: inline-flex;
+  color: #67e8f9;
+  font-size: 0.72rem;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.assistant-whatsapp-link:hover,
+.assistant-footer-link:hover {
+  color: #a5f3fc;
+}
+
+.assistant-prompts {
+  padding: 0 0.85rem 0.72rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.assistant-prompt-btn {
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.32);
+  background: rgba(15, 23, 42, 0.75);
+  color: #d1d5db;
+  font-size: 0.66rem;
+  line-height: 1.2;
+  padding: 0.36rem 0.58rem;
+  transition: border-color 200ms ease, color 200ms ease;
+}
+
+.assistant-prompt-btn:hover {
+  border-color: rgba(103, 232, 249, 0.46);
+  color: #f1f5f9;
+}
+
+.assistant-form {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.5rem;
+  padding: 0.72rem 0.85rem;
+}
+
+.assistant-input {
+  width: 100%;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  background: rgba(2, 6, 23, 0.72);
+  color: #f8fafc;
+  padding: 0.58rem 0.62rem;
+  font-size: 0.78rem;
+  outline: none;
+}
+
+.assistant-input:focus {
+  border-color: rgba(103, 232, 249, 0.5);
+}
+
+.assistant-send {
+  border-radius: 0.75rem;
+  border: 1px solid rgba(34, 211, 238, 0.5);
+  background: linear-gradient(
+    135deg,
+    rgba(14, 116, 144, 0.9),
+    rgba(30, 64, 175, 0.9)
+  );
+  color: #ecfeff;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0.58rem 0.74rem;
+}
+
+.assistant-send:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.assistant-footer-link {
+  padding: 0 0.85rem 0.75rem;
+}
+
+@media (min-width: 768px) {
+  .assistant-root {
+    bottom: 1.4rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .assistant-root {
+    left: 0.82rem;
+    right: 0.82rem;
+    bottom: max(calc(env(safe-area-inset-bottom) + 6.2rem), 6.2rem);
+  }
+
+  .assistant-launcher {
+    padding: 0.68rem 0.86rem;
+  }
+
+  .assistant-launcher-label {
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+  }
+
+  .assistant-panel {
+    width: calc(100vw - 1.64rem);
+    max-height: 70vh;
+  }
+}
