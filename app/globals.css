@@ -18,9 +18,9 @@ body {
   margin: 0;
   min-height: 100vh;
   background:
-    radial-gradient(circle at 16% 14%, rgba(24, 111, 184, 0.16), transparent 44%),
-    radial-gradient(circle at 84% 10%, rgba(12, 168, 142, 0.11), transparent 38%),
-    linear-gradient(180deg, #050505 0%, #050505 100%);
+    radial-gradient(circle at 18% 10%, rgba(0, 120, 255, 0.16), transparent 42%),
+    radial-gradient(circle at 82% 12%, rgba(0, 255, 180, 0.11), transparent 40%),
+    linear-gradient(180deg, #02060d 0%, #02060d 100%);
   color: #f5f7ff;
 }
 
@@ -34,9 +34,76 @@ body {
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  opacity: 0.52;
+  opacity: 0.58;
   overflow: hidden;
   animation: electricBackgroundFloat 46s ease-in-out infinite;
+}
+
+.background-effects {
+  isolation: isolate;
+}
+
+.bg-localized-glow {
+  position: absolute;
+  border-radius: 999px;
+  pointer-events: none;
+  filter: blur(64px);
+  mix-blend-mode: screen;
+  opacity: 0.5;
+  animation: localizedGlowFloat 18s ease-in-out infinite;
+}
+
+.bg-localized-glow-hero {
+  top: -8%;
+  left: 44%;
+  width: min(42vw, 600px);
+  height: min(42vw, 600px);
+  background:
+    radial-gradient(circle, rgba(0, 120, 255, 0.25), transparent 62%),
+    radial-gradient(circle at 62% 52%, rgba(0, 255, 180, 0.16), transparent 66%);
+}
+
+.bg-localized-glow-catalog {
+  top: 42%;
+  left: 10%;
+  width: min(34vw, 500px);
+  height: min(34vw, 500px);
+  background:
+    radial-gradient(circle, rgba(0, 120, 255, 0.18), transparent 64%),
+    radial-gradient(circle at 56% 62%, rgba(0, 255, 180, 0.12), transparent 68%);
+  animation-delay: -6s;
+}
+
+.bg-tesla-arc {
+  position: absolute;
+  inset: 8% 4% auto 4%;
+  height: 58%;
+  pointer-events: none;
+  opacity: 0.25;
+  background-image:
+    repeating-linear-gradient(
+      112deg,
+      rgba(255, 255, 255, 0) 0,
+      rgba(255, 255, 255, 0) 42px,
+      rgba(255, 255, 255, 0.11) 42px,
+      rgba(255, 255, 255, 0.11) 43px
+    ),
+    repeating-linear-gradient(
+      164deg,
+      rgba(0, 120, 255, 0) 0,
+      rgba(0, 120, 255, 0) 56px,
+      rgba(0, 120, 255, 0.24) 56px,
+      rgba(0, 120, 255, 0.24) 57px
+    ),
+    repeating-linear-gradient(
+      28deg,
+      rgba(0, 255, 180, 0) 0,
+      rgba(0, 255, 180, 0) 64px,
+      rgba(0, 255, 180, 0.16) 64px,
+      rgba(0, 255, 180, 0.16) 65px
+    );
+  mask-image: radial-gradient(circle at 58% 30%, black 26%, transparent 74%);
+  animation: teslaArcFlow 14s linear infinite;
 }
 
 .electric-background::before {
@@ -240,6 +307,10 @@ body {
 .electric-particle.p-30 { top: 84%; left: 71%; animation-delay: -16.2s; }
 .electric-particle.p-31 { top: 88%; left: 83%; animation-delay: -16.8s; }
 .electric-particle.p-32 { top: 92%; left: 93%; animation-delay: -17.4s; }
+.electric-particle.p-33 { top: 22%; left: 64%; animation-delay: -11.1s; }
+.electric-particle.p-34 { top: 48%; left: 79%; animation-delay: -13.7s; }
+.electric-particle.p-35 { top: 66%; left: 54%; animation-delay: -15.1s; }
+.electric-particle.p-36 { top: 86%; left: 28%; animation-delay: -17.9s; }
 
 @layer components {
   .glass-nav {
@@ -1130,6 +1201,33 @@ body {
   }
 }
 
+@keyframes localizedGlowFloat {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.42;
+  }
+  50% {
+    transform: translate3d(0, -20px, 0) scale(1.05);
+    opacity: 0.62;
+  }
+}
+
+@keyframes teslaArcFlow {
+  0% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0.2;
+  }
+  50% {
+    transform: translate3d(-20px, 12px, 0);
+    opacity: 0.34;
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0.22;
+  }
+}
+
 @keyframes electricGridShift {
   0% {
     transform: translate3d(0, 0, 0);
@@ -1483,6 +1581,17 @@ body {
 
   .fx-circuit-lines {
     opacity: 0.18;
+  }
+
+  .bg-localized-glow {
+    opacity: 0.34;
+    filter: blur(48px);
+  }
+
+  .bg-tesla-arc {
+    opacity: 0.16;
+    inset: 10% 2% auto 2%;
+    height: 48%;
   }
 }
 
