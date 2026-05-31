@@ -30,6 +30,7 @@ Notas:
 - No expongas tokens privados en variables `NEXT_PUBLIC_*`.
 - `SITE_URL` se usa para metadata SEO canonica/OpenGraph.
 - Si `OPENAI_API_KEY` no esta configurada, el asistente usa fallback comercial y ofrece atencion por WhatsApp.
+- El asistente detecta automaticamente idioma del cliente (es/en/pt) y responde en ese idioma usando datos reales de Shopify.
 
 ## Desarrollo local
 

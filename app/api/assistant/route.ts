@@ -1,11 +1,180 @@
-import { NextResponse } from "next/server";
+﻿import { NextResponse } from "next/server";
 
 const MAX_USER_MESSAGE_LENGTH = 700;
 const MAX_HISTORY_MESSAGES = 8;
 const MAX_SUGGESTIONS = 4;
 const OPENAI_ENDPOINT = "https://api.openai.com/v1/responses";
-const FALLBACK_BASE_MESSAGE =
-  "Puedo ayudarte con productos, precios y disponibilidad. Escríbenos por WhatsApp para atención personalizada.";
+
+type AssistantLanguage = "es" | "en" | "pt";
+
+type LanguagePack = {
+  languageForPrompt: string;
+  fallbackBaseMessage: string;
+  suggestionsHeader: string;
+  availableLabel: string;
+  soldOutLabel: string;
+  variantSummaryPrefix: string;
+  variantDetailsHeader: string;
+  unitsSuffix: string;
+  whatsappLinePrefix: string;
+  humanHelpFallback: string;
+  catalogContextHeader: string;
+  historyUserLabel: string;
+  historyAssistantLabel: string;
+  askForWhatsappIfUnknown: string;
+  emptyMessageError: string;
+  invalidPayloadError: string;
+  catalogUnavailableError: string;
+};
+
+const LANGUAGE_PACKS: Record<AssistantLanguage, LanguagePack> = {
+  es: {
+    languageForPrompt: "Spanish",
+    fallbackBaseMessage:
+      "Puedo ayudarte con productos, precios y disponibilidad. Escribenos por WhatsApp para atencion personalizada.",
+    suggestionsHeader: "Sugerencias actuales:",
+    availableLabel: "Disponible",
+    soldOutLabel: "Agotado",
+    variantSummaryPrefix: "Variantes actuales de",
+    variantDetailsHeader: "Detalle de variantes:",
+    unitsSuffix: "u.",
+    whatsappLinePrefix: "Atencion humana por WhatsApp:",
+    humanHelpFallback: "Si no tienes seguridad total, ofrece atencion humana por WhatsApp.",
+    catalogContextHeader: "Catalogo real Shopify (fuente de verdad):",
+    historyUserLabel: "Cliente",
+    historyAssistantLabel: "Asistente",
+    askForWhatsappIfUnknown:
+      "Si no sabes algo con certeza, dilo y ofrece WhatsApp para atencion humana.",
+    emptyMessageError: "Escribe una pregunta para continuar.",
+    invalidPayloadError: "Solicitud invalida. Envia un mensaje en formato JSON.",
+    catalogUnavailableError: "No hay productos disponibles para responder en este momento.",
+  },
+  en: {
+    languageForPrompt: "English",
+    fallbackBaseMessage:
+      "I can help you with products, prices, and availability. Message us on WhatsApp for personalized support.",
+    suggestionsHeader: "Current suggestions:",
+    availableLabel: "Available",
+    soldOutLabel: "Sold out",
+    variantSummaryPrefix: "Current variants for",
+    variantDetailsHeader: "Variant details:",
+    unitsSuffix: "units",
+    whatsappLinePrefix: "Human support on WhatsApp:",
+    humanHelpFallback: "If anything is uncertain, say it clearly and offer WhatsApp human support.",
+    catalogContextHeader: "Live Shopify catalog (source of truth):",
+    historyUserLabel: "Customer",
+    historyAssistantLabel: "Assistant",
+    askForWhatsappIfUnknown:
+      "If you are not certain about something, say so and offer WhatsApp human support.",
+    emptyMessageError: "Please type a question to continue.",
+    invalidPayloadError: "Invalid request. Send a message in JSON format.",
+    catalogUnavailableError: "No products are available to answer right now.",
+  },
+  pt: {
+    languageForPrompt: "Portuguese",
+    fallbackBaseMessage:
+      "Posso ajudar com produtos, precos e disponibilidade. Fale conosco no WhatsApp para atendimento personalizado.",
+    suggestionsHeader: "Sugestoes atuais:",
+    availableLabel: "Disponivel",
+    soldOutLabel: "Esgotado",
+    variantSummaryPrefix: "Variantes atuais de",
+    variantDetailsHeader: "Detalhes das variantes:",
+    unitsSuffix: "un.",
+    whatsappLinePrefix: "Atendimento humano no WhatsApp:",
+    humanHelpFallback:
+      "Se algo nao estiver claro, diga com transparencia e ofereca atendimento humano no WhatsApp.",
+    catalogContextHeader: "Catalogo real do Shopify (fonte de verdade):",
+    historyUserLabel: "Cliente",
+    historyAssistantLabel: "Assistente",
+    askForWhatsappIfUnknown:
+      "Se nao tiver certeza de algo, diga isso e ofereca atendimento humano via WhatsApp.",
+    emptyMessageError: "Escreva uma pergunta para continuar.",
+    invalidPayloadError: "Solicitacao invalida. Envie uma mensagem em JSON.",
+    catalogUnavailableError: "Nao ha produtos disponiveis para responder agora.",
+  },
+};
+
+const EN_HINTS = new Set([
+  "the",
+  "and",
+  "with",
+  "for",
+  "you",
+  "your",
+  "price",
+  "stock",
+  "available",
+  "shipping",
+  "ship",
+  "internationally",
+  "warranty",
+  "product",
+  "products",
+  "checkout",
+  "cart",
+  "buy",
+  "recommend",
+  "difference",
+  "variant",
+  "variants",
+  "does",
+  "do",
+  "is",
+  "are",
+]);
+
+const ES_HINTS = new Set([
+  "que",
+  "como",
+  "cuanto",
+  "precio",
+  "precios",
+  "envio",
+  "envios",
+  "disponible",
+  "disponibles",
+  "garantia",
+  "producto",
+  "productos",
+  "carrito",
+  "comprar",
+  "recomiendas",
+  "recomendacion",
+  "variante",
+  "variantes",
+  "diferencia",
+  "tarda",
+  "envian",
+  "internacional",
+]);
+
+const PT_HINTS = new Set([
+  "que",
+  "como",
+  "quanto",
+  "preco",
+  "precos",
+  "frete",
+  "envio",
+  "disponivel",
+  "disponiveis",
+  "garantia",
+  "produto",
+  "produtos",
+  "carrinho",
+  "comprar",
+  "recomenda",
+  "recomendacao",
+  "variante",
+  "variantes",
+  "diferenca",
+  "entrega",
+  "internacional",
+  "esse",
+  "esta",
+  "tem",
+  "voce",
+]);
 
 type CatalogProduct = {
   id: string;
@@ -83,6 +252,13 @@ function normalizeText(value: unknown, maxLength: number) {
   return value.replace(/\s+/g, " ").trim().slice(0, maxLength);
 }
 
+function toAsciiLower(value: string) {
+  return value
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+}
+
 function sanitizeHistory(rawHistory: unknown): AssistantHistoryItem[] {
   if (!Array.isArray(rawHistory)) return [];
 
@@ -106,39 +282,157 @@ function sanitizeHistory(rawHistory: unknown): AssistantHistoryItem[] {
   return normalized.slice(-MAX_HISTORY_MESSAGES);
 }
 
-function extractKeywords(input: string) {
-  const lowered = input
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "");
+function getLanguageScore(text: string) {
+  const rawLower = text.toLowerCase();
+  const normalized = toAsciiLower(text);
+  const tokens = normalized.split(/[^a-z0-9]+/g).filter(Boolean);
 
-  const stopwords = new Set([
-    "de",
-    "la",
-    "el",
-    "los",
-    "las",
-    "que",
+  const scores: Record<AssistantLanguage, number> = {
+    es: 0,
+    en: 0,
+    pt: 0,
+  };
+
+  for (const token of tokens) {
+    if (EN_HINTS.has(token)) scores.en += 2;
+    if (ES_HINTS.has(token)) scores.es += 2;
+    if (PT_HINTS.has(token)) scores.pt += 2;
+  }
+
+  if (/[¿¡]/.test(text)) scores.es += 3;
+  if (/[ñ]/i.test(text)) scores.es += 3;
+  if (/[ãõçêôâáà]/i.test(rawLower)) scores.pt += 3;
+  if (/\b(do you|can you|how much|what is|what are|does it|is it|are there)\b/i.test(rawLower)) {
+    scores.en += 4;
+  }
+  if (/\b(quanto custa|tem garantia|frete internacional|voce|vocês|voces)\b/i.test(rawLower)) {
+    scores.pt += 4;
+  }
+  if (/\b(cuanto cuesta|tiene garantia|envio internacional|ustedes|cuanto tarda)\b/i.test(rawLower)) {
+    scores.es += 4;
+  }
+
+  return scores;
+}
+
+function chooseLanguageByScore(scores: Record<AssistantLanguage, number>) {
+  const entries: Array<[AssistantLanguage, number]> = [
+    ["es", scores.es],
+    ["en", scores.en],
+    ["pt", scores.pt],
+  ];
+
+  entries.sort((a, b) => b[1] - a[1]);
+  const [topLanguage, topScore] = entries[0];
+  const secondScore = entries[1][1];
+
+  if (topScore === 0) return null;
+  if (topScore === secondScore) return null;
+  return topLanguage;
+}
+
+function detectPreferredLanguage(message: string, history: AssistantHistoryItem[]): AssistantLanguage {
+  const direct = chooseLanguageByScore(getLanguageScore(message));
+  if (direct) return direct;
+
+  const userHistoryText = history
+    .filter((item) => item.role === "user")
+    .map((item) => item.content)
+    .join(" ");
+
+  if (userHistoryText) {
+    const combined = `${message} ${userHistoryText}`.trim();
+    const combinedLanguage = chooseLanguageByScore(getLanguageScore(combined));
+    if (combinedLanguage) return combinedLanguage;
+  }
+
+  return "es";
+}
+
+function extractKeywords(input: string, language: AssistantLanguage) {
+  const lowered = toAsciiLower(input);
+
+  const commonStopwords = new Set([
+    "for",
+    "with",
+    "from",
+    "this",
+    "that",
+    "have",
+    "has",
+    "and",
+    "are",
+    "the",
+    "to",
+    "you",
+    "your",
+    "por",
     "para",
     "con",
     "sin",
-    "del",
-    "por",
-    "una",
-    "un",
-    "me",
-    "quiero",
-    "busco",
-    "necesito",
-    "sobre",
+    "que",
     "como",
-    "cual",
-    "cuanto",
+    "una",
+    "uno",
+    "um",
+    "uma",
   ]);
+
+  const languageStopwords: Record<AssistantLanguage, Set<string>> = {
+    es: new Set([
+      "de",
+      "la",
+      "el",
+      "los",
+      "las",
+      "del",
+      "me",
+      "quiero",
+      "busco",
+      "necesito",
+      "sobre",
+      "cual",
+      "cuanto",
+    ]),
+    en: new Set([
+      "do",
+      "does",
+      "is",
+      "are",
+      "can",
+      "please",
+      "show",
+      "need",
+      "want",
+      "about",
+      "which",
+      "what",
+      "much",
+    ]),
+    pt: new Set([
+      "de",
+      "da",
+      "do",
+      "dos",
+      "das",
+      "com",
+      "sem",
+      "quero",
+      "preciso",
+      "sobre",
+      "qual",
+      "quanto",
+    ]),
+  };
 
   return lowered
     .split(/[^a-z0-9]+/g)
-    .filter((token) => token.length > 2 && !stopwords.has(token));
+    .filter((token) => {
+      if (token.length <= 2) return false;
+      if (commonStopwords.has(token)) return false;
+      if (languageStopwords[language].has(token)) return false;
+      return true;
+    });
 }
 
 function toPriceNumber(amount: string) {
@@ -146,23 +440,18 @@ function toPriceNumber(amount: string) {
   return Number.isFinite(value) ? value : Number.MAX_SAFE_INTEGER;
 }
 
-function rankProducts(products: CatalogProduct[], userMessage: string) {
-  const keywords = extractKeywords(userMessage);
-  const normalizedMessage = userMessage
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "");
+function rankProducts(
+  products: CatalogProduct[],
+  userMessage: string,
+  language: AssistantLanguage
+) {
+  const keywords = extractKeywords(userMessage, language);
+  const normalizedMessage = toAsciiLower(userMessage);
 
   const ranked = products
     .map((product) => {
-      const title = product.title
-        .toLowerCase()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "");
-      const description = product.descriptionShort
-        .toLowerCase()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "");
+      const title = toAsciiLower(product.title);
+      const description = toAsciiLower(product.descriptionShort);
 
       let score = 0;
       for (const keyword of keywords) {
@@ -171,14 +460,15 @@ function rankProducts(products: CatalogProduct[], userMessage: string) {
       }
 
       if (product.availableForSale) score += 2;
-      if (normalizedMessage.includes("barat") || normalizedMessage.includes("econom")) {
+
+      const wantsAffordable =
+        /barat|econom|cheap|afford|budget|preco baixo|em conta/.test(normalizedMessage);
+      if (wantsAffordable) {
         score += Math.max(0, 30 - toPriceNumber(product.priceAmount));
       }
-      if (
-        normalizedMessage.includes("premium") ||
-        normalizedMessage.includes("pro") ||
-        normalizedMessage.includes("top")
-      ) {
+
+      const wantsPremium = /premium|pro|top|advanced|avancad/.test(normalizedMessage);
+      if (wantsPremium) {
         score += toPriceNumber(product.priceAmount) / 10;
       }
 
@@ -231,7 +521,7 @@ async function fetchCatalog(origin: string) {
     if (!response.ok || !payload.ok || !Array.isArray(payload.products)) {
       return {
         ok: false,
-        error: payload.error || "No se pudo consultar el catálogo real de Shopify.",
+        error: payload.error || "Could not query live Shopify catalog.",
         products: [] as CatalogProduct[],
       };
     }
@@ -244,19 +534,25 @@ async function fetchCatalog(origin: string) {
   } catch {
     return {
       ok: false,
-      error: "No fue posible conectar con el catálogo de Shopify.",
+      error: "Could not connect to Shopify catalog.",
       products: [] as CatalogProduct[],
     };
   }
 }
 
 function needsVariantDetails(userMessage: string) {
-  return /variante|variantes|color|modelo|version|diferencia|tamano|tamaño/i.test(
+  return /(variant|variants|variante|variantes|color|modelo|model|version|diferencia|diferenca|difference|size|tamano|tamanho)/i.test(
     userMessage
   );
 }
 
-async function fetchVariantSummary(origin: string, handle: string) {
+async function fetchVariantSummary(
+  origin: string,
+  handle: string,
+  language: AssistantLanguage
+) {
+  const pack = LANGUAGE_PACKS[language];
+
   try {
     const response = await fetch(
       `${origin}/api/product/${encodeURIComponent(handle)}`,
@@ -271,16 +567,18 @@ async function fetchVariantSummary(origin: string, handle: string) {
     const lines = variants.slice(0, 6).map((variant) => {
       const quantity =
         typeof variant.quantityAvailable === "number"
-          ? ` (${variant.quantityAvailable} u.)`
+          ? ` (${variant.quantityAvailable} ${pack.unitsSuffix})`
           : "";
-      const availability = variant.availableForSale ? "Disponible" : "Agotado";
+      const availability = variant.availableForSale
+        ? pack.availableLabel
+        : pack.soldOutLabel;
       return `${variant.title}: ${formatMoney(
         variant.priceAmount,
         variant.priceCurrency
       )} - ${availability}${quantity}`;
     });
 
-    return `Variantes actuales de ${payload.product.title}: ${lines.join(" | ")}`;
+    return `${pack.variantSummaryPrefix} ${payload.product.title}: ${lines.join(" | ")}`;
   } catch {
     return null;
   }
@@ -312,36 +610,45 @@ async function askOpenAI(options: {
   catalogContext: string;
   variantContext: string | null;
   whatsappUrl: string | null;
+  language: AssistantLanguage;
 }) {
+  const pack = LANGUAGE_PACKS[options.language];
+
   const contextParts = [
-    "Catálogo real Shopify (fuente de verdad):",
+    pack.catalogContextHeader,
     options.catalogContext,
-    options.variantContext ? `\nDetalle de variantes:\n${options.variantContext}` : "",
+    options.variantContext ? `\n${pack.variantDetailsHeader}\n${options.variantContext}` : "",
   ]
     .filter(Boolean)
     .join("\n");
 
   const recentHistory = options.history
-    .map((item) => `${item.role === "user" ? "Cliente" : "Asistente"}: ${item.content}`)
+    .map((item) =>
+      `${
+        item.role === "user" ? pack.historyUserLabel : pack.historyAssistantLabel
+      }: ${item.content}`
+    )
     .join("\n");
 
   const systemPrompt = [
-    "Eres el Asistente All In One de ecommerce.",
-    "Habla SIEMPRE en español.",
-    "Nunca inventes precios, stock, variantes ni productos.",
-    "Usa únicamente la información del catálogo real proporcionado.",
-    "Si un producto está agotado, dilo y sugiere alternativas disponibles.",
-    "Sé breve, claro y comercial (máximo 6 líneas).",
-    "Incluye links de producto cuando recomiendes algo usando la URL disponible.",
+    "You are the All In One ecommerce assistant.",
+    `Always respond in ${pack.languageForPrompt}.`,
+    "If the customer mixes languages, use the predominant language of the latest customer message.",
+    "Never invent prices, inventory, product specs, or availability.",
+    "Use only the provided live Shopify catalog context as source of truth.",
+    "If a product is out of stock, say it clearly and suggest available alternatives.",
+    "Keep responses concise, clear, and commercial (max 6 lines).",
+    "When recommending products, include product URLs from the context.",
+    pack.askForWhatsappIfUnknown,
     options.whatsappUrl
-      ? `Si el cliente necesita ayuda humana, invita a WhatsApp: ${options.whatsappUrl}`
-      : "Si el cliente necesita ayuda humana, sugiere contacto por WhatsApp.",
+      ? `Human support WhatsApp URL: ${options.whatsappUrl}`
+      : "If needed, suggest WhatsApp human support.",
   ].join(" ");
 
   const userPrompt = [
     contextParts,
-    recentHistory ? `\nHistorial reciente:\n${recentHistory}` : "",
-    `\nPregunta del cliente:\n${options.message}`,
+    recentHistory ? `\nRecent history:\n${recentHistory}` : "",
+    `\nCustomer message:\n${options.message}`,
   ]
     .filter(Boolean)
     .join("\n");
@@ -370,7 +677,7 @@ async function askOpenAI(options: {
 
   const payload = (await response.json()) as OpenAIResponse;
   if (!response.ok) {
-    const errorMessage = payload.error?.message || "Error de OpenAI.";
+    const errorMessage = payload.error?.message || "OpenAI error";
     throw new Error(errorMessage);
   }
 
@@ -381,24 +688,29 @@ function buildFallbackAnswer(options: {
   suggestions: AssistantSuggestion[];
   variantSummary: string | null;
   whatsappUrl: string | null;
+  language: AssistantLanguage;
 }) {
+  const pack = LANGUAGE_PACKS[options.language];
+
   const lines = options.suggestions.map((product, index) => {
-    const stockLabel = product.availableForSale ? "Disponible" : "Agotado";
-    return `${index + 1}. ${product.title} — ${formatMoney(
+    const stockLabel = product.availableForSale
+      ? pack.availableLabel
+      : pack.soldOutLabel;
+    return `${index + 1}. ${product.title} - ${formatMoney(
       product.priceAmount,
       product.priceCurrency
     )} (${stockLabel})`;
   });
 
-  const sections = [FALLBACK_BASE_MESSAGE];
+  const sections = [pack.fallbackBaseMessage];
   if (lines.length > 0) {
-    sections.push(`Sugerencias actuales:\n${lines.join("\n")}`);
+    sections.push(`${pack.suggestionsHeader}\n${lines.join("\n")}`);
   }
   if (options.variantSummary) {
     sections.push(options.variantSummary);
   }
   if (options.whatsappUrl) {
-    sections.push(`Atención humana por WhatsApp: ${options.whatsappUrl}`);
+    sections.push(`${pack.whatsappLinePrefix} ${options.whatsappUrl}`);
   }
 
   return sections.join("\n\n");
@@ -412,7 +724,7 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         ok: false,
-        error: "Solicitud inválida. Envia un mensaje en formato JSON.",
+        error: LANGUAGE_PACKS.es.invalidPayloadError,
         answer: "",
         fallback: true,
         suggestions: [],
@@ -424,12 +736,14 @@ export async function POST(request: Request) {
 
   const message = normalizeText(body.message, MAX_USER_MESSAGE_LENGTH);
   const history = sanitizeHistory(body.history);
+  const language = detectPreferredLanguage(message, history);
+  const pack = LANGUAGE_PACKS[language];
 
   if (!message) {
     return NextResponse.json(
       {
         ok: false,
-        error: "Escribe una pregunta para continuar.",
+        error: pack.emptyMessageError,
         answer: "",
         fallback: true,
         suggestions: [],
@@ -441,27 +755,32 @@ export async function POST(request: Request) {
 
   const origin = new URL(request.url).origin;
   const catalogResult = await fetchCatalog(origin);
+  const whatsappUrl = buildWhatsAppUrl(process.env.NEXT_PUBLIC_WHATSAPP_NUMBER);
+
   if (!catalogResult.ok || catalogResult.products.length === 0) {
     return NextResponse.json(
       {
         ok: false,
-        error:
-          catalogResult.error ||
-          "No hay productos disponibles para responder en este momento.",
-        answer: FALLBACK_BASE_MESSAGE,
+        error: catalogResult.error || pack.catalogUnavailableError,
+        answer: buildFallbackAnswer({
+          suggestions: [],
+          variantSummary: null,
+          whatsappUrl,
+          language,
+        }),
         fallback: true,
         suggestions: [],
-        whatsappUrl: buildWhatsAppUrl(process.env.NEXT_PUBLIC_WHATSAPP_NUMBER),
+        whatsappUrl,
       },
       { status: 200 }
     );
   }
 
-  const suggestions = rankProducts(catalogResult.products, message).map(toSuggestion);
+  const suggestions = rankProducts(catalogResult.products, message, language).map(toSuggestion);
   const catalogContext = catalogResult.products
     .slice(0, 24)
     .map((product) => {
-      const stock = product.availableForSale ? "Disponible" : "Agotado";
+      const stock = product.availableForSale ? pack.availableLabel : pack.soldOutLabel;
       return `- ${product.title} | ${formatMoney(
         product.priceAmount,
         product.priceCurrency
@@ -471,10 +790,9 @@ export async function POST(request: Request) {
 
   let variantSummary: string | null = null;
   if (needsVariantDetails(message) && suggestions[0]?.handle) {
-    variantSummary = await fetchVariantSummary(origin, suggestions[0].handle);
+    variantSummary = await fetchVariantSummary(origin, suggestions[0].handle, language);
   }
 
-  const whatsappUrl = buildWhatsAppUrl(process.env.NEXT_PUBLIC_WHATSAPP_NUMBER);
   const openaiApiKey = (process.env.OPENAI_API_KEY || "").trim();
   const openaiModel = (process.env.OPENAI_MODEL || "gpt-4o-mini").trim();
 
@@ -483,7 +801,7 @@ export async function POST(request: Request) {
       {
         ok: true,
         error: null,
-        answer: buildFallbackAnswer({ suggestions, variantSummary, whatsappUrl }),
+        answer: buildFallbackAnswer({ suggestions, variantSummary, whatsappUrl, language }),
         fallback: true,
         suggestions,
         whatsappUrl,
@@ -501,6 +819,7 @@ export async function POST(request: Request) {
       catalogContext,
       variantContext: variantSummary,
       whatsappUrl,
+      language,
     });
 
     if (!aiText) {
@@ -508,7 +827,7 @@ export async function POST(request: Request) {
         {
           ok: true,
           error: null,
-          answer: buildFallbackAnswer({ suggestions, variantSummary, whatsappUrl }),
+          answer: buildFallbackAnswer({ suggestions, variantSummary, whatsappUrl, language }),
           fallback: true,
           suggestions,
           whatsappUrl,
@@ -533,7 +852,7 @@ export async function POST(request: Request) {
       {
         ok: true,
         error: null,
-        answer: buildFallbackAnswer({ suggestions, variantSummary, whatsappUrl }),
+        answer: buildFallbackAnswer({ suggestions, variantSummary, whatsappUrl, language }),
         fallback: true,
         suggestions,
         whatsappUrl,
