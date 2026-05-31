@@ -296,8 +296,8 @@ export async function GET(request: Request) {
       const variantNumericId = extractVariantNumericId(variantGid);
       const handle = node.handle || "";
       const productUrl = handle
-        ? `https://${domain}/products/${handle}`
-        : `https://${domain}/collections/all`;
+        ? `/products/${handle}`
+        : "/#catalogo";
       const buyNowUrl = variantNumericId
         ? `https://${domain}/cart/${variantNumericId}:1`
         : productUrl;

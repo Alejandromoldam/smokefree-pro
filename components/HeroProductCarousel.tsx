@@ -27,7 +27,7 @@ type HeroSlide = {
 const MAX_HERO_SLIDES = 8;
 const ROTATION_INTERVAL_MS = 5000;
 const SWIPE_THRESHOLD = 42;
-const CATALOG_LINK = "https://all-in-one-22092396.myshopify.com/collections/all";
+const CATALOG_LINK = "/#catalogo";
 
 const FALLBACK_SLIDE: HeroSlide = {
   id: "fallback-slide",

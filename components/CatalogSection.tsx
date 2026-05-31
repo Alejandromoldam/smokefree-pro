@@ -54,8 +54,7 @@ type CheckoutApiResponse = {
   } | null;
 };
 
-const CATALOG_FALLBACK_LINK =
-  "https://all-in-one-22092396.myshopify.com/collections/all";
+const CATALOG_FALLBACK_LINK = "/#catalogo";
 const LOCAL_CART_STORAGE_KEY = "sf_local_cart_v1";
 const LOCAL_CART_EVENT = "sf-local-cart-updated";
 const LOCAL_CART_EVENT_SOURCE = "catalog-section";
@@ -708,8 +707,6 @@ export default function CatalogSection() {
           {showShopifyPagination && !hasActiveFilters ? (
             <a
               href={CATALOG_FALLBACK_LINK}
-              target="_blank"
-              rel="noreferrer"
               className="btn-premium px-6 py-2 text-sm font-semibold"
             >
               Abrir catalogo completo

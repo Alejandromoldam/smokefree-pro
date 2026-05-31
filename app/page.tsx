@@ -7,7 +7,7 @@ import NavbarCartButton from "@/components/NavbarCartButton";
 
 const PRODUCT_LINK =
   "https://all-in-one-22092396.myshopify.com/products/2-in-1-multifunctional-indoor-smokeless-ashtray-360-surround-suction-intelligent-air-purifier-ashtray-indoor-household-car-intelligent-ashtray-grey";
-const CATALOG_LINK = "https://all-in-one-22092396.myshopify.com/collections/all";
+const CATALOG_LINK = "#catalogo";
 const CART_LINK = "https://all-in-one-22092396.myshopify.com/cart";
 
 type BenefitIconType = "air" | "chip" | "shield";
@@ -539,8 +539,6 @@ export default function Home() {
             </a>
             <a
               href={CATALOG_LINK}
-              target="_blank"
-              rel="noreferrer"
               className="btn-ghost px-7 py-3 text-sm font-semibold sm:px-8 sm:py-4 sm:text-base"
             >
               Ver catalogo
@@ -707,8 +705,6 @@ export default function Home() {
               </a>
               <a
                 href={CATALOG_LINK}
-                target="_blank"
-                rel="noreferrer"
                 className="btn-ghost px-7 py-3 text-sm font-semibold sm:px-8 sm:py-4 sm:text-base"
               >
                 Ver catalogo
@@ -950,8 +946,6 @@ export default function Home() {
             </a>
             <a
               href={CATALOG_LINK}
-              target="_blank"
-              rel="noreferrer"
               className="btn-ghost px-9 py-4 text-sm font-semibold sm:text-base"
             >
               Ver catalogo
@@ -964,7 +958,7 @@ export default function Home() {
         <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 px-4 py-10 text-sm text-gray-400 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
           <p>Copyright {new Date().getFullYear()} All In One Store. All rights reserved.</p>
           <div className="flex flex-wrap gap-4">
-            <a href={CATALOG_LINK} target="_blank" rel="noreferrer" className="nav-link">
+            <a href={CATALOG_LINK} className="nav-link">
               Catalogo
             </a>
             <a href={PRODUCT_LINK} target="_blank" rel="noreferrer" className="nav-link">

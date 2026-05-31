@@ -351,8 +351,8 @@ function mapCart(domain: string, cart: StorefrontCart): CartPayload {
         lineTotalCurrency: line.cost?.totalAmount?.currencyCode || "MXN",
         availableForSale: Boolean(merchandise?.availableForSale),
         productUrl: handle
-          ? `https://${domain}/products/${handle}`
-          : `https://${domain}/collections/all`,
+          ? `/products/${handle}`
+          : "/#catalogo",
       };
     }),
   };
