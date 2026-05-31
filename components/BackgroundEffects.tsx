@@ -4,6 +4,7 @@ export default function BackgroundEffects() {
       <div className="bg-localized-glow bg-localized-glow-hero" />
       <div className="bg-localized-glow bg-localized-glow-catalog" />
       <div className="bg-tesla-arc" />
+      <div className="bg-hero-lightning" />
 
       <div className="electric-fog" />
       <div className="electric-circuit-grid" />
