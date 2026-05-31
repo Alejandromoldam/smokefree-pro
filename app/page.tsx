@@ -466,7 +466,7 @@ function TrustSignalIcon({
 
 export default function Home() {
   return (
-    <main className="premium-shell relative z-10 overflow-hidden bg-[#050505] pb-24 text-white md:pb-0">
+    <main className="premium-shell relative z-10 overflow-hidden bg-transparent pb-24 text-white md:pb-0">
       <nav className="glass-nav sticky inset-x-0 top-0 z-50 border-b border-white/10">
         <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-3 sm:px-6 sm:py-4 lg:px-8">
           <Link href="/" className="tracking-brand text-sm font-semibold uppercase text-white">
@@ -948,7 +948,7 @@ export default function Home() {
         </div>
       </section>
 
-      <footer className="border-t border-white/10 bg-[#070707]/90">
+      <footer className="border-t border-white/10 bg-[rgba(4,10,20,0.72)] backdrop-blur-md">
         <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 px-4 py-10 text-sm text-gray-400 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
           <p>Copyright {new Date().getFullYear()} All In One Store. All rights reserved.</p>
           <div className="flex flex-wrap gap-4">

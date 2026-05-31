@@ -793,7 +793,7 @@ export default function CatalogSection() {
             onClick={() => setCartOpen(false)}
           />
 
-          <aside className="absolute right-0 top-0 h-full w-full max-w-xl overflow-y-auto border-l border-white/12 bg-[#05070b]/95 p-5 shadow-[0_0_40px_rgba(0,0,0,0.55)] sm:p-6">
+          <aside className="absolute right-0 top-0 h-full w-full max-w-xl overflow-y-auto border-l border-white/12 bg-[rgba(4,10,20,0.78)] p-5 shadow-[0_0_40px_rgba(0,0,0,0.55)] backdrop-blur-xl sm:p-6">
             <div className="mb-5 flex items-start justify-between gap-4">
               <div>
                 <p className="text-xs uppercase tracking-[0.18em] text-cyan-200/90">Carrito</p>

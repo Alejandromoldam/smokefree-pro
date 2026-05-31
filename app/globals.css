@@ -12,27 +12,35 @@
 
 html {
   scroll-behavior: smooth;
+  background: #02060d;
 }
 
 body {
   margin: 0;
   min-height: 100vh;
-  background:
-    radial-gradient(circle at 18% 10%, rgba(0, 140, 255, 0.16), transparent 42%),
-    radial-gradient(circle at 82% 12%, rgba(0, 255, 190, 0.12), transparent 40%),
-    linear-gradient(180deg, #02060d 0%, #02060d 100%);
+  background: #02060d;
   color: #f5f7ff;
 }
 
 .app-content {
   position: relative;
-  z-index: 20;
+  z-index: 2;
+}
+
+.app-content main,
+.app-content header,
+.app-content section,
+.app-content footer {
+  position: relative;
+  z-index: 2;
 }
 
 .electric-background {
   position: fixed;
   inset: 0;
-  z-index: 2;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
   pointer-events: none;
   opacity: 0.94;
   overflow: hidden;
@@ -1117,9 +1125,9 @@ body {
     background:
       radial-gradient(circle at 18% -10%, rgba(255, 255, 255, 0.08), transparent 40%),
       radial-gradient(circle at 84% -8%, rgba(34, 197, 246, 0.08), transparent 42%),
-      radial-gradient(circle at 50% 122%, rgba(0, 0, 0, 0.6), transparent 44%);
+      radial-gradient(circle at 50% 122%, rgba(0, 0, 0, 0.22), transparent 44%);
     mix-blend-mode: screen;
-    opacity: 0.28;
+    opacity: 0.16;
     z-index: -1;
   }
 

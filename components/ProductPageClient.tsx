@@ -737,7 +737,7 @@ export default function ProductPage() {
   }
 
   return (
-    <main className="premium-shell min-h-screen bg-[#050505] text-white">
+    <main className="premium-shell min-h-screen bg-transparent text-white">
       <div className="mx-auto w-full max-w-7xl px-4 pb-[calc(9.5rem+env(safe-area-inset-bottom))] pt-20 sm:px-6 sm:pt-24 lg:px-8 lg:pb-20">
         <div className="mb-8 flex flex-wrap items-center justify-between gap-3">
           <Link href="/" className="btn-ghost inline-flex px-4 py-2 text-sm font-semibold">
