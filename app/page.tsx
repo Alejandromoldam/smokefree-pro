@@ -564,8 +564,8 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="relative z-10 w-full lg:w-[56%]">
-          <div className="hero-frame hero-dominant parallax-layer depth-strong reveal-2 relative mx-auto max-w-2xl rounded-[2.2rem] border border-white/15 p-3 sm:p-5">
+        <div className="hero-media-wrap relative z-10 w-full lg:w-[56%]">
+          <div className="hero-frame hero-dominant parallax-layer depth-strong relative mx-auto max-w-2xl rounded-[2.2rem] border border-white/15 p-3 sm:p-5">
             <div className="hero-glow absolute -inset-10 -z-10" />
             <div className="fx-hero-electric" />
             <div className="fx-product-smoke" />

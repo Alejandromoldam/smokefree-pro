@@ -1274,29 +1274,40 @@ body {
   .reveal-3,
   .reveal-4,
   .reveal-5 {
-    opacity: 0;
-    transform: translateY(18px);
-    animation: fadeUp 650ms cubic-bezier(0.2, 0.65, 0.2, 1) forwards;
+    opacity: 1;
+    transform: translateY(0);
   }
 
-  .reveal-1 {
-    animation-delay: 0.08s;
-  }
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal-1,
+    .reveal-2,
+    .reveal-3,
+    .reveal-4,
+    .reveal-5 {
+      opacity: 0;
+      transform: translateY(18px);
+      animation: fadeUp 650ms cubic-bezier(0.2, 0.65, 0.2, 1) forwards;
+    }
 
-  .reveal-2 {
-    animation-delay: 0.18s;
-  }
+    .reveal-1 {
+      animation-delay: 0.08s;
+    }
 
-  .reveal-3 {
-    animation-delay: 0.28s;
-  }
+    .reveal-2 {
+      animation-delay: 0.18s;
+    }
 
-  .reveal-4 {
-    animation-delay: 0.38s;
-  }
+    .reveal-3 {
+      animation-delay: 0.28s;
+    }
 
-  .reveal-5 {
-    animation-delay: 0.48s;
+    .reveal-4 {
+      animation-delay: 0.38s;
+    }
+
+    .reveal-5 {
+      animation-delay: 0.48s;
+    }
   }
 
   .section-reveal {
@@ -1718,6 +1729,15 @@ body {
     opacity: 1 !important;
     transform: none !important;
     animation: none !important;
+  }
+
+  .hero-media-wrap {
+    margin-top: 16px !important;
+  }
+
+  .hero-carousel-stage {
+    min-height: clamp(12rem, 62vw, 17rem) !important;
+    aspect-ratio: 4 / 3 !important;
   }
 }
 
