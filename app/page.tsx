@@ -493,9 +493,7 @@ export default function Home() {
 
           <div className="flex items-center gap-2">
             <a
-              href={CATALOG_LINK}
-              target="_blank"
-              rel="noreferrer"
+              href="#catalogo"
               className="btn-ghost px-3 py-2 text-xs font-semibold sm:text-sm"
             >
               Catalogo
