@@ -6,7 +6,7 @@ import HeroProductCarousel from "@/components/HeroProductCarousel";
 import NavbarCartButton from "@/components/NavbarCartButton";
 
 const PRODUCT_LINK =
-  "https://all-in-one-22092396.myshopify.com/products/2-in-1-multifunctional-indoor-smokeless-ashtray-360-surround-suction-intelligent-air-purifier-ashtray-indoor-household-car-intelligent-ashtray-grey";
+  "/products/2-in-1-multifunctional-indoor-smokeless-ashtray-360-surround-suction-intelligent-air-purifier-ashtray-indoor-household-car-intelligent-ashtray-grey";
 const CATALOG_LINK = "#catalogo";
 const CART_LINK = "https://all-in-one-22092396.myshopify.com/cart";
 
@@ -531,8 +531,6 @@ export default function Home() {
           <div className="reveal-4 mt-8 flex flex-wrap items-center gap-3">
             <a
               href={PRODUCT_LINK}
-              target="_blank"
-              rel="noreferrer"
               className="btn-premium px-7 py-3 text-sm font-semibold sm:px-8 sm:py-4 sm:text-base"
             >
               Comprar ahora
@@ -697,8 +695,6 @@ export default function Home() {
             <div className="mt-8 flex flex-wrap gap-3">
               <a
                 href={PRODUCT_LINK}
-                target="_blank"
-                rel="noreferrer"
                 className="btn-premium px-7 py-3 text-sm font-semibold sm:px-8 sm:py-4 sm:text-base"
               >
                 Comprar ahora
@@ -938,8 +934,6 @@ export default function Home() {
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
             <a
               href={PRODUCT_LINK}
-              target="_blank"
-              rel="noreferrer"
               className="btn-premium px-9 py-4 text-sm font-semibold sm:text-base"
             >
               Comprar ahora
@@ -961,7 +955,7 @@ export default function Home() {
             <a href={CATALOG_LINK} className="nav-link">
               Catalogo
             </a>
-            <a href={PRODUCT_LINK} target="_blank" rel="noreferrer" className="nav-link">
+            <a href={PRODUCT_LINK} className="nav-link">
               Producto
             </a>
           </div>
@@ -974,8 +968,6 @@ export default function Home() {
         </p>
         <a
           href={PRODUCT_LINK}
-          target="_blank"
-          rel="noreferrer"
           className="btn-premium mt-2 block w-full px-6 py-3 text-center text-sm font-semibold"
         >
           Comprar ahora
