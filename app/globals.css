@@ -454,6 +454,96 @@ body {
       0 0 0 1px rgba(255, 255, 255, 0.11) inset;
   }
 
+  .hero-carousel {
+    position: relative;
+    width: 100%;
+  }
+
+  .hero-carousel-stage {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1.72rem;
+    aspect-ratio: 1 / 1;
+    min-height: clamp(20rem, 45vw, 38rem);
+    background: rgba(4, 8, 12, 0.75);
+  }
+
+  .hero-carousel-slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: scale(1.012);
+    transition:
+      opacity 700ms ease,
+      visibility 700ms ease,
+      transform 700ms ease;
+  }
+
+  .hero-carousel-slide.is-active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: scale(1);
+    z-index: 2;
+  }
+
+  .hero-carousel-meta {
+    margin-top: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  .hero-carousel-title {
+    margin: 0;
+    max-width: 70%;
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    font-size: 0.84rem;
+    letter-spacing: 0.03em;
+    color: rgba(207, 250, 254, 0.9);
+  }
+
+  .hero-carousel-dots {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.42rem;
+  }
+
+  .hero-carousel-dot {
+    width: 0.55rem;
+    height: 0.55rem;
+    border-radius: 999px;
+    border: 1px solid rgba(103, 232, 249, 0.55);
+    background: rgba(22, 28, 38, 0.9);
+    transition:
+      transform 220ms ease,
+      background-color 220ms ease,
+      box-shadow 220ms ease;
+  }
+
+  .hero-carousel-dot.is-active {
+    background: rgba(34, 211, 238, 0.95);
+    box-shadow:
+      0 0 0 1px rgba(186, 230, 253, 0.2) inset,
+      0 0 14px rgba(34, 211, 238, 0.45);
+    transform: scale(1.12);
+  }
+
+  @media (max-width: 640px) {
+    .hero-carousel-title {
+      max-width: 100%;
+      font-size: 0.78rem;
+      -webkit-line-clamp: 2;
+    }
+  }
+
   .benefit-card {
     border: 1px solid rgba(148, 163, 184, 0.22);
     background: linear-gradient(

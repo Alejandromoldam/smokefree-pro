@@ -2,6 +2,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import CatalogSection from "@/components/CatalogSection";
+import HeroProductCarousel from "@/components/HeroProductCarousel";
 import NavbarCartButton from "@/components/NavbarCartButton";
 
 const PRODUCT_LINK =
@@ -570,14 +571,7 @@ export default function Home() {
             <div className="hero-glow absolute -inset-10 -z-10" />
             <div className="fx-hero-electric" />
             <div className="fx-product-smoke" />
-            <Image
-              src="/producto-real.png"
-              alt="Producto destacado All In One"
-              width={1200}
-              height={1200}
-              priority
-              className="float-soft hero-product h-auto w-full rounded-[1.72rem] object-cover"
-            />
+            <HeroProductCarousel />
           </div>
         </div>
       </section>
