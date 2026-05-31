@@ -18,10 +18,14 @@ SHOPIFY_STOREFRONT_PRIVATE_TOKEN=your_headless_private_token_here
 # SHOPIFY_STOREFRONT_ACCESS_TOKEN=your_storefront_access_token_here
 SHOPIFY_API_VERSION=2025-04
 SITE_URL=https://tu-dominio.com
+# opcional para unificar canonical/SEO:
+NEXT_PUBLIC_SITE_URL=https://tu-dominio.com
 OPENAI_API_KEY=your_openai_api_key_here
 # opcional:
 OPENAI_MODEL=gpt-4o-mini
 NEXT_PUBLIC_WHATSAPP_NUMBER=5215512345678
+# opcional GA4 (si no se define, no se activa analytics):
+NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
 ```
 
 Notas:
@@ -31,6 +35,7 @@ Notas:
 - `SITE_URL` se usa para metadata SEO canonica/OpenGraph.
 - Si `OPENAI_API_KEY` no esta configurada, el asistente usa fallback comercial y ofrece atencion por WhatsApp.
 - El asistente detecta automaticamente idioma del cliente (es/en/pt) y responde en ese idioma usando datos reales de Shopify.
+- Si `NEXT_PUBLIC_GA_MEASUREMENT_ID` no existe, GA4 queda desactivado automaticamente.
 
 ## Desarrollo local
 
@@ -55,6 +60,13 @@ npm run build
 - `POST /api/assistant` asistente IA con contexto actualizado desde Shopify
 - `POST /api/cart/create` crea carrito Shopify y devuelve `checkoutUrl`
 - `POST /api/cart/add|update|remove` operaciones de carrito
+
+## SEO tecnico
+
+- `GET /sitemap.xml` sitemap dinamico con home, productos y categorias
+- `GET /robots.txt` reglas de indexacion + referencia al sitemap
+- Canonical en home, productos (`/products/[handle]`) y categorias (`/categorias/[handle]`)
+- Ruta legacy `/producto/[handle]` redirige permanentemente a `/products/[handle]`
 
 ## Deploy en Vercel
 

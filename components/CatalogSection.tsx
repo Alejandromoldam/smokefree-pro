@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { trackAddToCart, trackBeginCheckout } from "@/lib/ga";
 
 type CatalogProduct = {
   id: string;
@@ -383,6 +384,23 @@ export default function CatalogSection() {
         ],
       };
     });
+
+    const variantTitle = product.variantId ? "Variante seleccionada" : "Variante unica";
+    trackAddToCart({
+      currency: product.priceCurrency,
+      value: getPriceNumber(product.priceAmount),
+      items: [
+        {
+          item_id: product.variantId || product.id,
+          item_name: product.title,
+          item_variant: variantTitle,
+          currency: product.priceCurrency,
+          price: getPriceNumber(product.priceAmount),
+          quantity: 1,
+        },
+      ],
+    });
+
     setCartOpen(true);
     setAddingProductId(null);
   }
@@ -444,6 +462,19 @@ export default function CatalogSection() {
         setCartActionError(payload.error || "No se pudo generar checkout Shopify.");
         return;
       }
+
+      trackBeginCheckout({
+        currency: cartCurrency,
+        value: getPriceNumber(cartTotalAmount),
+        items: cart.lines.map((line) => ({
+          item_id: line.merchandiseId || line.id,
+          item_name: line.title,
+          item_variant: line.variantTitle,
+          currency: line.unitPriceCurrency,
+          price: getPriceNumber(line.unitPriceAmount),
+          quantity: line.quantity,
+        })),
+      });
 
       window.location.href = payload.cart.checkoutUrl;
     } catch {

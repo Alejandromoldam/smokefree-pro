@@ -963,13 +963,28 @@ export default function Home() {
       <footer className="border-t border-white/10 bg-[rgba(4,10,20,0.72)] backdrop-blur-md">
         <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 px-4 py-10 text-sm text-gray-400 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
           <p>Copyright {new Date().getFullYear()} All In One Store. All rights reserved.</p>
-          <div className="flex flex-wrap gap-4">
+          <div className="flex flex-wrap gap-x-5 gap-y-2">
             <a href={CATALOG_LINK} className="nav-link">
               Catalogo
             </a>
             <a href={PRODUCT_LINK} className="nav-link">
               Producto
             </a>
+            <Link href="/politica-de-privacidad" className="nav-link">
+              Privacidad
+            </Link>
+            <Link href="/terminos-y-condiciones" className="nav-link">
+              Terminos
+            </Link>
+            <Link href="/politica-de-envios" className="nav-link">
+              Envios
+            </Link>
+            <Link href="/politica-de-devoluciones" className="nav-link">
+              Devoluciones
+            </Link>
+            <Link href="/contacto" className="nav-link">
+              Contacto
+            </Link>
           </div>
         </div>
       </footer>

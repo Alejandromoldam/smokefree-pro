@@ -1,11 +1,14 @@
 ﻿import type { Metadata } from "next";
 import ProductPageClient from "@/components/ProductPageClient";
+import { getAllProductHandles, getSiteUrl } from "@/lib/shopifySeo";
 
 const DEFAULT_API_VERSION = "2025-04";
 const DEFAULT_STORE_DOMAIN = "all-in-one-22092396.myshopify.com";
 const FALLBACK_TITLE = "Producto premium";
 const FALLBACK_DESCRIPTION =
-  "All In One Store reúne productos tecnológicos y soluciones innovadoras seleccionadas para mejorar tu experiencia diaria.";
+  "All In One Store reune productos tecnologicos y soluciones innovadoras seleccionadas para mejorar tu experiencia diaria.";
+
+export const revalidate = 1800;
 
 type ShopifySeoResponse = {
   data?: {
@@ -49,25 +52,6 @@ function normalizeStoreDomain(rawDomain: string) {
     .replace(/^https?:\/\//i, "")
     .replace(/\/$/, "")
     .trim();
-}
-
-function getSiteUrl() {
-  const rawSiteUrl =
-    process.env.NEXT_PUBLIC_SITE_URL || process.env.SITE_URL || "";
-
-  if (rawSiteUrl) {
-    try {
-      return new URL(rawSiteUrl).origin;
-    } catch {
-      // Continue with safe fallbacks.
-    }
-  }
-
-  if (process.env.NODE_ENV !== "production") {
-    return "http://localhost:4020";
-  }
-
-  return "https://allinonestore.lat";
 }
 
 function compactDescription(rawText: string, maxLength = 160) {
@@ -141,7 +125,7 @@ async function fetchSeoProduct(handle: string): Promise<SeoProduct | null> {
           query,
           variables: { handle },
         }),
-        cache: "no-store",
+        next: { revalidate },
       });
 
       if (!response.ok) {
@@ -176,6 +160,13 @@ async function fetchSeoProduct(handle: string): Promise<SeoProduct | null> {
   }
 
   return null;
+}
+
+export async function generateStaticParams() {
+  const products = await getAllProductHandles(500);
+  return products.map((product) => ({
+    handle: product.handle,
+  }));
 }
 
 export async function generateMetadata({
@@ -224,6 +215,3 @@ export async function generateMetadata({
 export default function ProductPage() {
   return <ProductPageClient />;
 }
-
-
-

@@ -2,9 +2,10 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import { NavbarCartButtonWithHref } from "@/components/NavbarCartButton";
+import { trackAddToCart, trackBeginCheckout, trackViewItem } from "@/lib/ga";
 
 type ProductImage = {
   url: string;
@@ -373,6 +374,7 @@ export default function ProductPage() {
   const [relatedError, setRelatedError] = useState<string | null>(null);
   const [addingRelatedId, setAddingRelatedId] = useState<string | null>(null);
   const [stickyBarVisible, setStickyBarVisible] = useState(false);
+  const trackedViewProductIdRef = useRef<string | null>(null);
 
   useEffect(() => {
     let active = true;
@@ -508,6 +510,61 @@ export default function ProductPage() {
       selectedVariant?.priceCurrency || product.priceCurrency
     );
   }, [product, selectedVariant?.priceAmount, selectedVariant?.priceCurrency]);
+
+  useEffect(() => {
+    if (!product?.id) return;
+    if (trackedViewProductIdRef.current === product.id) return;
+
+    trackViewItem({
+      currency: selectedVariant?.priceCurrency || product.priceCurrency,
+      value: getPriceNumber(selectedVariant?.priceAmount || product.priceAmount),
+      items: [
+        {
+          item_id: selectedVariant?.id || product.id,
+          item_name: product.title,
+          item_variant: selectedVariant?.title || undefined,
+          currency: selectedVariant?.priceCurrency || product.priceCurrency,
+          price: getPriceNumber(selectedVariant?.priceAmount || product.priceAmount),
+          quantity: 1,
+        },
+      ],
+    });
+
+    trackedViewProductIdRef.current = product.id;
+  }, [
+    product?.id,
+    product?.title,
+    product?.priceAmount,
+    product?.priceCurrency,
+    selectedVariant?.id,
+    selectedVariant?.title,
+    selectedVariant?.priceAmount,
+    selectedVariant?.priceCurrency,
+  ]);
+
+  function trackBuyNowIntent() {
+    if (!product) return;
+    const safeQuantity = Math.max(1, Math.min(quantity, maxQuantity));
+    const baseAmount = getPriceNumber(
+      selectedVariant?.priceAmount || product.priceAmount
+    );
+    const currency = selectedVariant?.priceCurrency || product.priceCurrency;
+
+    trackBeginCheckout({
+      currency,
+      value: baseAmount * safeQuantity,
+      items: [
+        {
+          item_id: selectedVariant?.id || product.id,
+          item_name: product.title,
+          item_variant: selectedVariant?.title || undefined,
+          currency,
+          price: baseAmount,
+          quantity: safeQuantity,
+        },
+      ],
+    });
+  }
 
   useEffect(() => {
     let ticking = false;
@@ -691,6 +748,21 @@ export default function ProductPage() {
         productUrl: product.productUrl,
       });
 
+      trackAddToCart({
+        currency: selectedVariant.priceCurrency,
+        value: getPriceNumber(selectedVariant.priceAmount) * safeQuantity,
+        items: [
+          {
+            item_id: selectedVariant.id,
+            item_name: product.title,
+            item_variant: selectedVariant.title || undefined,
+            currency: selectedVariant.priceCurrency,
+            price: getPriceNumber(selectedVariant.priceAmount),
+            quantity: safeQuantity,
+          },
+        ],
+      });
+
       setCartMessage(
         safeQuantity > 1
           ? `Se agregaron ${safeQuantity} unidades al carrito.`
@@ -745,6 +817,21 @@ export default function ProductPage() {
         unitPriceCurrency: related.priceCurrency,
         availableForSale: related.availableForSale,
         productUrl: related.productUrl,
+      });
+
+      trackAddToCart({
+        currency: related.priceCurrency,
+        value: getPriceNumber(related.priceAmount),
+        items: [
+          {
+            item_id: related.variantId,
+            item_name: related.title,
+            item_variant: "Variante seleccionada",
+            currency: related.priceCurrency,
+            price: getPriceNumber(related.priceAmount),
+            quantity: 1,
+          },
+        ],
       });
 
       setCartMessage(
@@ -931,6 +1018,7 @@ export default function ProductPage() {
                     href={buyNowUrl}
                     target="_blank"
                     rel="noreferrer"
+                    onClick={trackBuyNowIntent}
                     className="btn-ghost px-6 py-3.5 text-center text-sm font-semibold"
                   >
                     Comprar ahora
@@ -1148,6 +1236,7 @@ export default function ProductPage() {
                 href={buyNowUrl}
                 target="_blank"
                 rel="noreferrer"
+                onClick={trackBuyNowIntent}
                 className="btn-ghost px-4 py-3 text-center text-sm font-semibold"
               >
                 Comprar
