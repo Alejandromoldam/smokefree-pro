@@ -610,7 +610,7 @@ export default function CatalogSection() {
         <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
           {visibleProducts.map((product) => {
             const detailHref = product.handle
-              ? `/producto/${product.handle}`
+              ? `/products/${product.handle}`
               : product.productUrl;
             return (
               <article
@@ -773,7 +773,7 @@ export default function CatalogSection() {
                   <a
                     href={
                       quickViewProduct.handle
-                        ? `/producto/${quickViewProduct.handle}`
+                        ? `/products/${quickViewProduct.handle}`
                         : quickViewProduct.productUrl
                     }
                     className="btn-ghost px-4 py-2 text-center text-sm font-semibold"
@@ -928,3 +928,5 @@ export default function CatalogSection() {
     </section>
   );
 }
+
+

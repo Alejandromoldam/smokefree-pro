@@ -452,11 +452,28 @@ export default function ProductPage() {
   }, [maxQuantity]);
 
   const inventoryText = useMemo(() => {
-    if (!selectedVariant) return "Inventario no disponible";
-    if (!selectedVariant.availableForSale) return "Agotado";
-    if (selectedVariant.quantityAvailable === null) return "Inventario no disponible";
-    return `${selectedVariant.quantityAvailable} disponibles`;
-  }, [selectedVariant]);
+    if (selectedVariant?.availableForSale === true) {
+      return "Disponible";
+    }
+
+    if (selectedVariant?.availableForSale === false) {
+      return "Agotado";
+    }
+
+    if (product?.availableForSale === true) {
+      return "Disponible";
+    }
+
+    if (product?.availableForSale === false) {
+      return "Agotado";
+    }
+
+    if ((product?.variants?.length || 0) > 0) {
+      return "En stock";
+    }
+
+    return "Agotado";
+  }, [product, selectedVariant]);
 
   const stickyShortTitle = useMemo(
     () => shortenTitle(product?.title || "Producto All In One Store"),
@@ -802,15 +819,19 @@ export default function ProductPage() {
                   )}
                 </p>
 
-                <div className="mt-4 grid gap-3 rounded-2xl border border-white/12 bg-black/30 p-4 sm:grid-cols-2">
-                  <div>
-                    <p className="text-xs uppercase tracking-[0.12em] text-gray-400">Inventario</p>
-                    <p className="mt-1 text-sm font-medium text-white">{inventoryText}</p>
-                  </div>
-                  <div>
-                    <p className="text-xs uppercase tracking-[0.12em] text-gray-400">SKU</p>
-                    <p className="mt-1 text-sm font-medium text-white">
-                      {selectedVariant?.sku || "Sin SKU"}
+                <div className="mt-4 rounded-2xl border border-white/12 bg-black/30 p-4">
+                  <div className="grid gap-2">
+                    <p className="inline-flex items-center gap-2 text-sm font-medium text-white">
+                      <span className="text-emerald-300">✓</span>
+                      {inventoryText}
+                    </p>
+                    <p className="inline-flex items-center gap-2 text-sm font-medium text-white">
+                      <span className="text-emerald-300">✓</span>
+                      Envío rápido
+                    </p>
+                    <p className="inline-flex items-center gap-2 text-sm font-medium text-white">
+                      <span className="text-emerald-300">✓</span>
+                      Pago seguro
                     </p>
                   </div>
                 </div>
@@ -999,7 +1020,7 @@ export default function ProductPage() {
                           {addingRelatedId === related.id ? "Agregando..." : "Agregar al carrito"}
                         </button>
                         <Link
-                          href={related.handle ? `/producto/${related.handle}` : related.productUrl}
+                          href={related.handle ? `/products/${related.handle}` : related.productUrl}
                           className="btn-ghost px-3 py-2 text-center text-xs font-semibold sm:text-sm"
                         >
                           Ver detalles
@@ -1124,3 +1145,5 @@ export default function ProductPage() {
     </main>
   );
 }
+
+
