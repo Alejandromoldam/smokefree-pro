@@ -509,7 +509,7 @@ export default function Home() {
 
       <section
         id="inicio"
-        className="hero-cinematic relative mx-auto flex min-h-screen w-full max-w-7xl flex-col justify-center gap-14 overflow-hidden px-4 pb-20 pt-20 sm:px-6 sm:pt-24 lg:flex-row lg:items-center lg:gap-20 lg:px-8 lg:pt-28"
+        className="hero-cinematic relative mx-auto flex min-h-[auto] w-full max-w-7xl flex-col justify-start gap-10 overflow-hidden px-4 pb-10 pt-14 sm:min-h-screen sm:justify-center sm:gap-14 sm:px-6 sm:pb-16 sm:pt-24 lg:flex-row lg:items-center lg:gap-20 lg:px-8 lg:pb-20 lg:pt-28"
       >
         <div className="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
           <div className="light-orb light-orb-a" />
