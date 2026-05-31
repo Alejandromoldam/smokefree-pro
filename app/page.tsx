@@ -574,6 +574,8 @@ export default function Home() {
         </div>
       </section>
 
+      <CatalogSection />
+
       <section className="section-reveal mx-auto w-full max-w-7xl px-4 pb-24 sm:px-6 lg:px-8">
         <div className="mb-8">
           <p className="text-xs uppercase tracking-[0.2em] text-cyan-200/85 sm:text-sm">
@@ -598,8 +600,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      <CatalogSection />
 
       <section className="section-reveal mx-auto w-full max-w-7xl px-4 pb-24 sm:px-6 lg:px-8">
         <div className="mb-8">
