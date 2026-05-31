@@ -1240,14 +1240,51 @@ body {
 
 .catalog-description-clamp {
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  min-height: 2.7rem;
+  min-height: 3.9rem;
 }
 
 .catalog-price {
   text-shadow: 0 0 18px rgba(56, 189, 248, 0.32);
+}
+
+.product-description-rich {
+  line-height: 1.8;
+  letter-spacing: 0.005em;
+}
+
+.product-description-rich p,
+.product-description-rich ul,
+.product-description-rich ol,
+.product-description-rich blockquote,
+.product-description-rich h1,
+.product-description-rich h2,
+.product-description-rich h3,
+.product-description-rich h4 {
+  margin: 0 0 0.95rem 0;
+}
+
+.product-description-rich ul,
+.product-description-rich ol {
+  padding-left: 1.25rem;
+}
+
+.product-description-rich li {
+  margin-bottom: 0.42rem;
+}
+
+.product-description-rich strong,
+.product-description-rich b {
+  color: #f8fafc;
+  font-weight: 700;
+}
+
+.product-description-rich a {
+  color: #67e8f9;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
 }
 
 .catalog-product-image {
@@ -1831,9 +1868,9 @@ body {
   }
 
   .catalog-description-clamp {
-    min-height: 2.35rem;
+    min-height: 3.3rem;
     font-size: 0.84rem;
-    line-height: 1.35;
+    line-height: 1.4;
   }
 
   .catalog-meta-row {

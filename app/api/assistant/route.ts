@@ -634,10 +634,14 @@ async function askOpenAI(options: {
     "You are the All In One ecommerce assistant.",
     `Always respond in ${pack.languageForPrompt}.`,
     "If the customer mixes languages, use the predominant language of the latest customer message.",
+    "Use a professional, clear, objective, polite, and commercial tone.",
+    "Default response length: 2 to 4 sentences.",
+    "Provide a long detailed response only when the customer explicitly asks for full details.",
     "Never invent prices, inventory, product specs, or availability.",
+    "Do not mention Shopify, APIs, backend, tokens, or internal systems to the customer.",
     "Use only the provided live Shopify catalog context as source of truth.",
+    "Summarize product info and do not copy full product descriptions verbatim.",
     "If a product is out of stock, say it clearly and suggest available alternatives.",
-    "Keep responses concise, clear, and commercial (max 6 lines).",
     "When recommending products, include product URLs from the context.",
     pack.askForWhatsappIfUnknown,
     options.whatsappUrl
@@ -692,19 +696,19 @@ function buildFallbackAnswer(options: {
 }) {
   const pack = LANGUAGE_PACKS[options.language];
 
-  const lines = options.suggestions.map((product, index) => {
+  const lines = options.suggestions.slice(0, 2).map((product) => {
     const stockLabel = product.availableForSale
       ? pack.availableLabel
       : pack.soldOutLabel;
-    return `${index + 1}. ${product.title} - ${formatMoney(
+    return `${product.title} (${formatMoney(
       product.priceAmount,
       product.priceCurrency
-    )} (${stockLabel})`;
+    )}, ${stockLabel})`;
   });
 
   const sections = [pack.fallbackBaseMessage];
   if (lines.length > 0) {
-    sections.push(`${pack.suggestionsHeader}\n${lines.join("\n")}`);
+    sections.push(`${pack.suggestionsHeader} ${lines.join(" | ")}`);
   }
   if (options.variantSummary) {
     sections.push(options.variantSummary);

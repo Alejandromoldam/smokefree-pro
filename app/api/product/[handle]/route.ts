@@ -21,6 +21,7 @@ type ShopifyProductResponse = {
       title: string;
       handle: string;
       description: string;
+      descriptionHtml?: string;
       availableForSale: boolean;
       vendor: string;
       productType: string;
@@ -107,6 +108,133 @@ function normalizeShopifyImageUrl(
   }
 }
 
+function escapeHtml(text: string) {
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function sanitizeLinkUrl(rawUrl: string) {
+  const trimmed = rawUrl.trim();
+  if (!trimmed) return "#";
+  if (
+    trimmed.startsWith("/") ||
+    trimmed.startsWith("#") ||
+    /^https?:\/\//i.test(trimmed) ||
+    /^mailto:/i.test(trimmed) ||
+    /^tel:/i.test(trimmed)
+  ) {
+    return trimmed;
+  }
+  return "#";
+}
+
+function plainTextToHtml(rawText: string) {
+  const normalized = rawText.replace(/\r\n/g, "\n").trim();
+  if (!normalized) {
+    return "<p>Este producto no tiene descripcion publica todavia.</p>";
+  }
+
+  const blocks = normalized
+    .split(/\n{2,}/)
+    .map((block) => block.trim())
+    .filter(Boolean);
+
+  const htmlBlocks = blocks.map((block) => {
+    const lines = block
+      .split("\n")
+      .map((line) => line.trim())
+      .filter(Boolean);
+    if (lines.length === 0) return "";
+
+    const allBulletLines = lines.every((line) => /^[-*•]\s+/.test(line));
+    if (allBulletLines) {
+      const listItems = lines
+        .map((line) => line.replace(/^[-*•]\s+/, ""))
+        .map((line) => `<li>${escapeHtml(line)}</li>`)
+        .join("");
+      return `<ul>${listItems}</ul>`;
+    }
+
+    return `<p>${lines.map((line) => escapeHtml(line)).join("<br />")}</p>`;
+  });
+
+  return htmlBlocks.filter(Boolean).join("");
+}
+
+function sanitizeDescriptionHtml(rawHtml: string | null | undefined) {
+  const source = (rawHtml || "").trim();
+  if (!source) return "";
+
+  const withoutComments = source.replace(/<!--[\s\S]*?-->/g, "");
+  const withoutDangerousBlocks = withoutComments
+    .replace(
+      /<(script|style|iframe|object|embed|form|input|button|textarea|select|meta|link|base|svg|math)[^>]*>[\s\S]*?<\/\1>/gi,
+      ""
+    )
+    .replace(
+      /<(script|style|iframe|object|embed|form|input|button|textarea|select|meta|link|base|svg|math)[^>]*\/?>/gi,
+      ""
+    );
+
+  const allowedTags = new Set([
+    "p",
+    "br",
+    "ul",
+    "ol",
+    "li",
+    "strong",
+    "b",
+    "em",
+    "i",
+    "u",
+    "a",
+    "h1",
+    "h2",
+    "h3",
+    "h4",
+    "blockquote",
+  ]);
+
+  const sanitized = withoutDangerousBlocks.replace(
+    /<\/?([a-z0-9-]+)([^>]*)>/gi,
+    (fullTag, rawTagName: string, rawAttrs: string) => {
+      const tagName = rawTagName.toLowerCase();
+      const isClosingTag = fullTag.startsWith("</");
+      if (!allowedTags.has(tagName)) {
+        return "";
+      }
+
+      if (isClosingTag) {
+        return `</${tagName}>`;
+      }
+
+      if (tagName === "br") {
+        return "<br />";
+      }
+
+      if (tagName === "a") {
+        const hrefMatch = rawAttrs.match(
+          /href\s*=\s*("([^"]*)"|'([^']*)'|([^\s>]+))/i
+        );
+        const hrefCandidate =
+          hrefMatch?.[2] || hrefMatch?.[3] || hrefMatch?.[4] || "#";
+        const safeHref = sanitizeLinkUrl(hrefCandidate);
+        return `<a href="${escapeHtml(
+          safeHref
+        )}" target="_blank" rel="noopener noreferrer nofollow">`;
+      }
+
+      return `<${tagName}>`;
+    }
+  );
+
+  return sanitized.trim();
+}
+
 async function extractShopifyErrorMessage(response: Response) {
   try {
     const payload = (await response.json()) as ShopifyProductResponse;
@@ -160,6 +288,7 @@ export async function GET(
         title
         handle
         description
+        descriptionHtml
         availableForSale
         vendor
         productType
@@ -202,6 +331,7 @@ export async function GET(
         title
         handle
         description
+        descriptionHtml
         availableForSale
         vendor
         productType
@@ -344,6 +474,10 @@ export async function GET(
     }
 
     const product = payload.data.product;
+    const sanitizedDescriptionHtml = sanitizeDescriptionHtml(
+      product.descriptionHtml
+    );
+    const fallbackDescriptionHtml = plainTextToHtml(product.description || "");
     const variants = product.variants.edges.map((edge) => edge.node);
     const selectedVariant =
       variants.find((variant) => variant.availableForSale) || variants[0] || null;
@@ -364,6 +498,8 @@ export async function GET(
           title: product.title,
           handle: product.handle,
           description: product.description,
+          descriptionHtml:
+            sanitizedDescriptionHtml || fallbackDescriptionHtml,
           availableForSale: product.availableForSale,
           vendor: product.vendor,
           productType: product.productType,

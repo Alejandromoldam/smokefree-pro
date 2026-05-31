@@ -31,7 +31,7 @@ type ChatMessage = {
 };
 
 const INITIAL_ASSISTANT_TEXT =
-  "Hola / Hi / Oi. Soy el Asistente All In One. I can help with live Shopify prices, stock, and product recommendations.";
+  "\u{1F44B} Hola, soy el Asistente All In One.\n\nPuedo ayudarte con productos, precios, disponibilidad, env\u00EDos y recomendaciones personalizadas.\n\n\u2728 Respuestas r\u00E1pidas y asistencia en tiempo real.";
 
 function formatMoney(amount: string, currencyCode: string) {
   const numeric = Number(amount);

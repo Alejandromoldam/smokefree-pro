@@ -26,6 +26,7 @@ type ProductPayload = {
   title: string;
   handle: string;
   description: string;
+  descriptionHtml?: string;
   availableForSale: boolean;
   vendor: string;
   productType: string;
@@ -202,6 +203,15 @@ function getPriceNumber(amount: string) {
 
 function getLineTotalAmount(unitPriceAmount: string, quantity: number) {
   return (getPriceNumber(unitPriceAmount) * Math.max(1, quantity)).toFixed(2);
+}
+
+function escapeHtml(text: string) {
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
 }
 
 function shortenTitle(title: string, maxLength = 38) {
@@ -424,12 +434,23 @@ export default function ProductPage() {
     );
   }, [product, selectedVariantId]);
 
-  const descriptionText = useMemo(() => {
-    const full = product?.description?.trim() || "";
-    if (!full) {
-      return "Este producto no tiene descripcion publica todavia. Revisa la ficha de Shopify para mas detalles.";
+  const descriptionHtml = useMemo(() => {
+    const rich = product?.descriptionHtml?.trim() || "";
+    if (rich) return rich;
+
+    const plain = product?.description?.trim() || "";
+    if (!plain) {
+      return "<p>Este producto no tiene descripcion publica todavia. Revisa la ficha para mas detalles.</p>";
     }
-    return full;
+
+    const paragraphs = plain
+      .replace(/\r\n/g, "\n")
+      .split(/\n{2,}/)
+      .map((block) => block.trim())
+      .filter(Boolean)
+      .map((block) => `<p>${escapeHtml(block).replace(/\n/g, "<br />")}</p>`);
+
+    return paragraphs.join("");
   }, [product]);
 
   const buyNowUrl = useMemo(() => {
@@ -882,9 +903,10 @@ export default function ProductPage() {
                   </div>
                 </div>
 
-                <p className="mt-5 whitespace-pre-line text-sm leading-relaxed text-gray-300 sm:text-base">
-                  {descriptionText}
-                </p>
+                <div
+                  className="product-description-rich mt-5 text-sm text-gray-300 sm:text-base"
+                  dangerouslySetInnerHTML={{ __html: descriptionHtml }}
+                />
 
                 <p className="mt-4 text-xs uppercase tracking-[0.12em] text-gray-400">
                   {product.vendor || "All In One"} - {product.productType || "Tecnologia premium"}

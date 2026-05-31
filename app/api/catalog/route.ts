@@ -16,6 +16,7 @@ type ShopifyProductsResponse = {
           title?: string | null;
           handle?: string | null;
           description?: string | null;
+          descriptionHtml?: string | null;
           availableForSale?: boolean | null;
           images: {
             edges: Array<{
@@ -184,6 +185,7 @@ export async function GET(request: Request) {
             title
             handle
             description
+            descriptionHtml
             availableForSale
             images(first: 1) {
               edges {
@@ -301,8 +303,8 @@ export async function GET(request: Request) {
       const buyNowUrl = variantNumericId
         ? `https://${domain}/cart/${variantNumericId}:1`
         : productUrl;
-      const title = (node.title || "").trim() || "Producto";
-      const description = node.description || "";
+      const title = node.title || "Producto";
+      const description = node.description || node.descriptionHtml || "";
       const currencyCode = node.priceRange?.minVariantPrice?.currencyCode || "USD";
       const priceAmount = node.priceRange?.minVariantPrice?.amount || "0.00";
 
