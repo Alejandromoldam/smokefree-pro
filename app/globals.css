@@ -1225,14 +1225,35 @@ body {
     animation: floatSoft 9s ease-in-out infinite;
   }
 
-  .catalog-card {
-    transform-style: preserve-3d;
-  }
+.catalog-card {
+  transform-style: preserve-3d;
+}
 
-  .catalog-product-image {
-    animation: productFloatSlow 10s ease-in-out infinite;
-    transform-origin: 50% 60%;
-  }
+.catalog-title-clamp {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-wrap: balance;
+  min-height: 3.1rem;
+}
+
+.catalog-description-clamp {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 2.7rem;
+}
+
+.catalog-price {
+  text-shadow: 0 0 18px rgba(56, 189, 248, 0.32);
+}
+
+.catalog-product-image {
+  animation: productFloatSlow 10s ease-in-out infinite;
+  transform-origin: 50% 60%;
+}
 
   .catalog-card:nth-child(2n) .catalog-product-image {
     animation-delay: -2.5s;
@@ -1778,6 +1799,52 @@ body {
 
   .catalog-product-image {
     animation-duration: 12s;
+  }
+
+  .catalog-card {
+    border-radius: 1.35rem;
+  }
+
+  .catalog-image-shell {
+    border-radius: 1rem;
+  }
+
+  .catalog-product-image {
+    height: 10rem;
+    object-fit: contain;
+    padding: 0.35rem;
+  }
+
+  .catalog-title-clamp {
+    min-height: 2.8rem;
+    font-size: 1rem;
+    line-height: 1.35;
+  }
+
+  .catalog-description-clamp {
+    min-height: 2.35rem;
+    font-size: 0.84rem;
+    line-height: 1.35;
+  }
+
+  .catalog-meta-row {
+    margin-top: 0.65rem;
+  }
+
+  .catalog-price {
+    font-size: 1.12rem;
+  }
+
+  .catalog-actions {
+    gap: 0.55rem;
+  }
+
+  .catalog-actions .btn-premium,
+  .catalog-actions .btn-ghost {
+    min-height: 2.55rem;
+    padding: 0.62rem 0.5rem;
+    font-size: 0.74rem;
+    line-height: 1.15;
   }
 
   .fx-energy-grid {

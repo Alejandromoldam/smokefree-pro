@@ -606,7 +606,7 @@ export default function CatalogSection() {
       ) : null}
 
       {filteredProducts.length > 0 ? (
-        <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="grid gap-4 sm:gap-5 sm:grid-cols-2 xl:grid-cols-4">
           {visibleProducts.map((product) => {
             const detailHref = product.handle
               ? `/products/${product.handle}`
@@ -614,9 +614,9 @@ export default function CatalogSection() {
             return (
               <article
                 key={product.id}
-                className="glass-card catalog-card group rounded-3xl border border-white/12 p-4 transition duration-300 hover:-translate-y-1 hover:border-cyan-300/45"
+                className="glass-card catalog-card group rounded-3xl border border-white/12 p-3.5 transition duration-300 hover:-translate-y-1 hover:border-cyan-300/45 sm:p-4"
               >
-                <div className="overflow-hidden rounded-2xl border border-white/10 bg-black/30">
+                <div className="catalog-image-shell overflow-hidden rounded-2xl border border-white/10 bg-black/35">
                   <Image
                     src={product.imageUrl}
                     alt={product.imageAlt}
@@ -624,14 +624,16 @@ export default function CatalogSection() {
                     height={700}
                     loading="lazy"
                     unoptimized
-                    className="catalog-product-image h-52 w-full object-cover transition duration-500 group-hover:scale-[1.03]"
+                    className="catalog-product-image h-40 w-full object-contain transition duration-500 group-hover:scale-[1.03] sm:h-52 sm:object-cover"
                   />
                 </div>
 
                 <div className="mt-4">
-                  <h3 className="text-lg font-semibold text-white">{product.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-gray-300">
-                    {product.descriptionShort}
+                  <h3 className="catalog-title-clamp text-base font-semibold text-white sm:text-lg">
+                    {product.title}
+                  </h3>
+                  <p className="catalog-description-clamp mt-2 text-sm leading-relaxed text-gray-300">
+                    {product.descriptionShort || "Descripcion disponible en ver detalles."}
                   </p>
                   <button
                     type="button"
@@ -640,8 +642,8 @@ export default function CatalogSection() {
                   >
                     Ver detalles rapido
                   </button>
-                  <div className="mt-3 flex items-center justify-between">
-                    <p className="text-lg font-semibold text-white">
+                  <div className="catalog-meta-row mt-3 flex items-center justify-between gap-2">
+                    <p className="catalog-price text-xl font-semibold text-cyan-100 sm:text-lg">
                       {formatMoney(product.priceAmount, product.priceCurrency)}
                     </p>
                     <span
@@ -656,14 +658,14 @@ export default function CatalogSection() {
                   </div>
                 </div>
 
-                <div className="mt-4 grid grid-cols-2 gap-2">
+                <div className="catalog-actions mt-4 grid grid-cols-2 gap-2.5">
                   <button
                     type="button"
                     onClick={() => void addToCart(product)}
                     disabled={addingProductId === product.id}
                     className="btn-premium px-3 py-2 text-center text-xs font-semibold disabled:cursor-not-allowed disabled:opacity-70 sm:text-sm"
                   >
-                    {addingProductId === product.id ? "Agregando..." : "Comprar / Ordenar"}
+                    {addingProductId === product.id ? "Agregando..." : "Agregar al carrito"}
                   </button>
                   <a
                     href={detailHref}
