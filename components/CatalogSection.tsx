@@ -456,7 +456,7 @@ export default function CatalogSection() {
   return (
     <section
       id="catalogo"
-      className="section-reveal mx-auto w-full max-w-7xl px-4 pb-24 sm:px-6 lg:px-8"
+      className="catalog-section section-reveal mx-auto w-full max-w-7xl px-4 pb-12 sm:px-6 sm:pb-24 lg:px-8"
     >
       <div id="carrito" className="sr-only" aria-hidden="true">
         carrito
