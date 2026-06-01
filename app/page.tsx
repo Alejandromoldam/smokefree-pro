@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import CatalogSection from "@/components/CatalogSection";
 import HeroProductCarousel from "@/components/HeroProductCarousel";
 import NavbarCartButton from "@/components/NavbarCartButton";
+import TopBenefitsBar from "@/components/TopBenefitsBar";
 
 const PRODUCT_LINK =
   "/products/2-in-1-multifunctional-indoor-smokeless-ashtray-360-surround-suction-intelligent-air-purifier-ashtray-indoor-household-car-intelligent-ashtray-grey";
@@ -194,6 +195,13 @@ const metrics = [
     label: "Uso",
     value: "Hogar / Auto",
   },
+];
+
+const heroTrustBadges = [
+  "Pago Seguro",
+  "Envío Rápido",
+  "Garantía de Satisfacción",
+  "Atención Personalizada",
 ];
 
 const trustItems = [
@@ -472,6 +480,7 @@ export default function Home() {
   return (
     <main className="premium-shell relative z-10 overflow-hidden bg-transparent pb-24 text-white md:pb-0">
       <nav className="glass-nav sticky inset-x-0 top-0 z-50 border-b border-white/10">
+        <TopBenefitsBar />
         <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-3 sm:px-6 sm:py-4 lg:px-8">
           <Link href="/" className="tracking-brand text-sm font-semibold uppercase text-white">
             ALL IN ONE
@@ -547,7 +556,19 @@ export default function Home() {
             </a>
           </div>
 
-          <div className="reveal-5 mt-9 grid w-full max-w-xl grid-cols-3 gap-3">
+          <div className="hero-trust-badges reveal-5 mt-5 grid w-full max-w-2xl gap-2 sm:grid-cols-2">
+            {heroTrustBadges.map((badge) => (
+              <div
+                key={badge}
+                className="hero-trust-badge inline-flex items-center gap-2 rounded-xl border border-white/14 bg-white/[0.04] px-3 py-2 text-xs font-medium text-gray-100 sm:text-sm"
+              >
+                <span className="text-emerald-300">✓</span>
+                <span>{badge}</span>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-9 grid w-full max-w-xl grid-cols-3 gap-3">
             {metrics.map((metric) => (
               <article
                 key={metric.label}

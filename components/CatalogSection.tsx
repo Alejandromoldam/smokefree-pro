@@ -118,9 +118,6 @@ export default function CatalogSection() {
   const [hasMoreFromShopify, setHasMoreFromShopify] = useState(false);
   const [nextCursor, setNextCursor] = useState<string | null>(null);
   const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_PRODUCTS);
-  const [quickViewProduct, setQuickViewProduct] = useState<CatalogProduct | null>(
-    null
-  );
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState<SortOption>("featured");
   const [availabilityFilter, setAvailabilityFilter] =
@@ -663,17 +660,7 @@ export default function CatalogSection() {
                   <h3 className="catalog-title-clamp text-base font-semibold text-white sm:text-lg">
                     {product.title}
                   </h3>
-                  <p className="catalog-description-clamp mt-2 text-sm leading-relaxed text-gray-300">
-                    {product.descriptionShort || "Descripcion disponible en ver detalles."}
-                  </p>
-                  <button
-                    type="button"
-                    onClick={() => setQuickViewProduct(product)}
-                    className="mt-2 text-xs uppercase tracking-[0.1em] text-cyan-200/90 transition hover:text-cyan-100"
-                  >
-                    Ver detalles rapido
-                  </button>
-                  <div className="catalog-meta-row mt-3 flex items-center justify-between gap-2">
+                  <div className="catalog-meta-row mt-2 flex items-center justify-between gap-2">
                     <p className="catalog-price text-xl font-semibold text-cyan-100 sm:text-lg">
                       {formatMoney(product.priceAmount, product.priceCurrency)}
                     </p>
@@ -745,75 +732,6 @@ export default function CatalogSection() {
               Abrir catalogo completo
             </a>
           ) : null}
-        </div>
-      ) : null}
-
-      {quickViewProduct ? (
-        <div
-          className="fixed inset-0 z-[80] flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm"
-          role="dialog"
-          aria-modal="true"
-        >
-          <div className="glass-card w-full max-w-2xl rounded-3xl border border-white/15 p-5 sm:p-6">
-            <div className="flex items-start justify-between gap-4">
-              <h3 className="text-xl font-semibold text-white sm:text-2xl">
-                {quickViewProduct.title}
-              </h3>
-              <button
-                type="button"
-                onClick={() => setQuickViewProduct(null)}
-                className="btn-ghost px-3 py-1 text-xs font-semibold"
-              >
-                Cerrar
-              </button>
-            </div>
-
-            <div className="mt-4 grid gap-5 sm:grid-cols-[1fr_1.05fr]">
-              <div className="overflow-hidden rounded-2xl border border-white/12 bg-black/30">
-                <Image
-                  src={quickViewProduct.imageUrl}
-                  alt={quickViewProduct.imageAlt}
-                  width={760}
-                  height={760}
-                  unoptimized
-                  className="h-full w-full object-cover"
-                />
-              </div>
-
-              <div>
-                <p className="text-sm leading-relaxed text-gray-300">
-                  {quickViewProduct.descriptionShort ||
-                    "Descripcion disponible en la ficha del producto."}
-                </p>
-                <p className="mt-4 text-xl font-semibold text-white">
-                  {formatMoney(
-                    quickViewProduct.priceAmount,
-                    quickViewProduct.priceCurrency
-                  )}
-                </p>
-                <div className="mt-6 grid gap-2 sm:grid-cols-2">
-                  <button
-                    type="button"
-                    onClick={() => void addToCart(quickViewProduct)}
-                    disabled={addingProductId === quickViewProduct.id}
-                    className="btn-premium px-4 py-2 text-center text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-70"
-                  >
-                    {addingProductId === quickViewProduct.id ? "Agregando..." : "Comprar / Ordenar"}
-                  </button>
-                  <a
-                    href={
-                      quickViewProduct.handle
-                        ? `/products/${quickViewProduct.handle}`
-                        : quickViewProduct.productUrl
-                    }
-                    className="btn-ghost px-4 py-2 text-center text-sm font-semibold"
-                  >
-                    Ver detalles
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       ) : null}
 

@@ -452,6 +452,41 @@ body {
     transition: box-shadow 220ms ease, background 220ms ease;
   }
 
+  .top-benefits-bar {
+    display: flex;
+    min-height: 2.1rem;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    background: linear-gradient(
+      135deg,
+      rgba(7, 11, 19, 0.78),
+      rgba(8, 18, 28, 0.72)
+    );
+    padding: 0.36rem 0.8rem;
+  }
+
+  .top-benefits-bar-text {
+    margin: 0;
+    text-align: center;
+    font-size: 0.74rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(219, 234, 254, 0.92);
+    transition: opacity 260ms ease, transform 260ms ease;
+  }
+
+  .top-benefits-bar-text.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .top-benefits-bar-text.is-hidden {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
   .glass-card {
     position: relative;
     isolation: isolate;
@@ -1201,6 +1236,19 @@ body {
     animation: glowPulse 6.8s ease-in-out infinite;
   }
 
+  .hero-trust-badges {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .hero-trust-badge {
+    backdrop-filter: blur(9px);
+    -webkit-backdrop-filter: blur(9px);
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.03) inset,
+      0 0 18px rgba(34, 211, 238, 0.08);
+  }
+
   #catalogo {
     position: relative;
     isolation: isolate;
@@ -1800,6 +1848,26 @@ body {
 }
 
 @media (max-width: 640px) {
+  .top-benefits-bar {
+    min-height: 1.85rem;
+    padding: 0.28rem 0.6rem;
+  }
+
+  .top-benefits-bar-text {
+    font-size: 0.66rem;
+    letter-spacing: 0.065em;
+  }
+
+  .hero-trust-badges {
+    grid-template-columns: 1fr;
+    gap: 0.42rem;
+  }
+
+  .hero-trust-badge {
+    font-size: 0.72rem;
+    padding: 0.42rem 0.62rem;
+  }
+
   .tracking-brand {
     letter-spacing: 0.18em;
   }
@@ -1840,6 +1908,7 @@ body {
 
   .catalog-card {
     border-radius: 1.35rem;
+    padding: 0.72rem;
   }
 
   .catalog-image-shell {
@@ -1862,19 +1931,19 @@ body {
   }
 
   .catalog-title-clamp {
-    min-height: 2.8rem;
+    min-height: 2.7rem;
     font-size: 1rem;
     line-height: 1.35;
   }
 
   .catalog-description-clamp {
-    min-height: 3.3rem;
+    min-height: 0;
     font-size: 0.84rem;
     line-height: 1.4;
   }
 
   .catalog-meta-row {
-    margin-top: 0.65rem;
+    margin-top: 0.45rem;
   }
 
   .catalog-price {
@@ -1882,15 +1951,22 @@ body {
   }
 
   .catalog-actions {
-    gap: 0.55rem;
+    margin-top: 0.75rem;
+    gap: 0.45rem;
   }
 
   .catalog-actions .btn-premium,
   .catalog-actions .btn-ghost {
-    min-height: 2.55rem;
-    padding: 0.62rem 0.5rem;
-    font-size: 0.74rem;
-    line-height: 1.15;
+    min-height: 2.45rem;
+    padding: 0.5rem 0.55rem;
+    font-size: 0.73rem;
+    line-height: 1.1;
+  }
+
+  .mobile-cta {
+    right: 0.55rem;
+    left: 0.55rem;
+    padding: 0.62rem;
   }
 
   .fx-energy-grid {

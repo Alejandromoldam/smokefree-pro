@@ -206,6 +206,18 @@ function getLineTotalAmount(unitPriceAmount: string, quantity: number) {
   return (getPriceNumber(unitPriceAmount) * Math.max(1, quantity)).toFixed(2);
 }
 
+function shuffleProducts<T>(items: T[]) {
+  const shuffled = [...items];
+  for (let index = shuffled.length - 1; index > 0; index -= 1) {
+    const randomIndex = Math.floor(Math.random() * (index + 1));
+    [shuffled[index], shuffled[randomIndex]] = [
+      shuffled[randomIndex],
+      shuffled[index],
+    ];
+  }
+  return shuffled;
+}
+
 function escapeHtml(text: string) {
   return text
     .replace(/&/g, "&amp;")
@@ -613,9 +625,14 @@ export default function ProductPage() {
           return;
         }
 
-        const filtered = (payload.products || [])
-          .filter((item) => item.id !== product.id && item.handle !== product.handle)
-          .slice(0, 4);
+        const candidates = (payload.products || []).filter(
+          (item) => item.id !== product.id && item.handle !== product.handle
+        );
+
+        const randomized = shuffleProducts(candidates);
+        const relatedLimit =
+          randomized.length >= 4 ? (Math.random() < 0.5 ? 3 : 4) : randomized.length;
+        const filtered = randomized.slice(0, relatedLimit);
 
         setRelatedProducts(filtered);
       } catch {
@@ -1113,9 +1130,20 @@ export default function ProductPage() {
                       <h3 className="mt-4 line-clamp-2 text-base font-semibold text-white">
                         {related.title}
                       </h3>
-                      <p className="mt-2 text-lg font-semibold text-white">
-                        {formatMoney(related.priceAmount, related.priceCurrency)}
-                      </p>
+                      <div className="mt-2 flex items-center justify-between gap-2">
+                        <p className="text-lg font-semibold text-cyan-100">
+                          {formatMoney(related.priceAmount, related.priceCurrency)}
+                        </p>
+                        <span
+                          className={
+                            related.availableForSale
+                              ? "rounded-full border border-emerald-300/40 bg-emerald-300/10 px-2 py-1 text-[0.65rem] uppercase tracking-[0.1em] text-emerald-100"
+                              : "rounded-full border border-white/20 bg-white/5 px-2 py-1 text-[0.65rem] uppercase tracking-[0.1em] text-gray-300"
+                          }
+                        >
+                          {related.availableForSale ? "Disponible" : "Agotado"}
+                        </span>
+                      </div>
                       <div className="mt-4 grid grid-cols-2 gap-2">
                         <button
                           type="button"
