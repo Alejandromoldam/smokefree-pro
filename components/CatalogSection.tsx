@@ -60,6 +60,8 @@ const LOCAL_CART_STORAGE_KEY = "sf_local_cart_v1";
 const LOCAL_CART_EVENT = "sf-local-cart-updated";
 const CART_DRAWER_EVENT = "sf-cart-drawer-visibility";
 const LOCAL_CART_EVENT_SOURCE = "catalog-section";
+const CART_HELP_MESSAGE =
+  "Hola, tengo productos en mi carrito de All In One y necesito ayuda para completar mi compra.";
 const INITIAL_VISIBLE_PRODUCTS = 10;
 const LOAD_MORE_STEP = 8;
 
@@ -111,6 +113,13 @@ function readLocalCartFromStorage(): CartPayload {
   }
 }
 
+function buildWhatsAppLink(rawNumber: string, message: string) {
+  const digits = rawNumber.replace(/[^\d]/g, "");
+  if (!digits) return null;
+  const encodedText = encodeURIComponent(message);
+  return `https://wa.me/${digits}?text=${encodedText}`;
+}
+
 export default function CatalogSection() {
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
@@ -130,6 +139,10 @@ export default function CatalogSection() {
   const [cartHydrated, setCartHydrated] = useState(false);
   const [cart, setCart] = useState<CartPayload>({ lines: [] });
   const [addingProductId, setAddingProductId] = useState<string | null>(null);
+  const whatsappHelpUrl = useMemo(() => {
+    const rawNumber = (process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "").trim();
+    return buildWhatsAppLink(rawNumber, CART_HELP_MESSAGE);
+  }, []);
 
   const loadCatalog = useCallback(
     async (options?: { append?: boolean; cursor?: string | null }) => {
@@ -774,9 +787,22 @@ export default function CatalogSection() {
               </div>
             ) : null}
 
+            <div className="mb-4 rounded-xl border border-cyan-300/25 bg-cyan-400/10 p-3">
+              <p className="text-sm font-medium text-cyan-100">
+                Tu compra esta protegida y procesada de forma segura.
+              </p>
+              <div className="mt-3 grid gap-1.5">
+                <p className="text-xs text-gray-200">✓ Pago seguro</p>
+                <p className="text-xs text-gray-200">✓ Atencion personalizada</p>
+                <p className="text-xs text-gray-200">✓ Envio con seguimiento</p>
+              </div>
+            </div>
+
             {cart.lines.length === 0 ? (
               <div className="glass-card rounded-2xl border border-white/12 p-5">
-                <p className="text-sm text-gray-300">Tu carrito esta vacio. Agrega productos del catalogo para continuar.</p>
+                <p className="text-sm text-gray-300">
+                  Explora el catalogo y encuentra productos seleccionados para ti.
+                </p>
               </div>
             ) : null}
 
@@ -867,6 +893,17 @@ export default function CatalogSection() {
                   <p className="mb-4 text-xs text-gray-400">
                     Carrito local activo con checkout real de Shopify.
                   </p>
+
+                  {whatsappHelpUrl ? (
+                    <a
+                      href={whatsappHelpUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="btn-ghost mb-3 block w-full px-5 py-3 text-center text-sm font-semibold"
+                    >
+                      Necesito ayuda con mi compra
+                    </a>
+                  ) : null}
 
                   <button
                     type="button"
