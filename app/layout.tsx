@@ -39,6 +39,9 @@ export const metadata: Metadata = {
       "max-video-preview": -1,
     },
   },
+  verification: {
+    google: "hiKxUIqm2HusZgwphFrn-WHSSMrphwm0QK9X3Uug9Og",
+  },
   openGraph: {
     title: "All In One",
     description: SITE_DESCRIPTION,
