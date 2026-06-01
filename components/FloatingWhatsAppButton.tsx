@@ -2,9 +2,11 @@
 
 import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
+import { trackClickWhatsApp } from "@/lib/ga";
 
 const LOCAL_CART_EVENT = "sf-local-cart-updated";
 const CART_DRAWER_EVENT = "sf-cart-drawer-visibility";
+const DEFAULT_WHATSAPP_NUMBER = "525545424195";
 
 const HOME_MESSAGE =
   "Hola, estoy viendo la tienda All In One y necesito ayuda con un producto.";
@@ -67,7 +69,7 @@ async function fetchProductTitle(handle: string) {
 
 export default function FloatingWhatsAppButton() {
   const pathname = usePathname() || "/";
-  const rawNumber = (process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "").trim();
+  const rawNumber = DEFAULT_WHATSAPP_NUMBER;
 
   const [cartDrawerOpen, setCartDrawerOpen] = useState(false);
   const [productName, setProductName] = useState<string | null>(null);
@@ -136,8 +138,8 @@ export default function FloatingWhatsAppButton() {
     }
 
     if (pathname.startsWith("/products/")) {
-      const resolvedName = productName || "este producto";
-      return `Hola, estoy viendo este producto en All In One: ${resolvedName}. ¿Podrían ayudarme con más información?`;
+      const resolvedName = productName || "Producto";
+      return `Hola, estoy interesado en:\n${resolvedName}\n\n¿Podrían ayudarme?`;
     }
 
     return HOME_MESSAGE;
@@ -147,6 +149,12 @@ export default function FloatingWhatsAppButton() {
     () => buildWhatsAppLink(rawNumber, whatsappMessage),
     [rawNumber, whatsappMessage]
   );
+
+  const whatsappContext = useMemo(() => {
+    if (cartDrawerOpen) return "cart";
+    if (pathname.startsWith("/products/")) return "product";
+    return "home";
+  }, [cartDrawerOpen, pathname]);
 
   if (!whatsappUrl) {
     return null;
@@ -160,6 +168,15 @@ export default function FloatingWhatsAppButton() {
         rel="noreferrer"
         className="whatsapp-float-btn"
         aria-label="Hablar con asesor por WhatsApp"
+        onClick={() =>
+          trackClickWhatsApp({
+            location: "floating_button",
+            context: whatsappContext,
+            productName: pathname.startsWith("/products/")
+              ? productName || undefined
+              : undefined,
+          })
+        }
       >
         <span className="whatsapp-float-icon" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5">
@@ -177,8 +194,8 @@ export default function FloatingWhatsAppButton() {
           </svg>
         </span>
         <span className="whatsapp-float-copy">
-          <span className="whatsapp-float-title">Necesitas ayuda?</span>
-          <span className="whatsapp-float-subtitle">Hablar con asesor</span>
+          <span className="whatsapp-float-title">{"\u00bfNecesitas ayuda?"}</span>
+          <span className="whatsapp-float-subtitle">Te respondemos en minutos.</span>
         </span>
       </a>
     </div>

@@ -1,6 +1,11 @@
 "use client";
 
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import {
+  trackAssistantMessage,
+  trackAssistantOpen,
+  trackClickWhatsApp,
+} from "@/lib/ga";
 
 type AssistantSuggestion = {
   id: string;
@@ -80,6 +85,16 @@ export default function AIAssistantWidget() {
     []
   );
 
+  function toggleAssistant() {
+    setOpen((current) => {
+      const next = !current;
+      if (next) {
+        trackAssistantOpen({ source: "floating_launcher" });
+      }
+      return next;
+    });
+  }
+
   async function sendMessage(rawText: string) {
     const message = rawText.replace(/\s+/g, " ").trim();
     if (!message || sending) return;
@@ -94,6 +109,12 @@ export default function AIAssistantWidget() {
       .filter((item) => item.id !== "assistant-initial")
       .slice(-6)
       .map(normalizeMessageForApi);
+
+    trackAssistantMessage({
+      messageLength: message.length,
+      source: "assistant_widget",
+      hasHistory: historyForApi.length > 0,
+    });
 
     setMessages((current) => [...current, userMessage]);
     setInput("");
@@ -198,6 +219,12 @@ export default function AIAssistantWidget() {
                     target="_blank"
                     rel="noreferrer"
                     className="assistant-whatsapp-link"
+                    onClick={() =>
+                      trackClickWhatsApp({
+                        location: "assistant_message",
+                        context: "assistant_handoff",
+                      })
+                    }
                   >
                     Atención humana por WhatsApp
                   </a>
@@ -249,6 +276,12 @@ export default function AIAssistantWidget() {
               target="_blank"
               rel="noreferrer"
               className="assistant-footer-link"
+              onClick={() =>
+                trackClickWhatsApp({
+                  location: "assistant_footer",
+                  context: "assistant_handoff",
+                })
+              }
             >
               Hablar por WhatsApp
             </a>
@@ -259,7 +292,7 @@ export default function AIAssistantWidget() {
       <button
         type="button"
         className="assistant-launcher"
-        onClick={() => setOpen((current) => !current)}
+        onClick={toggleAssistant}
         aria-label="Abrir asistente All In One"
       >
         <span className="assistant-launcher-dot" aria-hidden="true" />

@@ -187,3 +187,39 @@ export function trackPurchase(params: {
     });
   }
 }
+
+export function trackClickWhatsApp(params: {
+  location: string;
+  context?: string;
+  productName?: string;
+}) {
+  if (!canTrackGa()) return;
+
+  window.gtag?.("event", "click_whatsapp", {
+    location: params.location,
+    context: params.context || "general",
+    product_name: params.productName || "",
+  });
+}
+
+export function trackAssistantOpen(params?: { source?: string }) {
+  if (!canTrackGa()) return;
+
+  window.gtag?.("event", "assistant_open", {
+    source: params?.source || "widget",
+  });
+}
+
+export function trackAssistantMessage(params: {
+  messageLength: number;
+  source?: string;
+  hasHistory?: boolean;
+}) {
+  if (!canTrackGa()) return;
+
+  window.gtag?.("event", "assistant_message", {
+    message_length: params.messageLength,
+    source: params.source || "assistant_widget",
+    has_history: Boolean(params.hasHistory),
+  });
+}

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { trackAddToCart, trackBeginCheckout } from "@/lib/ga";
+import { trackAddToCart, trackBeginCheckout, trackClickWhatsApp } from "@/lib/ga";
 
 type CatalogProduct = {
   id: string;
@@ -900,6 +900,12 @@ export default function CatalogSection() {
                       target="_blank"
                       rel="noreferrer"
                       className="btn-ghost mb-3 block w-full px-5 py-3 text-center text-sm font-semibold"
+                      onClick={() =>
+                        trackClickWhatsApp({
+                          location: "cart_drawer",
+                          context: "cart_help",
+                        })
+                      }
                     >
                       Necesito ayuda con mi compra
                     </a>
