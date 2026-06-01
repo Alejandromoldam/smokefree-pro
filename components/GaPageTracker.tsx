@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
+import { usePathname } from "next/navigation";
 import { type GaItem, trackPageView, trackPurchase } from "@/lib/ga";
 
 type PurchaseTrackingDetail = {
@@ -13,12 +13,16 @@ type PurchaseTrackingDetail = {
 
 export default function GaPageTracker() {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
+  const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    setSearch(window.location.search || "");
+  }, [pathname]);
 
   const currentPath = useMemo(() => {
-    const search = searchParams?.toString() || "";
-    return search ? `${pathname}?${search}` : pathname;
-  }, [pathname, searchParams]);
+    return search ? `${pathname}${search}` : pathname;
+  }, [pathname, search]);
 
   useEffect(() => {
     if (!currentPath) return;
