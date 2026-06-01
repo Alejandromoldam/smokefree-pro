@@ -1,11 +1,16 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getAllCollectionHandles, getSiteUrl } from "@/lib/shopifySeo";
+import {
+  buildBreadcrumbSchema,
+  getStructuredDataSiteUrl,
+  toJsonLd,
+} from "@/lib/structuredData";
 
 export const revalidate = 1800;
 
 const FALLBACK_DESCRIPTION =
-  "Explora categorias premium de tecnologia y productos destacados en All In One Store.";
+  "Explora el catalogo por categorias en All In One y encuentra productos premium con informacion actualizada para comprar con confianza.";
 
 function compactText(text: string, maxLength = 160) {
   const clean = text.replace(/\s+/g, " ").trim();
@@ -15,30 +20,41 @@ function compactText(text: string, maxLength = 160) {
 }
 
 export const metadata: Metadata = {
-  title: "Categorias | All In One Store",
+  title: "Catálogo por categorías | All In One",
   description: FALLBACK_DESCRIPTION,
   alternates: {
     canonical: "https://allinonestore.lat/categorias",
   },
   openGraph: {
-    title: "Categorias | All In One Store",
+    title: "Catálogo por categorías | All In One",
     description: FALLBACK_DESCRIPTION,
     url: "https://allinonestore.lat/categorias",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Categorias | All In One Store",
+    title: "Catálogo por categorías | All In One",
     description: FALLBACK_DESCRIPTION,
   },
 };
 
 export default async function CategoriesIndexPage() {
   const siteUrl = getSiteUrl();
+  const schemaSiteUrl = getStructuredDataSiteUrl();
   const categories = await getAllCollectionHandles(250);
+  const breadcrumbJsonLd = toJsonLd(
+    buildBreadcrumbSchema([
+      { name: "Inicio", url: `${schemaSiteUrl}/` },
+      { name: "Categorias", url: `${schemaSiteUrl}/categorias` },
+    ])
+  );
 
   return (
     <main className="premium-shell min-h-screen bg-transparent text-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: breadcrumbJsonLd }}
+      />
       <div className="mx-auto w-full max-w-7xl px-4 pb-24 pt-24 sm:px-6 lg:px-8">
         <div className="mb-8">
           <p className="text-xs uppercase tracking-[0.2em] text-cyan-200/85">

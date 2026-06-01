@@ -1,12 +1,18 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import ProductPageClient from "@/components/ProductPageClient";
 import { getAllProductHandles, getSiteUrl } from "@/lib/shopifySeo";
+import {
+  buildBreadcrumbSchema,
+  buildProductSchema,
+  getStructuredDataSiteUrl,
+  toJsonLd,
+} from "@/lib/structuredData";
 
 const DEFAULT_API_VERSION = "2025-04";
 const DEFAULT_STORE_DOMAIN = "all-in-one-22092396.myshopify.com";
 const FALLBACK_TITLE = "Producto premium";
 const FALLBACK_DESCRIPTION =
-  "All In One Store reune productos tecnologicos y soluciones innovadoras seleccionadas para mejorar tu experiencia diaria.";
+  "Compra productos de tecnologia premium en All In One con disponibilidad real, pago seguro y envio confiable.";
 
 export const revalidate = 1800;
 
@@ -16,6 +22,9 @@ type ShopifySeoResponse = {
       title?: string | null;
       handle?: string | null;
       description?: string | null;
+      availableForSale?: boolean | null;
+      vendor?: string | null;
+      productType?: string | null;
       images?: {
         edges?: Array<{
           node?: {
@@ -24,6 +33,28 @@ type ShopifySeoResponse = {
           };
         }>;
       };
+      selectedOrFirstAvailableVariant?: {
+        id?: string | null;
+        sku?: string | null;
+        availableForSale?: boolean | null;
+        price?: {
+          amount?: string | null;
+          currencyCode?: string | null;
+        } | null;
+      } | null;
+      variants?: {
+        edges?: Array<{
+          node?: {
+            id?: string | null;
+            sku?: string | null;
+            availableForSale?: boolean | null;
+            price?: {
+              amount?: string | null;
+              currencyCode?: string | null;
+            } | null;
+          };
+        }>;
+      } | null;
     } | null;
   };
   errors?: Array<{
@@ -37,6 +68,12 @@ type SeoProduct = {
   description: string;
   imageUrl: string | null;
   imageAlt: string;
+  images: string[];
+  availableForSale: boolean;
+  category: string | null;
+  priceAmount: string;
+  priceCurrency: string;
+  sku: string | null;
 };
 
 function getStorefrontToken() {
@@ -65,7 +102,7 @@ function compactDescription(rawText: string, maxLength = 160) {
     return cleanText;
   }
 
-  return `${cleanText.slice(0, maxLength - 1).trimEnd()}…`;
+  return `${cleanText.slice(0, maxLength - 3).trimEnd()}...`;
 }
 
 async function fetchSeoProduct(handle: string): Promise<SeoProduct | null> {
@@ -91,11 +128,36 @@ async function fetchSeoProduct(handle: string): Promise<SeoProduct | null> {
         title
         handle
         description
-        images(first: 1) {
+        availableForSale
+        vendor
+        productType
+        images(first: 8) {
           edges {
             node {
               url
               altText
+            }
+          }
+        }
+        selectedOrFirstAvailableVariant {
+          id
+          sku
+          availableForSale
+          price {
+            amount
+            currencyCode
+          }
+        }
+        variants(first: 1) {
+          edges {
+            node {
+              id
+              sku
+              availableForSale
+              price {
+                amount
+                currencyCode
+              }
             }
           }
         }
@@ -142,10 +204,17 @@ async function fetchSeoProduct(handle: string): Promise<SeoProduct | null> {
         return null;
       }
 
-      const firstImage = product.images?.edges?.[0]?.node;
-      const productTitle = (product.title || "").trim() || "Producto premium";
+      const productTitle = (product.title || "").trim() || FALLBACK_TITLE;
       const productHandle = (product.handle || handle).trim() || handle;
-      const description = product.description || "";
+      const description = (product.description || "").trim();
+      const selectedVariant =
+        product.selectedOrFirstAvailableVariant || product.variants?.edges?.[0]?.node;
+      const images =
+        product.images?.edges
+          ?.map((edge) => edge.node?.url || "")
+          .filter((url) => Boolean(url)) || [];
+      const firstImage = product.images?.edges?.[0]?.node;
+      const availability = selectedVariant?.availableForSale ?? product.availableForSale;
 
       return {
         title: productTitle,
@@ -153,6 +222,12 @@ async function fetchSeoProduct(handle: string): Promise<SeoProduct | null> {
         description,
         imageUrl: firstImage?.url || null,
         imageAlt: firstImage?.altText || productTitle,
+        images,
+        availableForSale: availability === true,
+        category: (product.productType || "").trim() || null,
+        priceAmount: selectedVariant?.price?.amount || "0.00",
+        priceCurrency: selectedVariant?.price?.currencyCode || "MXN",
+        sku: selectedVariant?.sku || null,
       };
     } catch {
       // Try next auth header format.
@@ -178,15 +253,15 @@ export async function generateMetadata({
   const fallbackImage = `${siteUrl}/producto-real.png`;
 
   const seoProduct = await fetchSeoProduct(params.handle);
-  const title = seoProduct?.title || FALLBACK_TITLE;
-  const socialTitle = `${title} | All In One Store`;
+  const productName = seoProduct?.title || FALLBACK_TITLE;
+  const socialTitle = `Comprar ${productName} | All In One`;
   const description = compactDescription(seoProduct?.description || "");
   const productPathHandle = seoProduct?.handle || params.handle;
   const productPageUrl = `${siteUrl}/products/${productPathHandle}`;
   const imageUrl = seoProduct?.imageUrl || fallbackImage;
 
   return {
-    title,
+    title: `Comprar ${productName}`,
     description,
     alternates: {
       canonical: productPageUrl,
@@ -199,7 +274,7 @@ export async function generateMetadata({
       images: [
         {
           url: imageUrl,
-          alt: seoProduct?.imageAlt || "Producto All In One Store",
+          alt: seoProduct?.imageAlt || "Producto All In One",
         },
       ],
     },
@@ -212,6 +287,54 @@ export async function generateMetadata({
   };
 }
 
-export default function ProductPage() {
-  return <ProductPageClient />;
+export default async function ProductPage({
+  params,
+}: {
+  params: { handle: string };
+}) {
+  const siteUrl = getStructuredDataSiteUrl();
+  const fallbackImage = `${siteUrl}/producto-real.png`;
+  const seoProduct = await fetchSeoProduct(params.handle);
+  const productHandle = seoProduct?.handle || params.handle;
+  const productUrl = `${siteUrl}/products/${productHandle}`;
+
+  const breadcrumbJsonLd = toJsonLd(
+    buildBreadcrumbSchema([
+      { name: "Inicio", url: `${siteUrl}/` },
+      { name: "Catalogo", url: `${siteUrl}/#catalogo` },
+      { name: seoProduct?.title || "Producto", url: productUrl },
+    ])
+  );
+
+  const productJsonLd = seoProduct
+    ? toJsonLd(
+        buildProductSchema({
+          name: seoProduct.title,
+          description: compactDescription(seoProduct.description || "", 500),
+          url: productUrl,
+          images: seoProduct.images.length > 0 ? seoProduct.images : [fallbackImage],
+          sku: seoProduct.sku,
+          category: seoProduct.category,
+          price: seoProduct.priceAmount,
+          priceCurrency: seoProduct.priceCurrency,
+          availableForSale: seoProduct.availableForSale,
+        })
+      )
+    : null;
+
+  return (
+    <>
+      {productJsonLd ? (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: productJsonLd }}
+        />
+      ) : null}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: breadcrumbJsonLd }}
+      />
+      <ProductPageClient />
+    </>
+  );
 }

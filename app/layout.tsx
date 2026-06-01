@@ -6,17 +6,23 @@ import AIAssistantWidget from "@/components/AIAssistantWidget";
 import FloatingWhatsAppButton from "@/components/FloatingWhatsAppButton";
 import GaPageTracker from "@/components/GaPageTracker";
 import { GA_MEASUREMENT_ID, META_PIXEL_ID } from "@/lib/ga";
+import {
+  buildOrganizationSchema,
+  buildWebsiteSchema,
+  getStructuredDataSiteUrl,
+  toJsonLd,
+} from "@/lib/structuredData";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 const SITE_DESCRIPTION =
-  "All In One Store reune productos tecnologicos y soluciones innovadoras seleccionadas para mejorar tu experiencia diaria.";
+  "All In One ofrece un catalogo de tecnologia premium con disponibilidad real y una experiencia de compra segura.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://allinonestore.lat"),
   title: {
-    default: "All In One Store",
-    template: "%s | All In One Store",
+    default: "All In One",
+    template: "%s | All In One",
   },
   description: SITE_DESCRIPTION,
   alternates: {
@@ -34,10 +40,10 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "All In One Store",
+    title: "All In One",
     description: SITE_DESCRIPTION,
     url: "https://allinonestore.lat",
-    siteName: "All In One Store",
+    siteName: "All In One",
     type: "website",
     images: [
       {
@@ -48,7 +54,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "All In One Store",
+    title: "All In One",
     description: SITE_DESCRIPTION,
     images: ["/producto-real.png"],
   },
@@ -59,12 +65,24 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const siteUrl = getStructuredDataSiteUrl();
   const hasGaMeasurementId = Boolean(GA_MEASUREMENT_ID);
   const hasMetaPixelId = Boolean(META_PIXEL_ID);
+  const organizationJsonLd = toJsonLd(buildOrganizationSchema(siteUrl));
+  const websiteJsonLd = toJsonLd(buildWebsiteSchema(siteUrl));
 
   return (
     <html lang="es">
       <body className={`${inter.className} relative overflow-x-hidden`}>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: organizationJsonLd }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: websiteJsonLd }}
+        />
+
         {hasGaMeasurementId ? (
           <>
             <Script

@@ -7,6 +7,11 @@ import {
   getCollectionByHandle,
   getSiteUrl,
 } from "@/lib/shopifySeo";
+import {
+  buildBreadcrumbSchema,
+  getStructuredDataSiteUrl,
+  toJsonLd,
+} from "@/lib/structuredData";
 
 export const revalidate = 1800;
 
@@ -83,14 +88,30 @@ export default async function CategoryDetailPage({
 }: {
   params: { handle: string };
 }) {
+  const siteUrl = getStructuredDataSiteUrl();
   const category = await getCollectionByHandle(params.handle);
 
   if (!category) {
     notFound();
   }
 
+  const breadcrumbJsonLd = toJsonLd(
+    buildBreadcrumbSchema([
+      { name: "Inicio", url: `${siteUrl}/` },
+      { name: "Categorias", url: `${siteUrl}/categorias` },
+      {
+        name: category.title || "Categoria",
+        url: `${siteUrl}/categorias/${category.handle || params.handle}`,
+      },
+    ])
+  );
+
   return (
     <main className="premium-shell min-h-screen bg-transparent text-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: breadcrumbJsonLd }}
+      />
       <div className="mx-auto w-full max-w-7xl px-4 pb-24 pt-24 sm:px-6 lg:px-8">
         <div className="mb-8">
           <Link href="/categorias" className="btn-ghost inline-flex px-4 py-2 text-xs font-semibold sm:text-sm">

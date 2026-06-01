@@ -69,6 +69,10 @@ npm run build
 - `GET /sitemap.xml` sitemap dinamico con home, productos y categorias
 - `GET /robots.txt` reglas de indexacion + referencia al sitemap
 - Canonical en home, productos (`/products/[handle]`) y categorias (`/categorias/[handle]`)
+- JSON-LD listo para Google Merchant Center:
+  - `Organization` y `WebSite` globales
+  - `Product` dinamico por `/products/[handle]` (precio, disponibilidad, imagen, marca)
+  - `BreadcrumbList` en productos y categorias
 - Ruta legacy `/producto/[handle]` redirige permanentemente a `/products/[handle]`
 
 ## Deploy en Vercel

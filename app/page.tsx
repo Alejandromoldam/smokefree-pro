@@ -248,16 +248,16 @@ const premiumTrustSignals: Array<{
 ];
 
 export const metadata: Metadata = {
-  title: "All In One Store | Tecnología premium para la vida moderna",
+  title: "All In One | Catálogo de tecnología premium",
   description:
-    "All In One reúne productos tecnológicos y soluciones innovadoras seleccionadas para mejorar tu experiencia diaria.",
+    "Descubre el catálogo de All In One con productos tecnológicos premium, precios actualizados y compra segura en línea.",
   alternates: {
     canonical: "https://allinonestore.lat",
   },
   openGraph: {
-    title: "All In One Store | Tecnología premium para la vida moderna",
+    title: "All In One | Catálogo de tecnología premium",
     description:
-      "All In One reúne productos tecnológicos y soluciones innovadoras seleccionadas para mejorar tu experiencia diaria.",
+      "Descubre el catálogo de All In One con productos tecnológicos premium, precios actualizados y compra segura en línea.",
     url: "https://allinonestore.lat",
     siteName: "All In One Store",
     type: "website",
@@ -270,9 +270,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "All In One Store | Tecnología premium para la vida moderna",
+    title: "All In One | Catálogo de tecnología premium",
     description:
-      "All In One reúne productos tecnológicos y soluciones innovadoras seleccionadas para mejorar tu experiencia diaria.",
+      "Descubre el catálogo de All In One con productos tecnológicos premium, precios actualizados y compra segura en línea.",
     images: ["/producto-real.png"],
   },
 };
