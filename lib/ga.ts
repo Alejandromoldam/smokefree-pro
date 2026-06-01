@@ -1,6 +1,9 @@
 export const GA_MEASUREMENT_ID = (
   process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || ""
 ).trim();
+export const META_PIXEL_ID = (
+  process.env.NEXT_PUBLIC_META_PIXEL_ID || ""
+).trim();
 
 export type GaItem = {
   item_id: string;
@@ -17,14 +20,31 @@ declare global {
   interface Window {
     dataLayer: unknown[];
     gtag?: (...args: unknown[]) => void;
+    fbq?: {
+      (...args: unknown[]): void;
+      callMethod?: (...args: unknown[]) => void;
+      queue?: unknown[];
+      loaded?: boolean;
+      version?: string;
+      push?: (...args: unknown[]) => number;
+    };
+    _fbq?: Window["fbq"];
   }
 }
 
-function canTrack() {
+function canTrackGa() {
   return (
     typeof window !== "undefined" &&
     Boolean(GA_MEASUREMENT_ID) &&
     typeof window.gtag === "function"
+  );
+}
+
+function canTrackMeta() {
+  return (
+    typeof window !== "undefined" &&
+    Boolean(META_PIXEL_ID) &&
+    typeof window.fbq === "function"
   );
 }
 
@@ -40,16 +60,61 @@ function parsePath(path: string) {
   }
 }
 
-export function trackPageView(path: string) {
-  if (!canTrack()) return;
+function getPageLocation(path: string) {
+  if (path.startsWith("http://") || path.startsWith("https://")) {
+    return path;
+  }
+  return `${window.location.origin}${path}`;
+}
 
-  window.gtag?.("event", "page_view", {
-    page_path: parsePath(path),
-    page_location:
-      path.startsWith("http://") || path.startsWith("https://")
-        ? path
-        : `${window.location.origin}${path}`,
-  });
+function normalizeItemQuantity(quantity: number | undefined) {
+  return quantity && Number.isFinite(quantity) ? quantity : 1;
+}
+
+function buildMetaCommercePayload(params: {
+  currency: string;
+  value: number;
+  items: GaItem[];
+}) {
+  const items = params.items || [];
+  const contentIds = items.map((item) => item.item_id).filter(Boolean);
+  const contents = items.map((item) => ({
+    id: item.item_id,
+    quantity: normalizeItemQuantity(item.quantity),
+    item_price: item.price,
+  }));
+  const numItems = items.reduce(
+    (total, item) => total + normalizeItemQuantity(item.quantity),
+    0
+  );
+
+  return {
+    content_ids: contentIds,
+    content_type: "product",
+    contents,
+    currency: params.currency,
+    value: params.value,
+    num_items: numItems,
+  };
+}
+
+export function trackPageView(path: string) {
+  const parsedPath = parsePath(path);
+  const pageLocation = getPageLocation(path);
+
+  if (canTrackGa()) {
+    window.gtag?.("event", "page_view", {
+      page_path: parsedPath,
+      page_location: pageLocation,
+    });
+  }
+
+  if (canTrackMeta()) {
+    window.fbq?.("track", "PageView", {
+      page_path: parsedPath,
+      page_location: pageLocation,
+    });
+  }
 }
 
 export function trackViewItem(params: {
@@ -57,8 +122,17 @@ export function trackViewItem(params: {
   value: number;
   items: GaItem[];
 }) {
-  if (!canTrack()) return;
-  window.gtag?.("event", "view_item", params);
+  if (canTrackGa()) {
+    window.gtag?.("event", "view_item", params);
+  }
+
+  if (canTrackMeta()) {
+    const payload = buildMetaCommercePayload(params);
+    window.fbq?.("track", "ViewContent", {
+      ...payload,
+      content_name: params.items[0]?.item_name,
+    });
+  }
 }
 
 export function trackAddToCart(params: {
@@ -66,8 +140,13 @@ export function trackAddToCart(params: {
   value: number;
   items: GaItem[];
 }) {
-  if (!canTrack()) return;
-  window.gtag?.("event", "add_to_cart", params);
+  if (canTrackGa()) {
+    window.gtag?.("event", "add_to_cart", params);
+  }
+
+  if (canTrackMeta()) {
+    window.fbq?.("track", "AddToCart", buildMetaCommercePayload(params));
+  }
 }
 
 export function trackBeginCheckout(params: {
@@ -75,6 +154,36 @@ export function trackBeginCheckout(params: {
   value: number;
   items: GaItem[];
 }) {
-  if (!canTrack()) return;
-  window.gtag?.("event", "begin_checkout", params);
+  if (canTrackGa()) {
+    window.gtag?.("event", "begin_checkout", params);
+  }
+
+  if (canTrackMeta()) {
+    window.fbq?.("track", "InitiateCheckout", buildMetaCommercePayload(params));
+  }
+}
+
+export function trackPurchase(params: {
+  currency: string;
+  value: number;
+  items: GaItem[];
+  orderId?: string;
+}) {
+  if (canTrackGa()) {
+    const gaPayload = params.orderId
+      ? {
+          ...params,
+          transaction_id: params.orderId,
+        }
+      : params;
+    window.gtag?.("event", "purchase", gaPayload);
+  }
+
+  if (canTrackMeta()) {
+    const payload = buildMetaCommercePayload(params);
+    window.fbq?.("track", "Purchase", {
+      ...payload,
+      ...(params.orderId ? { order_id: params.orderId } : {}),
+    });
+  }
 }

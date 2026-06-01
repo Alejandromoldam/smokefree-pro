@@ -26,6 +26,8 @@ OPENAI_MODEL=gpt-4o-mini
 NEXT_PUBLIC_WHATSAPP_NUMBER=5215512345678
 # opcional GA4 (si no se define, no se activa analytics):
 NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
+# opcional Meta Pixel (si no se define, no se activa):
+NEXT_PUBLIC_META_PIXEL_ID=123456789012345
 ```
 
 Notas:
@@ -36,6 +38,7 @@ Notas:
 - Si `OPENAI_API_KEY` no esta configurada, el asistente usa fallback comercial y ofrece atencion por WhatsApp.
 - El asistente detecta automaticamente idioma del cliente (es/en/pt) y responde en ese idioma usando datos reales de Shopify.
 - Si `NEXT_PUBLIC_GA_MEASUREMENT_ID` no existe, GA4 queda desactivado automaticamente.
+- Si `NEXT_PUBLIC_META_PIXEL_ID` no existe, Meta Pixel queda desactivado automaticamente.
 
 ## Desarrollo local
 
