@@ -1,4 +1,6 @@
-const DEFAULT_SITE_URL = "https://allinonestore.lat";
+import { getCanonicalSiteUrl } from "@/lib/canonical-domain";
+
+const DEFAULT_SITE_URL = getCanonicalSiteUrl();
 
 export type BreadcrumbItem = {
   name: string;
@@ -17,19 +19,8 @@ export type ProductSchemaInput = {
   availableForSale: boolean;
 };
 
-function normalizeSiteUrl(rawUrl: string) {
-  try {
-    const parsed = new URL(rawUrl);
-    return `${parsed.protocol}//${parsed.host}`;
-  } catch {
-    return DEFAULT_SITE_URL;
-  }
-}
-
 export function getStructuredDataSiteUrl() {
-  const rawUrl =
-    process.env.NEXT_PUBLIC_SITE_URL || process.env.SITE_URL || DEFAULT_SITE_URL;
-  return normalizeSiteUrl(rawUrl);
+  return DEFAULT_SITE_URL;
 }
 
 export function toJsonLd(data: unknown) {

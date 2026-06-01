@@ -1,5 +1,7 @@
+import { getCanonicalSiteUrl } from "@/lib/canonical-domain";
+
 const DEFAULT_API_VERSION = "2025-04";
-const DEFAULT_PUBLIC_DOMAIN = "https://allinonestore.lat";
+const DEFAULT_PUBLIC_DOMAIN = getCanonicalSiteUrl();
 const MAX_PRODUCTS_PER_PAGE = 100;
 const MAX_TOTAL_PRODUCTS = 500;
 
@@ -70,18 +72,6 @@ function normalizeStoreDomain(rawDomain: string) {
     .replace(/^https?:\/\//i, "")
     .replace(/\/$/, "")
     .trim();
-}
-
-function normalizePublicDomain(rawDomain: string) {
-  const candidate = rawDomain.trim();
-  if (!candidate) return DEFAULT_PUBLIC_DOMAIN;
-
-  try {
-    const parsed = new URL(candidate.startsWith("http") ? candidate : `https://${candidate}`);
-    return `${parsed.protocol}//${parsed.host}`;
-  } catch {
-    return DEFAULT_PUBLIC_DOMAIN;
-  }
 }
 
 function getStorefrontToken() {
@@ -271,11 +261,7 @@ export async function GET() {
       process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN ||
       ""
   );
-  const publicDomain = normalizePublicDomain(
-    process.env.NEXT_PUBLIC_SITE_URL ||
-      process.env.SITE_URL ||
-      DEFAULT_PUBLIC_DOMAIN
-  );
+  const publicDomain = DEFAULT_PUBLIC_DOMAIN;
   const token = getStorefrontToken();
   const apiVersion =
     process.env.SHOPIFY_API_VERSION ||

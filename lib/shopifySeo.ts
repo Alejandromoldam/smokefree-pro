@@ -1,4 +1,5 @@
-const DEFAULT_SITE_URL = "https://allinonestore.lat";
+import { getCanonicalSiteUrl } from "@/lib/canonical-domain";
+
 const DEFAULT_API_VERSION = "2025-04";
 const MAX_QUERY_BATCH = 100;
 
@@ -118,15 +119,7 @@ export type SeoCollectionDetail = {
 };
 
 export function getSiteUrl() {
-  const rawUrl =
-    process.env.NEXT_PUBLIC_SITE_URL || process.env.SITE_URL || DEFAULT_SITE_URL;
-
-  try {
-    const parsed = new URL(rawUrl);
-    return `${parsed.protocol}//${parsed.host}`;
-  } catch {
-    return DEFAULT_SITE_URL;
-  }
+  return getCanonicalSiteUrl();
 }
 
 function normalizeStoreDomain(rawDomain: string) {
