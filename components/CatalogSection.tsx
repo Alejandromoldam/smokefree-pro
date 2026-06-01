@@ -58,6 +58,7 @@ type CheckoutApiResponse = {
 const CATALOG_FALLBACK_LINK = "/#catalogo";
 const LOCAL_CART_STORAGE_KEY = "sf_local_cart_v1";
 const LOCAL_CART_EVENT = "sf-local-cart-updated";
+const CART_DRAWER_EVENT = "sf-cart-drawer-visibility";
 const LOCAL_CART_EVENT_SOURCE = "catalog-section";
 const INITIAL_VISIBLE_PRODUCTS = 10;
 const LOAD_MORE_STEP = 8;
@@ -238,6 +239,14 @@ export default function CatalogSection() {
       window.removeEventListener(LOCAL_CART_EVENT, syncFromEvent as EventListener);
     };
   }, []);
+
+  useEffect(() => {
+    window.dispatchEvent(
+      new CustomEvent(CART_DRAWER_EVENT, {
+        detail: { open: cartOpen },
+      })
+    );
+  }, [cartOpen]);
 
   const hasLiveCatalog = !loading && products.length > 0;
   const hasFatalError = !loading && Boolean(error) && products.length === 0;
