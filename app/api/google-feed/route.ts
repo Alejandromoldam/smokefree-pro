@@ -21,6 +21,20 @@ type ShopifyFeedProductNode = {
   googleCategoryGlobal?: {
     value?: string | null;
   } | null;
+  mpnCustom?: {
+    value?: string | null;
+  } | null;
+  mpnGoogle?: {
+    value?: string | null;
+  } | null;
+  variants?: {
+    edges?: Array<{
+      node?: {
+        sku?: string | null;
+        barcode?: string | null;
+      };
+    }>;
+  } | null;
   images?: {
     edges?: Array<{
       node?: {
@@ -65,6 +79,10 @@ type FeedProduct = {
   condition: "new";
   productType: string;
   googleProductCategory: string;
+  gtin: string;
+  mpn: string;
+  sku: string;
+  identifierExists: boolean;
 };
 
 function normalizeStoreDomain(rawDomain: string) {
@@ -127,6 +145,83 @@ function escapeXml(value: string) {
     .replace(/'/g, "&apos;");
 }
 
+function inferCatalogClassification(title: string, productType: string) {
+  const text = `${title} ${productType}`.toLowerCase();
+
+  if (/cenicero|purifica/.test(text)) {
+    return {
+      productType: productType || "Hogar inteligente",
+      googleProductCategory: "Home & Garden",
+    };
+  }
+
+  if (/jump starter|arranque|bomba de aire|carro|vehicle/.test(text)) {
+    return {
+      productType: productType || "Auto y accesorios",
+      googleProductCategory: "Vehicles & Parts",
+    };
+  }
+
+  if (/impresora|printer|thermal|etiqueta/.test(text)) {
+    return {
+      productType: productType || "Impresoras y etiquetas",
+      googleProductCategory: "Electronics > Print, Copy, Scan & Fax > Printers",
+    };
+  }
+
+  if (/consola|r36s|videojuego|game|retro/.test(text)) {
+    return {
+      productType: productType || "Consolas y videojuegos",
+      googleProductCategory: "Electronics > Video Game Consoles",
+    };
+  }
+
+  if (/drone|cámara 4k|camera/.test(text)) {
+    return {
+      productType: productType || "Drones y cámaras",
+      googleProductCategory: "Electronics",
+    };
+  }
+
+  if (/holográfico|holografico|proyector|ventilador.*3d/.test(text)) {
+    return {
+      productType: productType || "Pantallas y proyectores",
+      googleProductCategory: "Electronics",
+    };
+  }
+
+  if (/sellador|bolsas|taza|coffee|mug|kitchen/.test(text)) {
+    return {
+      productType: productType || "Hogar y cocina",
+      googleProductCategory: "Home & Garden > Kitchen & Dining",
+    };
+  }
+
+  if (/masajeador|rodilla|calor|compresión|salud|belleza/.test(text)) {
+    return {
+      productType: productType || "Bienestar y cuidado personal",
+      googleProductCategory: "Health & Beauty > Health Care",
+    };
+  }
+
+  if (/lamp|lámpara|luz|sunset/.test(text)) {
+    return {
+      productType: productType || "Iluminación",
+      googleProductCategory: "Home & Garden > Lighting",
+    };
+  }
+
+  return {
+    productType: productType || "Productos tecnologicos",
+    googleProductCategory: "Electronics",
+  };
+}
+
+function normalizeGtin(value: string | null | undefined) {
+  const digits = (value || "").replace(/\D/g, "");
+  return [8, 12, 13, 14].includes(digits.length) ? digits : "";
+}
+
 function buildFeedXml(products: FeedProduct[], publicDomain: string) {
   const itemXml = products
     .map((product) =>
@@ -141,6 +236,10 @@ function buildFeedXml(products: FeedProduct[], publicDomain: string) {
         `<g:price>${escapeXml(product.price)}</g:price>`,
         `<g:brand>${escapeXml(product.brand)}</g:brand>`,
         `<g:condition>${product.condition}</g:condition>`,
+        product.gtin ? `<g:gtin>${escapeXml(product.gtin)}</g:gtin>` : "",
+        product.mpn ? `<g:mpn>${escapeXml(product.mpn)}</g:mpn>` : "",
+        product.sku ? `<g:custom_label_0>${escapeXml(`SKU:${product.sku}`)}</g:custom_label_0>` : "",
+        `<g:identifier_exists>${product.identifierExists ? "yes" : "no"}</g:identifier_exists>`,
         product.productType
           ? `<g:product_type>${escapeXml(product.productType)}</g:product_type>`
           : "",
@@ -195,6 +294,20 @@ async function fetchProductsFromShopify(options: {
             }
             googleCategoryGlobal: metafield(namespace: "global", key: "google_product_category") {
               value
+            }
+            mpnCustom: metafield(namespace: "custom", key: "mpn") {
+              value
+            }
+            mpnGoogle: metafield(namespace: "google", key: "mpn") {
+              value
+            }
+            variants(first: 1) {
+              edges {
+                node {
+                  sku
+                  barcode
+                }
+              }
             }
             images(first: 1) {
               edges {
@@ -328,6 +441,11 @@ export async function GET() {
         product.googleCategoryGlobal?.value ||
         ""
       ).trim();
+      const inferred = inferCatalogClassification(title, productType);
+      const variant = product.variants?.edges?.[0]?.node;
+      const sku = (variant?.sku || "").trim();
+      const gtin = normalizeGtin(variant?.barcode);
+      const mpn = (product.mpnCustom?.value || product.mpnGoogle?.value || "").trim();
 
       return {
         id: toFeedId(product.id, handle),
@@ -339,8 +457,12 @@ export async function GET() {
         price: `${priceAmount} ${priceCurrency}`,
         brand: "All In One",
         condition: "new",
-        productType,
-        googleProductCategory,
+        productType: productType || inferred.productType,
+        googleProductCategory: googleProductCategory || inferred.googleProductCategory,
+        gtin,
+        mpn,
+        sku,
+        identifierExists: Boolean(gtin || mpn),
       } satisfies FeedProduct;
     })
     .filter((product): product is FeedProduct => Boolean(product));

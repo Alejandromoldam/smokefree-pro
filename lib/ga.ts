@@ -20,6 +20,7 @@ declare global {
   interface Window {
     dataLayer: unknown[];
     gtag?: (...args: unknown[]) => void;
+    __allInOneGaInitialized?: boolean;
     fbq?: {
       (...args: unknown[]): void;
       callMethod?: (...args: unknown[]) => void;
@@ -29,6 +30,34 @@ declare global {
       push?: (...args: unknown[]) => number;
     };
     _fbq?: Window["fbq"];
+  }
+}
+
+export function initializeGa() {
+  if (typeof window === "undefined" || !GA_MEASUREMENT_ID) return;
+
+  window.dataLayer = window.dataLayer || [];
+
+  if (typeof window.gtag !== "function") {
+    window.gtag = function gtag(...args: unknown[]) {
+      window.dataLayer.push(args);
+    };
+  }
+
+  if (!document.querySelector(`script[data-allinone-ga="${GA_MEASUREMENT_ID}"]`)) {
+    const script = document.createElement("script");
+    script.async = true;
+    script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(
+      GA_MEASUREMENT_ID
+    )}`;
+    script.dataset.allinoneGa = GA_MEASUREMENT_ID;
+    document.head.appendChild(script);
+  }
+
+  if (!window.__allInOneGaInitialized) {
+    window.gtag("js", new Date());
+    window.gtag("config", GA_MEASUREMENT_ID, { send_page_view: false });
+    window.__allInOneGaInitialized = true;
   }
 }
 

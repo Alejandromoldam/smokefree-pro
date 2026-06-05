@@ -2,7 +2,12 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { usePathname } from "next/navigation";
-import { type GaItem, trackPageView, trackPurchase } from "@/lib/ga";
+import {
+  initializeGa,
+  type GaItem,
+  trackPageView,
+  trackPurchase,
+} from "@/lib/ga";
 
 type PurchaseTrackingDetail = {
   currency: string;
@@ -25,7 +30,12 @@ export default function GaPageTracker() {
   }, [pathname, search]);
 
   useEffect(() => {
+    initializeGa();
+  }, []);
+
+  useEffect(() => {
     if (!currentPath) return;
+    initializeGa();
     trackPageView(currentPath);
   }, [currentPath]);
 
