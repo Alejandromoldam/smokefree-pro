@@ -133,6 +133,7 @@ export function trackPageView(path: string) {
 
   if (canTrackGa()) {
     window.gtag?.("event", "page_view", {
+      send_to: GA_MEASUREMENT_ID,
       page_path: parsedPath,
       page_location: pageLocation,
     });
@@ -152,7 +153,10 @@ export function trackViewItem(params: {
   items: GaItem[];
 }) {
   if (canTrackGa()) {
-    window.gtag?.("event", "view_item", params);
+    window.gtag?.("event", "view_item", {
+      send_to: GA_MEASUREMENT_ID,
+      ...params,
+    });
   }
 
   if (canTrackMeta()) {
@@ -170,7 +174,10 @@ export function trackAddToCart(params: {
   items: GaItem[];
 }) {
   if (canTrackGa()) {
-    window.gtag?.("event", "add_to_cart", params);
+    window.gtag?.("event", "add_to_cart", {
+      send_to: GA_MEASUREMENT_ID,
+      ...params,
+    });
   }
 
   if (canTrackMeta()) {
@@ -184,7 +191,10 @@ export function trackBeginCheckout(params: {
   items: GaItem[];
 }) {
   if (canTrackGa()) {
-    window.gtag?.("event", "begin_checkout", params);
+    window.gtag?.("event", "begin_checkout", {
+      send_to: GA_MEASUREMENT_ID,
+      ...params,
+    });
   }
 
   if (canTrackMeta()) {
@@ -205,7 +215,10 @@ export function trackPurchase(params: {
           transaction_id: params.orderId,
         }
       : params;
-    window.gtag?.("event", "purchase", gaPayload);
+    window.gtag?.("event", "purchase", {
+      send_to: GA_MEASUREMENT_ID,
+      ...gaPayload,
+    });
   }
 
   if (canTrackMeta()) {
@@ -225,6 +238,7 @@ export function trackClickWhatsApp(params: {
   if (!canTrackGa()) return;
 
   window.gtag?.("event", "click_whatsapp", {
+    send_to: GA_MEASUREMENT_ID,
     location: params.location,
     context: params.context || "general",
     product_name: params.productName || "",
@@ -235,6 +249,7 @@ export function trackAssistantOpen(params?: { source?: string }) {
   if (!canTrackGa()) return;
 
   window.gtag?.("event", "assistant_open", {
+    send_to: GA_MEASUREMENT_ID,
     source: params?.source || "widget",
   });
 }
@@ -247,6 +262,7 @@ export function trackAssistantMessage(params: {
   if (!canTrackGa()) return;
 
   window.gtag?.("event", "assistant_message", {
+    send_to: GA_MEASUREMENT_ID,
     message_length: params.messageLength,
     source: params.source || "assistant_widget",
     has_history: Boolean(params.hasHistory),
