@@ -1227,7 +1227,7 @@ export default function ProductPage() {
 
       {!loading && !error && product ? (
         <div
-          className={`fixed inset-x-0 z-[78] px-3 transition-all duration-500 ease-out lg:hidden ${
+          className={`mobile-sticky-buy-bar fixed inset-x-0 z-[78] px-3 transition-all duration-500 ease-out lg:hidden ${
             stickyBarVisible
               ? "bottom-0 translate-y-0 opacity-100"
               : "pointer-events-none -bottom-20 translate-y-6 opacity-0"
@@ -1236,7 +1236,7 @@ export default function ProductPage() {
             paddingBottom: "calc(env(safe-area-inset-bottom) + 0.65rem)",
           }}
         >
-          <div className="mx-auto w-full max-w-3xl rounded-2xl border border-cyan-300/30 bg-[linear-gradient(160deg,rgba(12,16,24,0.92),rgba(6,8,12,0.9))] px-3 py-2 shadow-[0_16px_32px_rgba(0,0,0,0.55),0_0_0_1px_rgba(56,189,248,0.14)_inset,0_0_22px_rgba(34,211,238,0.12)] backdrop-blur-xl">
+          <div className="mobile-sticky-buy-panel mx-auto w-full max-w-3xl rounded-2xl border border-cyan-300/30 bg-[linear-gradient(160deg,rgba(12,16,24,0.92),rgba(6,8,12,0.9))] px-3 py-2 shadow-[0_16px_32px_rgba(0,0,0,0.55),0_0_0_1px_rgba(56,189,248,0.14)_inset,0_0_22px_rgba(34,211,238,0.12)] backdrop-blur-xl">
             <div className="grid grid-cols-[auto_1fr] items-center gap-3">
               <div className="h-12 w-12 overflow-hidden rounded-xl border border-white/12 bg-black/35">
                 <Image

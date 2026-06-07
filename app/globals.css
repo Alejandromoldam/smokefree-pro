@@ -2001,6 +2001,201 @@ body {
   }
 }
 
+@media (max-width: 768px) {
+  html,
+  body {
+    background: #02060d !important;
+  }
+
+  .electric-background {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    contain: paint;
+    opacity: 0.34;
+    transform: none !important;
+    animation: none !important;
+    will-change: auto !important;
+  }
+
+  .electric-background *,
+  .electric-background::before,
+  .electric-background::after {
+    transform: none !important;
+    animation: none !important;
+    filter: none !important;
+    mix-blend-mode: normal !important;
+    will-change: auto !important;
+  }
+
+  .bg-localized-glow,
+  .bg-tesla-arc,
+  .bg-hero-lightning,
+  .bg-energy-wave,
+  .electric-fog {
+    display: none !important;
+  }
+
+  .electric-background::before {
+    inset: 0;
+    background-image:
+      radial-gradient(circle, rgba(255, 255, 255, 0.34) 0 1px, transparent 1.2px),
+      radial-gradient(circle, rgba(103, 232, 249, 0.28) 0 1px, transparent 1.2px);
+    background-size: 78px 78px, 116px 116px;
+    opacity: 0.44;
+  }
+
+  .electric-background::after,
+  .electric-circuit-grid {
+    opacity: 0.22 !important;
+    background-size: 96px 96px, 96px 96px, 32px 32px, 32px 32px;
+    mask-image: none !important;
+    -webkit-mask-image: none !important;
+  }
+
+  .electric-line {
+    height: 1px;
+    opacity: 0.12 !important;
+    box-shadow: 0 0 10px rgba(56, 189, 248, 0.22);
+  }
+
+  .electric-line:nth-child(n + 5),
+  .electric-particle:nth-child(n + 25) {
+    display: none !important;
+  }
+
+  .electric-particle {
+    width: 2px;
+    height: 2px;
+    opacity: 0.34 !important;
+    box-shadow: 0 0 7px rgba(103, 232, 249, 0.34);
+  }
+
+  .glass-nav,
+  .glass-card,
+  .benefit-card,
+  .assistant-launcher,
+  .assistant-panel,
+  .whatsapp-float-btn,
+  .mobile-cta,
+  .backdrop-blur,
+  .backdrop-blur-sm,
+  .backdrop-blur-md,
+  .backdrop-blur-lg,
+  .backdrop-blur-xl,
+  .backdrop-blur-2xl,
+  .backdrop-blur-3xl {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .glass-card,
+  .catalog-card,
+  .benefit-card,
+  .trust-card {
+    isolation: isolate;
+    background: linear-gradient(
+      160deg,
+      rgba(8, 13, 22, 0.96),
+      rgba(4, 8, 14, 0.94)
+    ) !important;
+    transform: none !important;
+    animation: none !important;
+    will-change: auto !important;
+  }
+
+  .glass-card::before {
+    display: none !important;
+  }
+
+  .glass-card::after {
+    opacity: 0.38 !important;
+    animation: none !important;
+  }
+
+  .glass-card > *,
+  .catalog-card > *,
+  .catalog-card h3,
+  .catalog-card p,
+  .catalog-card span,
+  .product-description-rich,
+  .product-description-rich *,
+  .assistant-panel *,
+  .whatsapp-float-btn *,
+  .mobile-sticky-buy-panel * {
+    position: relative;
+    z-index: 1;
+    opacity: 1;
+    text-shadow: none;
+  }
+
+  .catalog-product-image,
+  .hero-product,
+  .parallax-layer,
+  .hero-carousel-slide,
+  .fx-energy-grid::before,
+  .fx-energy-grid::after,
+  .fx-tesla-coil,
+  .fx-circuit-lines,
+  .fx-particles,
+  .fx-mist {
+    animation: none !important;
+    transform: none !important;
+    filter: none !important;
+    will-change: auto !important;
+  }
+
+  .btn-premium::before,
+  .btn-ghost::before {
+    animation: none !important;
+    mix-blend-mode: normal !important;
+    opacity: 0.24 !important;
+  }
+
+  .btn-premium::after {
+    display: none !important;
+  }
+
+  .btn-premium,
+  .btn-ghost,
+  .assistant-launcher,
+  .whatsapp-float-btn {
+    transform: none !important;
+    will-change: auto !important;
+  }
+
+  .assistant-root,
+  .whatsapp-float-root {
+    z-index: 74;
+  }
+
+  .mobile-sticky-buy-bar {
+    z-index: 78;
+    transform: none;
+    will-change: auto !important;
+    contain: layout paint;
+  }
+
+  .mobile-sticky-buy-panel {
+    background: linear-gradient(
+      160deg,
+      rgba(8, 12, 20, 0.98),
+      rgba(4, 8, 14, 0.97)
+    ) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .catalog-title-clamp,
+  .catalog-price,
+  .catalog-description-clamp {
+    color: inherit;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
