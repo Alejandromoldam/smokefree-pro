@@ -386,7 +386,6 @@ export default function ProductPage() {
   const [loadingRelated, setLoadingRelated] = useState(false);
   const [relatedError, setRelatedError] = useState<string | null>(null);
   const [addingRelatedId, setAddingRelatedId] = useState<string | null>(null);
-  const [stickyBarVisible, setStickyBarVisible] = useState(false);
   const [cartDrawerOpen, setCartDrawerOpen] = useState(false);
   const trackedViewProductIdRef = useRef<string | null>(null);
 
@@ -512,19 +511,6 @@ export default function ProductPage() {
     return "Agotado";
   }, [product, selectedVariant]);
 
-  const stickyShortTitle = useMemo(
-    () => shortenTitle(product?.title || "Producto All In One Store"),
-    [product?.title]
-  );
-
-  const stickyPriceText = useMemo(() => {
-    if (!product) return formatMoney("0.00", "MXN");
-    return formatMoney(
-      selectedVariant?.priceAmount || product.priceAmount,
-      selectedVariant?.priceCurrency || product.priceCurrency
-    );
-  }, [product, selectedVariant?.priceAmount, selectedVariant?.priceCurrency]);
-
   useEffect(() => {
     if (!product?.id) return;
     if (trackedViewProductIdRef.current === product.id) return;
@@ -579,28 +565,6 @@ export default function ProductPage() {
       ],
     });
   }
-
-  useEffect(() => {
-    let ticking = false;
-
-    const onScroll = () => {
-      if (ticking) return;
-      ticking = true;
-      window.requestAnimationFrame(() => {
-        const nextVisible = window.scrollY > 220 && window.location.hash !== "#carrito";
-        setStickyBarVisible((current) =>
-          current === nextVisible ? current : nextVisible
-        );
-        ticking = false;
-      });
-    };
-
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-    };
-  }, []);
 
   useEffect(() => {
     const syncCartDrawerState = () => {
@@ -1252,63 +1216,6 @@ export default function ProductPage() {
           </>
         ) : null}
       </div>
-
-      {!loading && !error && product && !cartDrawerOpen ? (
-        <div
-          className={`mobile-sticky-buy-bar fixed inset-x-0 z-[76] px-3 transition-all duration-500 ease-out lg:hidden ${
-            stickyBarVisible
-              ? "bottom-0 translate-y-0 opacity-100"
-              : "pointer-events-none -bottom-20 translate-y-6 opacity-0"
-          }`}
-          style={{
-            paddingBottom: "calc(env(safe-area-inset-bottom) + 0.45rem)",
-          }}
-        >
-          <div className="mobile-sticky-buy-panel mx-auto w-full max-w-3xl rounded-2xl border border-cyan-300/30 bg-[linear-gradient(160deg,rgba(12,16,24,0.92),rgba(6,8,12,0.9))] px-3 py-2 shadow-[0_16px_32px_rgba(0,0,0,0.55),0_0_0_1px_rgba(56,189,248,0.14)_inset,0_0_22px_rgba(34,211,238,0.12)] backdrop-blur-xl">
-            <div className="grid grid-cols-[auto_1fr] items-center gap-3">
-              <div className="h-10 w-10 overflow-hidden rounded-xl border border-white/12 bg-black/35">
-                <Image
-                  src={currentImage.url}
-                  alt={currentImage.altText}
-                  width={96}
-                  height={96}
-                  unoptimized
-                  className="h-full w-full object-cover"
-                />
-              </div>
-
-              <div className="min-w-0">
-                <p className="truncate text-[0.78rem] font-medium text-gray-100">
-                  {stickyShortTitle}
-                </p>
-                <p className="mt-0.5 text-sm font-semibold text-cyan-100">
-                  {stickyPriceText}
-                </p>
-              </div>
-            </div>
-
-            <div className="mt-2 grid grid-cols-2 gap-2">
-              <a
-                href={buyNowUrl}
-                target="_blank"
-                rel="noreferrer"
-                onClick={trackBuyNowIntent}
-                className="btn-ghost px-4 py-2.5 text-center text-sm font-semibold"
-              >
-                Comprar
-              </a>
-              <button
-                type="button"
-                onClick={() => void addToCart()}
-                disabled={addingToCart || !selectedVariant?.availableForSale}
-                className="btn-premium px-4 py-2.5 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-70"
-              >
-                {addingToCart ? "Agregando..." : "Agregar"}
-              </button>
-            </div>
-          </div>
-        </div>
-      ) : null}
     </main>
   );
 }
