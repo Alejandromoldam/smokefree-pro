@@ -1815,19 +1815,19 @@ body {
   }
 
   .hero-section {
-    padding-top: 48px !important;
-    padding-bottom: 48px !important;
+    padding-top: 36px !important;
+    padding-bottom: 32px !important;
   }
 
   .catalog-section {
     padding-top: 0 !important;
-    padding-bottom: 48px !important;
-    margin-bottom: 48px !important;
+    padding-bottom: 32px !important;
+    margin-bottom: 24px !important;
   }
 
   .trust-section {
     padding-top: 0 !important;
-    padding-bottom: 48px !important;
+    padding-bottom: 32px !important;
     margin-bottom: 0 !important;
   }
 
@@ -2193,7 +2193,7 @@ body {
   }
 
   .mobile-sticky-buy-bar {
-    z-index: 78;
+    z-index: 76;
     transform: none;
     will-change: auto !important;
     contain: layout paint;
@@ -2229,6 +2229,10 @@ body {
   .top-benefits-bar-text,
   .hero-carousel-slide {
     transition: none !important;
+  }
+
+  .whatsapp-float-root {
+    display: none !important;
   }
 }
 
@@ -2530,23 +2534,27 @@ body {
 
 @media (max-width: 640px) {
   .assistant-root {
-    left: 0.82rem;
-    right: 0.82rem;
-    bottom: max(calc(env(safe-area-inset-bottom) + 6.2rem), 6.2rem);
+    left: auto;
+    right: max(calc(env(safe-area-inset-right) + 0.82rem), 0.82rem);
+    top: max(calc(env(safe-area-inset-top) + 4.1rem), 4.1rem);
+    bottom: auto;
   }
 
   .assistant-launcher {
-    padding: 0.68rem 0.86rem;
+    width: 2.85rem;
+    height: 2.85rem;
+    justify-content: center;
+    padding: 0;
+    border-radius: 999px;
   }
 
   .assistant-launcher-label {
-    font-size: 0.68rem;
-    letter-spacing: 0.12em;
+    display: none;
   }
 
   .assistant-panel {
-    width: calc(100vw - 1.64rem);
-    max-height: 70vh;
+    width: min(22rem, calc(100vw - 1.64rem));
+    max-height: calc(100svh - max(calc(env(safe-area-inset-top) + 5.2rem), 5.2rem) - 1rem);
   }
 }
 
@@ -2582,7 +2590,7 @@ body {
     transform 220ms ease,
     box-shadow 220ms ease,
     border-color 220ms ease;
-  animation: whatsappPulse 2.9s ease-in-out infinite;
+  animation: whatsappPulse 10s ease-in-out infinite;
 }
 
 .whatsapp-float-btn:hover {
@@ -2629,17 +2637,27 @@ body {
 
 @keyframes whatsappPulse {
   0%,
+  84%,
   100% {
     box-shadow:
       0 0 0 1px rgba(74, 222, 128, 0.14) inset,
       0 18px 34px rgba(0, 0, 0, 0.45),
       0 0 22px rgba(34, 197, 94, 0.2);
+    transform: translateY(0) scale(1);
   }
-  50% {
+  90% {
     box-shadow:
       0 0 0 1px rgba(74, 222, 128, 0.2) inset,
       0 20px 36px rgba(0, 0, 0, 0.48),
       0 0 36px rgba(74, 222, 128, 0.3);
+    transform: translateY(-1px) scale(1.015);
+  }
+  94% {
+    box-shadow:
+      0 0 0 1px rgba(74, 222, 128, 0.17) inset,
+      0 19px 35px rgba(0, 0, 0, 0.46),
+      0 0 28px rgba(74, 222, 128, 0.24);
+    transform: translateY(0) scale(1.005);
   }
 }
 

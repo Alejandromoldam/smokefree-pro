@@ -5,6 +5,8 @@ import CatalogSection from "@/components/CatalogSection";
 import HeroProductCarousel from "@/components/HeroProductCarousel";
 import NavbarCartButton from "@/components/NavbarCartButton";
 import TopBenefitsBar from "@/components/TopBenefitsBar";
+import BestSellersSection from "@/components/BestSellersSection";
+import CustomerExperiencesSection from "@/components/CustomerExperiencesSection";
 
 const PRODUCT_LINK =
   "/products/2-in-1-multifunctional-indoor-smokeless-ashtray-360-surround-suction-intelligent-air-purifier-ashtray-indoor-household-car-intelligent-ashtray-grey";
@@ -478,7 +480,7 @@ function TrustSignalIcon({
 
 export default function Home() {
   return (
-    <main className="premium-shell relative z-10 overflow-hidden bg-transparent pb-24 text-white md:pb-0">
+    <main className="premium-shell relative z-10 overflow-hidden bg-transparent pb-16 text-white md:pb-0">
       <nav className="glass-nav sticky inset-x-0 top-0 z-50 border-b border-white/10">
         <TopBenefitsBar />
         <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-3 sm:px-6 sm:py-4 lg:px-8">
@@ -518,7 +520,7 @@ export default function Home() {
 
       <section
         id="inicio"
-        className="hero-section hero-cinematic relative mx-auto flex min-h-[auto] w-full max-w-7xl flex-col justify-start gap-10 overflow-hidden px-4 pb-10 pt-14 sm:min-h-screen sm:justify-center sm:gap-14 sm:px-6 sm:pb-16 sm:pt-24 lg:flex-row lg:items-center lg:gap-20 lg:px-8 lg:pb-20 lg:pt-28"
+        className="hero-section hero-cinematic relative mx-auto flex min-h-[auto] w-full max-w-7xl flex-col justify-start gap-8 overflow-hidden px-4 pb-8 pt-10 sm:min-h-screen sm:justify-center sm:gap-14 sm:px-6 sm:pb-16 sm:pt-24 lg:flex-row lg:items-center lg:gap-20 lg:px-8 lg:pb-20 lg:pt-28"
       >
         <div className="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
           <div className="light-orb light-orb-a" />
@@ -595,9 +597,12 @@ export default function Home() {
         </div>
       </section>
 
+      <BestSellersSection />
+      <CustomerExperiencesSection />
+
       <CatalogSection />
 
-      <section className="trust-section section-reveal mx-auto w-full max-w-7xl px-4 pb-24 sm:px-6 lg:px-8">
+      <section className="trust-section section-reveal mx-auto w-full max-w-7xl px-4 pb-16 sm:px-6 sm:pb-24 lg:px-8">
         <div className="mb-8">
           <p className="text-xs uppercase tracking-[0.2em] text-cyan-200/85 sm:text-sm">
             Confianza premium
@@ -980,47 +985,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      <footer className="border-t border-white/10 bg-[rgba(4,10,20,0.72)] backdrop-blur-md">
-        <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 px-4 py-10 text-sm text-gray-400 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
-          <p>Copyright {new Date().getFullYear()} All In One Store. All rights reserved.</p>
-          <div className="flex flex-wrap gap-x-5 gap-y-2">
-            <a href={CATALOG_LINK} className="nav-link">
-              Catalogo
-            </a>
-            <a href={PRODUCT_LINK} className="nav-link">
-              Producto
-            </a>
-            <Link href="/politica-de-privacidad" className="nav-link">
-              Privacidad
-            </Link>
-            <Link href="/terminos-y-condiciones" className="nav-link">
-              Terminos
-            </Link>
-            <Link href="/politica-de-envios" className="nav-link">
-              Envios
-            </Link>
-            <Link href="/politica-de-devoluciones" className="nav-link">
-              Devoluciones
-            </Link>
-            <Link href="/contacto" className="nav-link">
-              Contacto
-            </Link>
-          </div>
-        </div>
-      </footer>
-
-      <div className="mobile-cta md:hidden">
-        <p className="text-xs uppercase tracking-[0.12em] text-emerald-100/90">
-          Envio rapido · Pago seguro
-        </p>
-        <a
-          href={PRODUCT_LINK}
-          className="btn-premium mt-2 block w-full px-6 py-3 text-center text-sm font-semibold"
-        >
-          Comprar ahora
-        </a>
-      </div>
     </main>
   );
 }

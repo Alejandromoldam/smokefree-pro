@@ -100,6 +100,7 @@ type LocalCartPayload = {
 
 const LOCAL_CART_STORAGE_KEY = "sf_local_cart_v1";
 const LOCAL_CART_EVENT = "sf-local-cart-updated";
+const CART_DRAWER_EVENT = "sf-cart-drawer-visibility";
 const LOCAL_CART_EVENT_SOURCE = "product-detail";
 
 type TrustSignalIconType =
@@ -386,6 +387,7 @@ export default function ProductPage() {
   const [relatedError, setRelatedError] = useState<string | null>(null);
   const [addingRelatedId, setAddingRelatedId] = useState<string | null>(null);
   const [stickyBarVisible, setStickyBarVisible] = useState(false);
+  const [cartDrawerOpen, setCartDrawerOpen] = useState(false);
   const trackedViewProductIdRef = useRef<string | null>(null);
 
   useEffect(() => {
@@ -585,7 +587,7 @@ export default function ProductPage() {
       if (ticking) return;
       ticking = true;
       window.requestAnimationFrame(() => {
-        const nextVisible = window.scrollY > 220;
+        const nextVisible = window.scrollY > 220 && window.location.hash !== "#carrito";
         setStickyBarVisible((current) =>
           current === nextVisible ? current : nextVisible
         );
@@ -597,6 +599,30 @@ export default function ProductPage() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => {
       window.removeEventListener("scroll", onScroll);
+    };
+  }, []);
+
+  useEffect(() => {
+    const syncCartDrawerState = () => {
+      setCartDrawerOpen(window.location.hash === "#carrito");
+    };
+
+    const onDrawerVisibility = (event: Event) => {
+      const custom = event as CustomEvent<{ open?: boolean }>;
+      if (typeof custom.detail?.open === "boolean") {
+        setCartDrawerOpen(custom.detail.open);
+      } else {
+        syncCartDrawerState();
+      }
+    };
+
+    syncCartDrawerState();
+    window.addEventListener("hashchange", syncCartDrawerState);
+    window.addEventListener(CART_DRAWER_EVENT, onDrawerVisibility as EventListener);
+
+    return () => {
+      window.removeEventListener("hashchange", syncCartDrawerState);
+      window.removeEventListener(CART_DRAWER_EVENT, onDrawerVisibility as EventListener);
     };
   }, []);
 
@@ -862,8 +888,8 @@ export default function ProductPage() {
   }
 
   return (
-    <main className="premium-shell min-h-screen bg-transparent text-white">
-      <div className="mx-auto w-full max-w-7xl px-4 pb-[calc(9.5rem+env(safe-area-inset-bottom))] pt-20 sm:px-6 sm:pt-24 lg:px-8 lg:pb-20">
+    <main className="premium-shell min-h-[100svh] bg-transparent text-white">
+      <div className="mx-auto w-full max-w-7xl px-4 pb-[calc(6.8rem+env(safe-area-inset-bottom))] pt-14 sm:px-6 sm:pb-20 sm:pt-24 lg:px-8 lg:pb-20">
         <div className="mb-8 flex flex-wrap items-center justify-between gap-3">
           <Link href="/" className="btn-ghost inline-flex px-4 py-2 text-sm font-semibold">
             Volver al catalogo
@@ -1153,15 +1179,17 @@ export default function ProductPage() {
                             !related.availableForSale ||
                             !related.variantId
                           }
-                          className="btn-premium px-3 py-2 text-center text-xs font-semibold disabled:cursor-not-allowed disabled:opacity-70 sm:text-sm"
+                          className="btn-premium flex items-center justify-center px-3 py-2 text-center text-xs font-semibold leading-none disabled:cursor-not-allowed disabled:opacity-70 sm:text-sm"
                         >
-                          {addingRelatedId === related.id ? "Agregando..." : "Agregar al carrito"}
+                          <span className="translate-y-px">
+                            {addingRelatedId === related.id ? "Agregando..." : "Agregar al carrito"}
+                          </span>
                         </button>
                         <Link
                           href={related.handle ? `/products/${related.handle}` : related.productUrl}
-                          className="btn-ghost px-3 py-2 text-center text-xs font-semibold sm:text-sm"
+                          className="btn-ghost flex items-center justify-center px-3 py-2 text-center text-xs font-semibold leading-none sm:text-sm"
                         >
-                          Ver detalles
+                          <span className="translate-y-px">Ver detalles</span>
                         </Link>
                       </div>
                     </article>
@@ -1225,20 +1253,20 @@ export default function ProductPage() {
         ) : null}
       </div>
 
-      {!loading && !error && product ? (
+      {!loading && !error && product && !cartDrawerOpen ? (
         <div
-          className={`mobile-sticky-buy-bar fixed inset-x-0 z-[78] px-3 transition-all duration-500 ease-out lg:hidden ${
+          className={`mobile-sticky-buy-bar fixed inset-x-0 z-[76] px-3 transition-all duration-500 ease-out lg:hidden ${
             stickyBarVisible
               ? "bottom-0 translate-y-0 opacity-100"
               : "pointer-events-none -bottom-20 translate-y-6 opacity-0"
           }`}
           style={{
-            paddingBottom: "calc(env(safe-area-inset-bottom) + 0.65rem)",
+            paddingBottom: "calc(env(safe-area-inset-bottom) + 0.45rem)",
           }}
         >
           <div className="mobile-sticky-buy-panel mx-auto w-full max-w-3xl rounded-2xl border border-cyan-300/30 bg-[linear-gradient(160deg,rgba(12,16,24,0.92),rgba(6,8,12,0.9))] px-3 py-2 shadow-[0_16px_32px_rgba(0,0,0,0.55),0_0_0_1px_rgba(56,189,248,0.14)_inset,0_0_22px_rgba(34,211,238,0.12)] backdrop-blur-xl">
             <div className="grid grid-cols-[auto_1fr] items-center gap-3">
-              <div className="h-12 w-12 overflow-hidden rounded-xl border border-white/12 bg-black/35">
+              <div className="h-10 w-10 overflow-hidden rounded-xl border border-white/12 bg-black/35">
                 <Image
                   src={currentImage.url}
                   alt={currentImage.altText}
@@ -1265,7 +1293,7 @@ export default function ProductPage() {
                 target="_blank"
                 rel="noreferrer"
                 onClick={trackBuyNowIntent}
-                className="btn-ghost px-4 py-3 text-center text-sm font-semibold"
+                className="btn-ghost px-4 py-2.5 text-center text-sm font-semibold"
               >
                 Comprar
               </a>
@@ -1273,7 +1301,7 @@ export default function ProductPage() {
                 type="button"
                 onClick={() => void addToCart()}
                 disabled={addingToCart || !selectedVariant?.availableForSale}
-                className="btn-premium px-4 py-3 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-70"
+                className="btn-premium px-4 py-2.5 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-70"
               >
                 {addingToCart ? "Agregando..." : "Agregar"}
               </button>
