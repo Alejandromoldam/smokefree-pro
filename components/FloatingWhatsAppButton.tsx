@@ -156,7 +156,13 @@ export default function FloatingWhatsAppButton() {
     return "home";
   }, [cartDrawerOpen, pathname]);
 
-  if (!whatsappUrl) {
+  if (
+    !whatsappUrl ||
+    cartDrawerOpen ||
+    pathname.includes("/checkout") ||
+    pathname === "/cart" ||
+    pathname.startsWith("/cart/")
+  ) {
     return null;
   }
 

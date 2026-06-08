@@ -894,7 +894,7 @@ export default function ProductPage() {
           <Link href="/" className="btn-ghost inline-flex px-4 py-2 text-sm font-semibold">
             Volver al catalogo
           </Link>
-          <NavbarCartButtonWithHref href="/#carrito" />
+          <NavbarCartButtonWithHref href="/cart" />
         </div>
 
         {loading ? (
@@ -1179,17 +1179,17 @@ export default function ProductPage() {
                             !related.availableForSale ||
                             !related.variantId
                           }
-                          className="btn-premium flex items-center justify-center px-3 py-2 text-center text-xs font-semibold leading-none disabled:cursor-not-allowed disabled:opacity-70 sm:text-sm"
+                          className="btn-premium card-action-button disabled:cursor-not-allowed disabled:opacity-70"
                         >
-                          <span className="translate-y-px">
+                          <span className="card-action-label">
                             {addingRelatedId === related.id ? "Agregando..." : "Agregar al carrito"}
                           </span>
                         </button>
                         <Link
                           href={related.handle ? `/products/${related.handle}` : related.productUrl}
-                          className="btn-ghost flex items-center justify-center px-3 py-2 text-center text-xs font-semibold leading-none sm:text-sm"
+                          className="btn-ghost card-action-button"
                         >
-                          <span className="translate-y-px">Ver detalles</span>
+                          <span className="card-action-label">Ver detalles</span>
                         </Link>
                       </div>
                     </article>

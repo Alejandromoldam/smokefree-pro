@@ -1,11 +1,14 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import {
   trackAssistantMessage,
   trackAssistantOpen,
   trackClickWhatsApp,
 } from "@/lib/ga";
+
+const CART_DRAWER_EVENT = "sf-cart-drawer-visibility";
 
 type AssistantSuggestion = {
   id: string;
@@ -56,9 +59,11 @@ function normalizeMessageForApi(message: ChatMessage) {
 }
 
 export default function AIAssistantWidget() {
+  const pathname = usePathname() || "/";
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
   const [sending, setSending] = useState(false);
+  const [cartDrawerOpen, setCartDrawerOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: "assistant-initial",
@@ -75,6 +80,37 @@ export default function AIAssistantWidget() {
     if (!panel) return;
     panel.scrollTop = panel.scrollHeight;
   }, [messages, open, sending]);
+
+  useEffect(() => {
+    const syncCartState = () => {
+      const hashOpen = window.location.hash === "#carrito";
+      setCartDrawerOpen(hashOpen);
+      if (hashOpen) {
+        setOpen(false);
+      }
+    };
+
+    const onDrawerVisibility = (event: Event) => {
+      const custom = event as CustomEvent<{ open?: boolean }>;
+      const nextOpen =
+        typeof custom.detail?.open === "boolean"
+          ? custom.detail.open
+          : window.location.hash === "#carrito";
+      setCartDrawerOpen(nextOpen);
+      if (nextOpen) {
+        setOpen(false);
+      }
+    };
+
+    syncCartState();
+    window.addEventListener("hashchange", syncCartState);
+    window.addEventListener(CART_DRAWER_EVENT, onDrawerVisibility as EventListener);
+
+    return () => {
+      window.removeEventListener("hashchange", syncCartState);
+      window.removeEventListener(CART_DRAWER_EVENT, onDrawerVisibility as EventListener);
+    };
+  }, []);
 
   const quickPrompts = useMemo(
     () => [
@@ -166,6 +202,15 @@ export default function AIAssistantWidget() {
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     await sendMessage(input);
+  }
+
+  if (
+    cartDrawerOpen ||
+    pathname.includes("/checkout") ||
+    pathname === "/cart" ||
+    pathname.startsWith("/cart/")
+  ) {
+    return null;
   }
 
   return (

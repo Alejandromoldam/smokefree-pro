@@ -40,14 +40,14 @@ function CartIcon() {
 }
 
 export default function NavbarCartButton() {
-  return <NavbarCartButtonWithHref href="#carrito" />;
+  return <NavbarCartButtonWithHref href="/cart" />;
 }
 
 type NavbarCartButtonProps = {
   href?: string;
 };
 
-export function NavbarCartButtonWithHref({ href = "#carrito" }: NavbarCartButtonProps) {
+export function NavbarCartButtonWithHref({ href = "/cart" }: NavbarCartButtonProps) {
   const [quantity, setQuantity] = useState(0);
 
   useEffect(() => {

@@ -120,6 +120,13 @@ function buildWhatsAppLink(rawNumber: string, message: string) {
   return `https://wa.me/${digits}?text=${encodedText}`;
 }
 
+function shouldUseMobileCartPage() {
+  if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
+    return false;
+  }
+  return window.matchMedia("(max-width: 1023px)").matches;
+}
+
 export default function CatalogSection() {
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
@@ -220,6 +227,10 @@ export default function CatalogSection() {
   useEffect(() => {
     function syncCartFromHash() {
       if (window.location.hash === "#carrito") {
+        if (shouldUseMobileCartPage()) {
+          window.location.replace("/cart");
+          return;
+        }
         setCartOpen(true);
       }
     }
@@ -241,6 +252,10 @@ export default function CatalogSection() {
       }
       syncFromStorage();
       if (custom.detail?.openDrawer) {
+        if (shouldUseMobileCartPage()) {
+          window.location.href = "/cart";
+          return;
+        }
         setCartOpen(true);
       }
     };
@@ -259,6 +274,13 @@ export default function CatalogSection() {
         detail: { open: cartOpen },
       })
     );
+  }, [cartOpen]);
+
+  useEffect(() => {
+    document.body.classList.toggle("cart-drawer-open", cartOpen);
+    return () => {
+      document.body.classList.remove("cart-drawer-open");
+    };
   }, [cartOpen]);
 
   const hasLiveCatalog = !loading && products.length > 0;
@@ -356,6 +378,10 @@ export default function CatalogSection() {
   async function addToCart(product: CatalogProduct) {
     if (!product.availableForSale) {
       setCartActionError("Este producto esta agotado y no se puede agregar.");
+      if (shouldUseMobileCartPage()) {
+        window.location.href = "/cart";
+        return;
+      }
       setCartOpen(true);
       return;
     }
@@ -420,8 +446,14 @@ export default function CatalogSection() {
       ],
     });
 
-    setCartOpen(true);
     setAddingProductId(null);
+
+    if (shouldUseMobileCartPage()) {
+      window.location.href = "/cart";
+      return;
+    }
+
+    setCartOpen(true);
   }
 
   function updateLineQuantity(lineId: string, quantity: number) {
@@ -528,7 +560,13 @@ export default function CatalogSection() {
         <div className="flex items-center gap-2">
           <button
             type="button"
-            onClick={() => setCartOpen(true)}
+            onClick={() => {
+              if (shouldUseMobileCartPage()) {
+                window.location.href = "/cart";
+                return;
+              }
+              setCartOpen(true);
+            }}
             className="btn-premium px-5 py-2 text-sm font-semibold"
           >
             Carrito ({cartTotalQuantity})
@@ -703,15 +741,17 @@ export default function CatalogSection() {
                     type="button"
                     onClick={() => void addToCart(product)}
                     disabled={addingProductId === product.id}
-                    className="btn-premium px-3 py-2 text-center text-xs font-semibold disabled:cursor-not-allowed disabled:opacity-70 sm:text-sm"
+                    className="btn-premium card-action-button disabled:cursor-not-allowed disabled:opacity-70"
                   >
-                    {addingProductId === product.id ? "Agregando..." : "Agregar al carrito"}
+                    <span className="card-action-label">
+                      {addingProductId === product.id ? "Agregando..." : "Agregar al carrito"}
+                    </span>
                   </button>
                   <a
                     href={detailHref}
-                    className="btn-ghost px-3 py-2 text-center text-xs font-semibold sm:text-sm"
+                    className="btn-ghost card-action-button"
                   >
-                    Ver detalles
+                    <span className="card-action-label">Ver detalles</span>
                   </a>
                 </div>
               </article>
@@ -762,11 +802,11 @@ export default function CatalogSection() {
           <button
             type="button"
             aria-label="Cerrar carrito"
-            className="absolute inset-0 bg-black/65 backdrop-blur-sm"
+            className="absolute inset-0 bg-[#02060d] sm:bg-black/65 sm:backdrop-blur-sm"
             onClick={() => setCartOpen(false)}
           />
 
-          <aside className="absolute right-0 top-0 h-full w-full max-w-xl overflow-y-auto border-l border-white/12 bg-[rgba(4,10,20,0.78)] p-5 shadow-[0_0_40px_rgba(0,0,0,0.55)] backdrop-blur-xl sm:p-6">
+          <aside className="absolute inset-0 h-full w-full overflow-y-auto bg-[#02060d] px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-[max(1rem,env(safe-area-inset-top))] sm:right-0 sm:top-0 sm:left-auto sm:w-full sm:max-w-xl sm:border-l sm:border-white/12 sm:bg-[rgba(4,10,20,0.94)] sm:p-6 sm:shadow-[0_0_40px_rgba(0,0,0,0.55)] sm:backdrop-blur-xl">
             <div className="mb-5 flex items-start justify-between gap-4">
               <div>
                 <p className="text-xs uppercase tracking-[0.18em] text-cyan-200/90">Carrito</p>
