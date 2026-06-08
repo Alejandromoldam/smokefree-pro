@@ -1324,6 +1324,10 @@ body {
   text-shadow: 0 0 18px rgba(56, 189, 248, 0.32);
 }
 
+.navbar-cart-button {
+  box-sizing: border-box;
+}
+
 .product-description-rich {
   line-height: 1.8;
   letter-spacing: 0.005em;
@@ -1874,6 +1878,20 @@ body {
 }
 
 @media (max-width: 640px) {
+  .premium-shell > section {
+    scroll-margin-top: 5.5rem;
+  }
+
+  .premium-shell > section:not(.hero-section) {
+    padding-bottom: 2.75rem !important;
+  }
+
+  .premium-shell .section-reveal > .mb-8,
+  .premium-shell .section-reveal > .mb-7,
+  .premium-shell .section-reveal > .mb-5 {
+    margin-bottom: 1rem !important;
+  }
+
   .top-benefits-bar {
     min-height: 1.85rem;
     padding: 0.28rem 0.6rem;
@@ -1896,6 +1914,15 @@ body {
 
   .tracking-brand {
     letter-spacing: 0.18em;
+  }
+
+  .navbar-cart-button {
+    top: calc(env(safe-area-inset-top) + 2.55rem);
+    right: 0.9rem;
+    width: 2.85rem;
+    height: 2.85rem;
+    min-height: 2.85rem;
+    padding: 0;
   }
 
   .light-orb-a,
@@ -1934,7 +1961,7 @@ body {
 
   .catalog-card {
     border-radius: 1.35rem;
-    padding: 0.72rem;
+    padding: 0.68rem;
   }
 
   .catalog-image-shell {
@@ -1957,9 +1984,9 @@ body {
   }
 
   .catalog-title-clamp {
-    min-height: 2.7rem;
-    font-size: 1rem;
-    line-height: 1.35;
+    min-height: 2.45rem;
+    font-size: 0.96rem;
+    line-height: 1.28;
   }
 
   .catalog-description-clamp {
@@ -1969,32 +1996,32 @@ body {
   }
 
   .catalog-meta-row {
-    margin-top: 0.45rem;
+    margin-top: 0.35rem;
   }
 
   .catalog-price {
-    font-size: 1.12rem;
+    font-size: 1.05rem;
   }
 
   .catalog-actions {
-    margin-top: 0.75rem;
-    gap: 0.45rem;
+    margin-top: 0.62rem;
+    gap: 0.42rem;
   }
 
   .catalog-actions .btn-premium,
   .catalog-actions .btn-ghost {
-    height: 3rem;
-    min-height: 3rem;
-    padding: 0 0.55rem;
-    font-size: 0.73rem;
+    height: 2.8rem;
+    min-height: 2.8rem;
+    padding: 0 0.5rem;
+    font-size: 0.71rem;
     line-height: 1;
   }
 
   .card-action-button {
-    height: 3rem;
-    min-height: 3rem;
-    padding: 0 0.55rem;
-    font-size: 0.73rem;
+    height: 2.8rem;
+    min-height: 2.8rem;
+    padding: 0 0.5rem;
+    font-size: 0.71rem;
     line-height: 1;
   }
 

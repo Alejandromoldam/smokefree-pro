@@ -71,12 +71,16 @@ export function NavbarCartButtonWithHref({ href = "/cart" }: NavbarCartButtonPro
   }, []);
 
   return (
-    <a href={href} className="btn-premium px-3 py-2 text-xs font-semibold sm:text-sm">
-      <span className="relative inline-flex items-center gap-2">
+    <a
+      href={href}
+      aria-label={`Ir al carrito${quantity > 0 ? ` con ${quantity} producto${quantity === 1 ? "" : "s"}` : ""}`}
+      className="navbar-cart-button btn-premium fixed right-4 top-[max(0.9rem,env(safe-area-inset-top))] z-[88] inline-flex h-11 w-11 items-center justify-center px-0 py-0 text-xs font-semibold shadow-[0_16px_34px_rgba(0,0,0,0.34)] sm:static sm:h-auto sm:w-auto sm:px-3 sm:py-2 sm:text-sm sm:shadow-none"
+    >
+      <span className="relative inline-flex items-center justify-center sm:gap-2">
         <CartIcon />
-        Carrito
+        <span className="sr-only sm:not-sr-only sm:inline">Carrito</span>
         {quantity > 0 ? (
-          <span className="absolute -right-3 -top-2 inline-flex min-w-5 items-center justify-center rounded-full border border-cyan-200/50 bg-cyan-300 px-1.5 py-0.5 text-[10px] font-bold leading-none text-black">
+          <span className="absolute -right-2 -top-2 inline-flex min-w-5 items-center justify-center rounded-full border border-cyan-200/50 bg-cyan-300 px-1.5 py-0.5 text-[10px] font-bold leading-none text-black sm:-right-3 sm:-top-2">
             {quantity}
           </span>
         ) : null}

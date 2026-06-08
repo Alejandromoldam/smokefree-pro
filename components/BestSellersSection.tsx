@@ -128,21 +128,21 @@ export default function BestSellersSection() {
     : bestSellers;
 
   return (
-    <section className="section-reveal mx-auto w-full max-w-7xl px-4 pb-16 sm:px-6 sm:pb-20 lg:px-8">
-      <div className="mb-7">
+    <section className="section-reveal mx-auto w-full max-w-7xl px-4 pb-12 sm:px-6 sm:pb-20 lg:px-8">
+      <div className="mb-5 sm:mb-7">
         <h2 className="text-3xl font-semibold text-white sm:text-4xl">🔥 Más Vendidos</h2>
         <p className="mt-2 text-sm text-gray-300 sm:text-base">
           Los productos favoritos de nuestros clientes.
         </p>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
         {renderItems.map((product, index) => {
           if (!product) {
             return (
               <article
                 key={`best-seller-skeleton-${index}`}
-                className="glass-card rounded-3xl border border-white/12 p-4"
+                className="glass-card rounded-3xl border border-white/12 p-3.5 sm:p-4"
               >
                 <div className="h-44 animate-pulse rounded-2xl bg-white/10" />
                 <div className="mt-4 h-5 w-3/4 animate-pulse rounded bg-white/10" />
@@ -159,7 +159,7 @@ export default function BestSellersSection() {
           return (
             <article
               key={product.id}
-              className="glass-card rounded-3xl border border-white/12 p-4 transition duration-300 hover:-translate-y-1 hover:border-cyan-300/45"
+              className="glass-card rounded-3xl border border-white/12 p-3.5 transition duration-300 hover:-translate-y-1 hover:border-cyan-300/45 sm:p-4"
             >
               <div className="overflow-hidden rounded-2xl border border-white/10 bg-black/35">
                 <Image
@@ -168,11 +168,11 @@ export default function BestSellersSection() {
                   width={700}
                   height={700}
                   unoptimized
-                  className="h-44 w-full object-cover transition duration-500 hover:scale-[1.03]"
+                  className="h-40 w-full object-cover transition duration-500 hover:scale-[1.03] sm:h-44"
                 />
               </div>
 
-              <h3 className="mt-4 line-clamp-2 text-base font-semibold text-white">
+              <h3 className="mt-3 line-clamp-2 text-base font-semibold text-white sm:mt-4">
                 {product.title}
               </h3>
               <p className="mt-2 text-lg font-semibold text-cyan-100">

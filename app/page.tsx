@@ -480,10 +480,10 @@ function TrustSignalIcon({
 
 export default function Home() {
   return (
-    <main className="premium-shell relative z-10 overflow-hidden bg-transparent pb-16 text-white md:pb-0">
+    <main className="premium-shell relative z-10 overflow-hidden bg-transparent pb-12 text-white sm:pb-16 md:pb-0">
       <nav className="glass-nav sticky inset-x-0 top-0 z-50 border-b border-white/10">
         <TopBenefitsBar />
-        <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-3 sm:px-6 sm:py-4 lg:px-8">
+        <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-2.5 sm:px-6 sm:py-4 lg:px-8">
           <Link href="/" className="tracking-brand text-sm font-semibold uppercase text-white">
             ALL IN ONE
           </Link>
@@ -520,7 +520,7 @@ export default function Home() {
 
       <section
         id="inicio"
-        className="hero-section hero-cinematic relative mx-auto flex min-h-[auto] w-full max-w-7xl flex-col justify-start gap-8 overflow-hidden px-4 pb-8 pt-10 sm:min-h-screen sm:justify-center sm:gap-14 sm:px-6 sm:pb-16 sm:pt-24 lg:flex-row lg:items-center lg:gap-20 lg:px-8 lg:pb-20 lg:pt-28"
+        className="hero-section hero-cinematic relative mx-auto flex min-h-[auto] w-full max-w-7xl flex-col justify-start gap-6 overflow-hidden px-4 pb-6 pt-8 sm:min-h-screen sm:justify-center sm:gap-14 sm:px-6 sm:pb-16 sm:pt-24 lg:flex-row lg:items-center lg:gap-20 lg:px-8 lg:pb-20 lg:pt-28"
       >
         <div className="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
           <div className="light-orb light-orb-a" />
@@ -602,8 +602,8 @@ export default function Home() {
 
       <CatalogSection />
 
-      <section className="trust-section section-reveal mx-auto w-full max-w-7xl px-4 pb-16 sm:px-6 sm:pb-24 lg:px-8">
-        <div className="mb-8">
+      <section className="trust-section section-reveal mx-auto w-full max-w-7xl px-4 pb-12 sm:px-6 sm:pb-24 lg:px-8">
+        <div className="mb-5 sm:mb-8">
           <p className="text-xs uppercase tracking-[0.2em] text-cyan-200/85 sm:text-sm">
             Confianza premium
           </p>
@@ -627,8 +627,8 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section-reveal mx-auto w-full max-w-7xl px-4 pb-24 sm:px-6 lg:px-8">
-        <div className="mb-8">
+      <section className="section-reveal mx-auto w-full max-w-7xl px-4 pb-14 sm:px-6 lg:px-8">
+        <div className="mb-5 sm:mb-8">
           <p className="text-xs uppercase tracking-[0.2em] text-cyan-200/85 sm:text-sm">
             Opiniones de clientes
           </p>
@@ -679,8 +679,8 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="beneficios" className="section-reveal mx-auto w-full max-w-7xl px-4 pb-24 sm:px-6 lg:px-8">
-        <div className="mb-8">
+      <section id="beneficios" className="section-reveal mx-auto w-full max-w-7xl px-4 pb-14 sm:px-6 lg:px-8">
+        <div className="mb-5 sm:mb-8">
           <p className="text-xs uppercase tracking-[0.2em] text-cyan-200/85 sm:text-sm">Beneficios</p>
           <h2 className="mt-3 max-w-2xl text-3xl font-semibold leading-tight text-white sm:text-4xl">
             Rendimiento premium pensado para tu ritmo diario
@@ -705,7 +705,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="producto" className="section-reveal mx-auto w-full max-w-7xl px-4 pb-24 sm:px-6 lg:px-8">
+      <section id="producto" className="section-reveal mx-auto w-full max-w-7xl px-4 pb-14 sm:px-6 lg:px-8">
         <div className="glass-card grid gap-8 rounded-3xl border border-white/12 p-6 sm:p-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:p-10">
           <div>
             <p className="text-xs uppercase tracking-[0.2em] text-emerald-200/90 sm:text-sm">
@@ -761,7 +761,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="comparativa" className="section-reveal mx-auto w-full max-w-7xl px-4 pb-24 sm:px-6 lg:px-8">
+      <section id="comparativa" className="section-reveal mx-auto w-full max-w-7xl px-4 pb-14 sm:px-6 lg:px-8">
         <div className="mb-8">
           <p className="text-xs uppercase tracking-[0.2em] text-cyan-200/85 sm:text-sm">Comparativa</p>
           <h2 className="mt-3 text-3xl font-semibold text-white sm:text-4xl">
@@ -810,7 +810,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section-reveal mx-auto w-full max-w-7xl px-4 pb-24 sm:px-6 lg:px-8">
+      <section className="section-reveal mx-auto w-full max-w-7xl px-4 pb-14 sm:px-6 lg:px-8">
         <div className="mb-8">
           <p className="text-xs uppercase tracking-[0.2em] text-cyan-200/85 sm:text-sm">Testimonios</p>
           <h2 className="mt-3 text-3xl font-semibold text-white sm:text-4xl">
@@ -853,7 +853,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="faq" className="section-reveal mx-auto w-full max-w-7xl px-4 pb-24 sm:px-6 lg:px-8">
+      <section id="faq" className="section-reveal mx-auto w-full max-w-7xl px-4 pb-14 sm:px-6 lg:px-8">
         <div className="mb-8">
           <p className="text-xs uppercase tracking-[0.2em] text-cyan-200/85 sm:text-sm">FAQ</p>
           <h2 className="mt-3 text-3xl font-semibold text-white sm:text-4xl">
@@ -878,7 +878,7 @@ export default function Home() {
 
       <section
         id="contacto"
-        className="section-reveal mx-auto w-full max-w-7xl px-4 pb-24 sm:px-6 lg:px-8"
+        className="section-reveal mx-auto w-full max-w-7xl px-4 pb-14 sm:px-6 lg:px-8"
       >
         <div className="glass-card rounded-3xl border border-white/12 p-6 sm:p-8">
           <p className="text-xs uppercase tracking-[0.2em] text-cyan-200/85 sm:text-sm">
@@ -921,7 +921,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section-reveal mx-auto w-full max-w-7xl px-4 pb-24 sm:px-6 lg:px-8">
+      <section className="section-reveal mx-auto w-full max-w-7xl px-4 pb-14 sm:px-6 lg:px-8">
         <div className="glass-card rounded-3xl border border-cyan-300/25 p-6 sm:p-8">
           <p className="text-xs uppercase tracking-[0.2em] text-cyan-200/90 sm:text-sm">
             Confianza premium
@@ -954,7 +954,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section-reveal mx-auto w-full max-w-7xl px-4 pb-24 sm:px-6 lg:px-8">
+      <section className="section-reveal mx-auto w-full max-w-7xl px-4 pb-14 sm:px-6 lg:px-8">
         <div className="cta-panel parallax-layer depth-soft rounded-3xl border border-cyan-300/25 px-6 py-10 text-center sm:px-10">
           <p className="text-xs uppercase tracking-[0.2em] text-cyan-100/90 sm:text-sm">
             Call to action

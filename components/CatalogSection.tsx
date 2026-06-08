@@ -543,7 +543,7 @@ export default function CatalogSection() {
       <div id="carrito" className="sr-only" aria-hidden="true">
         carrito
       </div>
-      <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
+      <div className="mb-6 flex flex-wrap items-end justify-between gap-3 sm:mb-8 sm:gap-4">
         <div>
           <p className="text-xs uppercase tracking-[0.2em] text-cyan-200/85 sm:text-sm">
             Catalogo
@@ -560,19 +560,6 @@ export default function CatalogSection() {
         <div className="flex items-center gap-2">
           <button
             type="button"
-            onClick={() => {
-              if (shouldUseMobileCartPage()) {
-                window.location.href = "/cart";
-                return;
-              }
-              setCartOpen(true);
-            }}
-            className="btn-premium px-5 py-2 text-sm font-semibold"
-          >
-            Carrito ({cartTotalQuantity})
-          </button>
-          <button
-            type="button"
             onClick={() => void loadCatalog()}
             className="btn-ghost px-5 py-2 text-sm font-semibold"
           >
@@ -581,8 +568,8 @@ export default function CatalogSection() {
         </div>
       </div>
 
-      <div className="glass-card mb-6 rounded-2xl border border-white/12 p-4 sm:p-5">
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-[1.2fr_0.65fr_0.8fr]">
+      <div className="glass-card mb-5 rounded-2xl border border-white/12 p-3.5 sm:mb-6 sm:p-5">
+        <div className="grid gap-2.5 sm:gap-3 sm:grid-cols-2 lg:grid-cols-[1.2fr_0.65fr_0.8fr]">
           <label className="block">
             <span className="mb-2 block text-xs uppercase tracking-[0.14em] text-gray-300">
               Buscar producto
@@ -629,7 +616,7 @@ export default function CatalogSection() {
           </label>
         </div>
 
-        <div className="mt-4 flex flex-wrap items-center gap-2">
+        <div className="mt-3 flex flex-wrap items-center gap-2 sm:mt-4">
           <span className="rounded-full border border-cyan-300/35 bg-cyan-400/10 px-3 py-1 text-xs uppercase tracking-[0.11em] text-cyan-100">
             Cargados: {displayProducts.length}
           </span>
@@ -694,7 +681,7 @@ export default function CatalogSection() {
       ) : null}
 
       {filteredProducts.length > 0 ? (
-        <div className="grid gap-4 sm:gap-5 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="grid gap-3 sm:gap-5 sm:grid-cols-2 xl:grid-cols-4">
           {visibleProducts.map((product) => {
             const detailHref = product.handle
               ? `/products/${product.handle}`
@@ -702,7 +689,7 @@ export default function CatalogSection() {
             return (
               <article
                 key={product.id}
-                className="glass-card catalog-card group rounded-3xl border border-white/12 p-3.5 transition duration-300 hover:-translate-y-1 hover:border-cyan-300/45 sm:p-4"
+                className="glass-card catalog-card group rounded-3xl border border-white/12 p-3 transition duration-300 hover:-translate-y-1 hover:border-cyan-300/45 sm:p-4"
               >
                 <div className="catalog-image-shell overflow-hidden rounded-2xl border border-white/10 bg-black/35">
                   <Image
@@ -716,7 +703,7 @@ export default function CatalogSection() {
                   />
                 </div>
 
-                <div className="mt-4">
+                <div className="mt-3 sm:mt-4">
                   <h3 className="catalog-title-clamp text-base font-semibold text-white sm:text-lg">
                     {product.title}
                   </h3>
@@ -736,7 +723,7 @@ export default function CatalogSection() {
                   </div>
                 </div>
 
-                <div className="catalog-actions mt-4 grid grid-cols-2 gap-2.5">
+                <div className="catalog-actions mt-3 grid grid-cols-2 gap-2 sm:mt-4 sm:gap-2.5">
                   <button
                     type="button"
                     onClick={() => void addToCart(product)}
