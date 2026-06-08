@@ -198,7 +198,7 @@ export default function CartPageClient() {
         })),
       });
 
-      window.location.href = payload.cart.checkoutUrl;
+      window.location.assign(payload.cart.checkoutUrl);
     } catch {
       setCartActionError("Error de conexion al crear checkout Shopify.");
     } finally {
@@ -318,8 +318,13 @@ export default function CartPageClient() {
                 disabled={checkoutLoading}
                 className="btn-premium w-full px-5 py-3 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-70"
               >
-                {checkoutLoading ? "Generando checkout..." : "Finalizar compra"}
+                {checkoutLoading ? "Abriendo checkout seguro..." : "Finalizar compra"}
               </button>
+              {checkoutLoading ? (
+                <p className="mt-3 text-center text-xs text-cyan-100/85">
+                  Conectando con el checkout seguro de Shopify. Esto puede tardar unos segundos.
+                </p>
+              ) : null}
             </div>
           </>
         )}

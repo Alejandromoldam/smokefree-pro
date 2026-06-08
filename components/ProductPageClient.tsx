@@ -1019,7 +1019,7 @@ export default function ProductPage() {
                     disabled={addingToCart || !selectedVariant?.availableForSale}
                     className="btn-premium px-6 py-3.5 text-center text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-70"
                   >
-                    {addingToCart ? "Agregando..." : "Añadir al carrito"}
+                    {addingToCart ? "Agregando..." : "Agregar al carrito"}
                   </button>
                   <a
                     href={buyNowUrl}

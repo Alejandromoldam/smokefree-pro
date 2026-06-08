@@ -63,6 +63,7 @@ export default function AIAssistantWidget() {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
   const [sending, setSending] = useState(false);
+  const [isMobileViewport, setIsMobileViewport] = useState(false);
   const [cartDrawerOpen, setCartDrawerOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
@@ -80,6 +81,18 @@ export default function AIAssistantWidget() {
     if (!panel) return;
     panel.scrollTop = panel.scrollHeight;
   }, [messages, open, sending]);
+
+  useEffect(() => {
+    if (typeof window === "undefined" || typeof window.matchMedia !== "function") return;
+
+    const media = window.matchMedia("(max-width: 1023px)");
+    const syncViewport = () => setIsMobileViewport(media.matches);
+
+    syncViewport();
+    media.addEventListener("change", syncViewport);
+
+    return () => media.removeEventListener("change", syncViewport);
+  }, []);
 
   useEffect(() => {
     const syncCartState = () => {
@@ -205,6 +218,7 @@ export default function AIAssistantWidget() {
   }
 
   if (
+    isMobileViewport ||
     cartDrawerOpen ||
     pathname.includes("/checkout") ||
     pathname === "/cart" ||
