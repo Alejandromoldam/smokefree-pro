@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
-import { trackBeginCheckout } from "@/lib/ga";
+import { trackAddToCart, trackBeginCheckout } from "@/lib/ga";
 
 type CartLineItem = {
   id: string;
@@ -129,6 +129,12 @@ export default function CartPageClient() {
 
   function updateLineQuantity(lineId: string, quantity: number) {
     setCartActionError(null);
+    const currentLine = cart.lines.find((line) => line.id === lineId);
+    const addedQuantity =
+      currentLine && quantity > currentLine.quantity
+        ? quantity - currentLine.quantity
+        : 0;
+
     setCart((current) => {
       if (quantity <= 0) {
         return { lines: current.lines.filter((line) => line.id !== lineId) };
@@ -145,6 +151,23 @@ export default function CartPageClient() {
         ),
       };
     });
+
+    if (currentLine && addedQuantity > 0) {
+      trackAddToCart({
+        currency: currentLine.unitPriceCurrency,
+        value: getPriceNumber(currentLine.unitPriceAmount) * addedQuantity,
+        items: [
+          {
+            item_id: currentLine.merchandiseId || currentLine.id,
+            item_name: currentLine.title,
+            item_variant: currentLine.variantTitle || undefined,
+            currency: currentLine.unitPriceCurrency,
+            price: getPriceNumber(currentLine.unitPriceAmount),
+            quantity: addedQuantity,
+          },
+        ],
+      });
+    }
   }
 
   async function handleFinalizeCheckout() {

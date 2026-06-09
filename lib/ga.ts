@@ -1,6 +1,15 @@
 export const GA_MEASUREMENT_ID = (
   process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || ""
 ).trim();
+export const GOOGLE_ADS_ID = (
+  process.env.NEXT_PUBLIC_GOOGLE_ADS_ID || ""
+).trim();
+export const GOOGLE_ADS_ADD_TO_CART_LABEL = (
+  process.env.NEXT_PUBLIC_GOOGLE_ADS_ADD_TO_CART_LABEL || ""
+).trim();
+export const GOOGLE_ADS_PURCHASE_LABEL = (
+  process.env.NEXT_PUBLIC_GOOGLE_ADS_PURCHASE_LABEL || ""
+).trim();
 export const META_PIXEL_ID = (
   process.env.NEXT_PUBLIC_META_PIXEL_ID || ""
 ).trim();
@@ -20,7 +29,8 @@ declare global {
   interface Window {
     dataLayer: unknown[];
     gtag?: (...args: unknown[]) => void;
-    __allInOneGaInitialized?: boolean;
+    __allInOneGoogleTagInitialized?: boolean;
+    __allInOneConfiguredGoogleTagIds?: string[];
     fbq?: {
       (...args: unknown[]): void;
       callMethod?: (...args: unknown[]) => void;
@@ -33,10 +43,28 @@ declare global {
   }
 }
 
+function getGoogleTagBootstrapId() {
+  return GA_MEASUREMENT_ID || GOOGLE_ADS_ID;
+}
+
+function getGoogleTagConfigIds() {
+  return [GA_MEASUREMENT_ID, GOOGLE_ADS_ID].filter(Boolean);
+}
+
+function getGoogleAdsSendTo(label: string) {
+  if (!GOOGLE_ADS_ID || !label) return "";
+  return `${GOOGLE_ADS_ID}/${label}`;
+}
+
 export function initializeGa() {
-  if (typeof window === "undefined" || !GA_MEASUREMENT_ID) return;
+  if (typeof window === "undefined") return;
+
+  const bootstrapId = getGoogleTagBootstrapId();
+  if (!bootstrapId) return;
 
   window.dataLayer = window.dataLayer || [];
+  window.__allInOneConfiguredGoogleTagIds =
+    window.__allInOneConfiguredGoogleTagIds || [];
 
   if (typeof window.gtag !== "function") {
     window.gtag = function gtag(...args: unknown[]) {
@@ -44,20 +72,25 @@ export function initializeGa() {
     };
   }
 
-  if (!document.querySelector(`script[data-allinone-ga="${GA_MEASUREMENT_ID}"]`)) {
+  if (!document.querySelector('script[data-allinone-google-tag="true"]')) {
     const script = document.createElement("script");
     script.async = true;
     script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(
-      GA_MEASUREMENT_ID
+      bootstrapId
     )}`;
-    script.dataset.allinoneGa = GA_MEASUREMENT_ID;
+    script.dataset.allinoneGoogleTag = "true";
     document.head.appendChild(script);
   }
 
-  if (!window.__allInOneGaInitialized) {
+  if (!window.__allInOneGoogleTagInitialized) {
     window.gtag("js", new Date());
-    window.gtag("config", GA_MEASUREMENT_ID, { send_page_view: false });
-    window.__allInOneGaInitialized = true;
+    window.__allInOneGoogleTagInitialized = true;
+  }
+
+  for (const tagId of getGoogleTagConfigIds()) {
+    if (window.__allInOneConfiguredGoogleTagIds.includes(tagId)) continue;
+    window.gtag("config", tagId, { send_page_view: false });
+    window.__allInOneConfiguredGoogleTagIds.push(tagId);
   }
 }
 
@@ -65,6 +98,15 @@ function canTrackGa() {
   return (
     typeof window !== "undefined" &&
     Boolean(GA_MEASUREMENT_ID) &&
+    typeof window.gtag === "function"
+  );
+}
+
+function canTrackGoogleAds(label: string) {
+  return (
+    typeof window !== "undefined" &&
+    Boolean(GOOGLE_ADS_ID) &&
+    Boolean(label) &&
     typeof window.gtag === "function"
   );
 }
@@ -180,6 +222,17 @@ export function trackAddToCart(params: {
     });
   }
 
+  const googleAdsAddToCartSendTo = getGoogleAdsSendTo(
+    GOOGLE_ADS_ADD_TO_CART_LABEL
+  );
+  if (canTrackGoogleAds(googleAdsAddToCartSendTo)) {
+    window.gtag?.("event", "conversion", {
+      send_to: googleAdsAddToCartSendTo,
+      value: params.value,
+      currency: params.currency,
+    });
+  }
+
   if (canTrackMeta()) {
     window.fbq?.("track", "AddToCart", buildMetaCommercePayload(params));
   }
@@ -228,6 +281,25 @@ export function trackPurchase(params: {
       ...(params.orderId ? { order_id: params.orderId } : {}),
     });
   }
+}
+
+export function trackGoogleAdsPurchase(params: {
+  currency: string;
+  value: number;
+  orderId?: string;
+}) {
+  const googleAdsPurchaseSendTo = getGoogleAdsSendTo(
+    GOOGLE_ADS_PURCHASE_LABEL
+  );
+  if (!canTrackGoogleAds(googleAdsPurchaseSendTo)) return;
+
+  // Fire this only from a confirmed Shopify checkout/thank-you surface.
+  window.gtag?.("event", "conversion", {
+    send_to: googleAdsPurchaseSendTo,
+    value: params.value,
+    currency: params.currency,
+    transaction_id: params.orderId || undefined,
+  });
 }
 
 export function trackClickWhatsApp(params: {
