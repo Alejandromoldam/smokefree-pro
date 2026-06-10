@@ -105,7 +105,6 @@ function canTrackGa() {
 function canTrackGoogleAds(label: string) {
   return (
     typeof window !== "undefined" &&
-    Boolean(GOOGLE_ADS_ID) &&
     Boolean(label) &&
     typeof window.gtag === "function"
   );
