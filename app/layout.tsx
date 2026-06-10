@@ -6,7 +6,7 @@ import AIAssistantWidget from "@/components/AIAssistantWidget";
 import FloatingWhatsAppButton from "@/components/FloatingWhatsAppButton";
 import GaPageTracker from "@/components/GaPageTracker";
 import { GA_MEASUREMENT_ID, META_PIXEL_ID } from "@/lib/ga";
-import {
+import {GOOGLE_ADS_ID } from "@/lib/ga";
   buildOrganizationSchema,
   buildWebsiteSchema,
   getStructuredDataSiteUrl,
@@ -71,6 +71,7 @@ export default function RootLayout({
   const siteUrl = getStructuredDataSiteUrl();
   const hasGaMeasurementId = Boolean(GA_MEASUREMENT_ID);
   const hasMetaPixelId = Boolean(META_PIXEL_ID);
+  const hasGoogleAdsId = Boolean(GOOGLE_ADS_ID);
   const organizationJsonLd = toJsonLd(buildOrganizationSchema(siteUrl));
   const websiteJsonLd = toJsonLd(buildWebsiteSchema(siteUrl));
 
@@ -85,6 +86,22 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: websiteJsonLd }}
         />
+       {hasGoogleAdsId ? (
+  <>
+    <Script
+      src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ADS_ID}`}
+      strategy="afterInteractive"
+    />
+    <Script id="google-ads-init" strategy="afterInteractive">
+      {`
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', '${GOOGLE_ADS_ID}');
+      `}
+    </Script>
+  </>
+) : null}
         {hasMetaPixelId ? (
           <>
             <Script id="meta-pixel-init" strategy="afterInteractive">
