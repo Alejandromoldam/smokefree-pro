@@ -6,7 +6,8 @@ import AIAssistantWidget from "@/components/AIAssistantWidget";
 import FloatingWhatsAppButton from "@/components/FloatingWhatsAppButton";
 import GaPageTracker from "@/components/GaPageTracker";
 import { GA_MEASUREMENT_ID, META_PIXEL_ID } from "@/lib/ga";
-import {GOOGLE_ADS_ID } from "@/lib/ga";
+import { GOOGLE_ADS_ID } from "@/lib/ga";
+import {
   buildOrganizationSchema,
   buildWebsiteSchema,
   getStructuredDataSiteUrl,
