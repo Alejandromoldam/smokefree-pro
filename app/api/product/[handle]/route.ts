@@ -1,4 +1,4 @@
-﻿import { NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 const DEFAULT_API_VERSION = "2025-04";
 
@@ -11,6 +11,18 @@ type ShopifyVariantNode = {
   price?: {
     amount?: string | null;
     currencyCode?: string | null;
+  } | null;
+};
+
+type ShopifyMediaNode = {
+  mediaContentType: string;
+  alt?: string | null;
+  sources?: Array<{
+    url: string;
+    mimeType: string;
+  }> | null;
+  previewImage?: {
+    url: string;
   } | null;
 };
 
@@ -37,6 +49,11 @@ type ShopifyProductResponse = {
             url: string;
             altText: string | null;
           };
+        }>;
+      };
+      media: {
+        edges: Array<{
+          node: ShopifyMediaNode;
         }>;
       };
       variants: {
@@ -90,7 +107,6 @@ function normalizeShopifyImageUrl(
   if (!rawUrl) {
     return "/producto-real.png";
   }
-
   try {
     const parsed = new URL(rawUrl);
     if (
@@ -137,19 +153,16 @@ function plainTextToHtml(rawText: string) {
   if (!normalized) {
     return "<p>Este producto no tiene descripcion publica todavia.</p>";
   }
-
   const blocks = normalized
     .split(/\n{2,}/)
     .map((block) => block.trim())
     .filter(Boolean);
-
   const htmlBlocks = blocks.map((block) => {
     const lines = block
       .split("\n")
       .map((line) => line.trim())
       .filter(Boolean);
     if (lines.length === 0) return "";
-
     const allBulletLines = lines.every((line) => /^[-*•]\s+/.test(line));
     if (allBulletLines) {
       const listItems = lines
@@ -158,17 +171,14 @@ function plainTextToHtml(rawText: string) {
         .join("");
       return `<ul>${listItems}</ul>`;
     }
-
     return `<p>${lines.map((line) => escapeHtml(line)).join("<br />")}</p>`;
   });
-
   return htmlBlocks.filter(Boolean).join("");
 }
 
 function sanitizeDescriptionHtml(rawHtml: string | null | undefined) {
   const source = (rawHtml || "").trim();
   if (!source) return "";
-
   const withoutComments = source.replace(/<!--[\s\S]*?-->/g, "");
   const withoutDangerousBlocks = withoutComments
     .replace(
@@ -179,43 +189,18 @@ function sanitizeDescriptionHtml(rawHtml: string | null | undefined) {
       /<(script|style|iframe|object|embed|form|input|button|textarea|select|meta|link|base|svg|math)[^>]*\/?>/gi,
       ""
     );
-
   const allowedTags = new Set([
-    "p",
-    "br",
-    "ul",
-    "ol",
-    "li",
-    "strong",
-    "b",
-    "em",
-    "i",
-    "u",
-    "a",
-    "h1",
-    "h2",
-    "h3",
-    "h4",
-    "blockquote",
+    "p", "br", "ul", "ol", "li", "strong", "b", "em", "i", "u", "a",
+    "h1", "h2", "h3", "h4", "blockquote",
   ]);
-
   const sanitized = withoutDangerousBlocks.replace(
     /<\/?([a-z0-9-]+)([^>]*)>/gi,
     (fullTag, rawTagName: string, rawAttrs: string) => {
       const tagName = rawTagName.toLowerCase();
       const isClosingTag = fullTag.startsWith("</");
-      if (!allowedTags.has(tagName)) {
-        return "";
-      }
-
-      if (isClosingTag) {
-        return `</${tagName}>`;
-      }
-
-      if (tagName === "br") {
-        return "<br />";
-      }
-
+      if (!allowedTags.has(tagName)) return "";
+      if (isClosingTag) return `</${tagName}>`;
+      if (tagName === "br") return "<br />";
       if (tagName === "a") {
         const hrefMatch = rawAttrs.match(
           /href\s*=\s*("([^"]*)"|'([^']*)'|([^\s>]+))/i
@@ -223,15 +208,11 @@ function sanitizeDescriptionHtml(rawHtml: string | null | undefined) {
         const hrefCandidate =
           hrefMatch?.[2] || hrefMatch?.[3] || hrefMatch?.[4] || "#";
         const safeHref = sanitizeLinkUrl(hrefCandidate);
-        return `<a href="${escapeHtml(
-          safeHref
-        )}" target="_blank" rel="noopener noreferrer nofollow">`;
+        return `<a href="${escapeHtml(safeHref)}" target="_blank" rel="noopener noreferrer nofollow">`;
       }
-
       return `<${tagName}>`;
     }
   );
-
   return sanitized.trim();
 }
 
@@ -260,27 +241,20 @@ export async function GET(
 
   if (!domain || !token) {
     return NextResponse.json(
-      {
-        ok: false,
-        error:
-          "Faltan variables SHOPIFY_STORE_DOMAIN y token Storefront (SHOPIFY_STOREFRONT_PRIVATE_TOKEN o SHOPIFY_STOREFRONT_ACCESS_TOKEN).",
-      },
+      { ok: false, error: "Faltan variables SHOPIFY_STORE_DOMAIN y token Storefront." },
       { status: 500 }
     );
   }
 
   if (isAutomationToken(token)) {
     return NextResponse.json(
-      {
-        ok: false,
-        error:
-          "El token configurado parece ser de automatizacion (atkn_) y no sirve para Storefront API. Usa un token del canal Headless (private/public) y actualiza .env.local.",
-      },
+      { ok: false, error: "Token de automatizacion no valido para Storefront API." },
       { status: 500 }
     );
   }
 
   const endpoint = `https://${domain}/api/${version}/graphql.json`;
+
   const queryWithInventory = `
     query ProductByHandle($handle: String!) {
       product(handle: $handle) {
@@ -306,6 +280,23 @@ export async function GET(
             }
           }
         }
+        media(first: 12) {
+          edges {
+            node {
+              mediaContentType
+              alt
+              ... on Video {
+                sources {
+                  url
+                  mimeType
+                }
+                previewImage {
+                  url
+                }
+              }
+            }
+          }
+        }
         variants(first: 30) {
           edges {
             node {
@@ -324,6 +315,7 @@ export async function GET(
       }
     }
   `;
+
   const queryWithoutInventory = `
     query ProductByHandle($handle: String!) {
       product(handle: $handle) {
@@ -346,6 +338,23 @@ export async function GET(
             node {
               url
               altText
+            }
+          }
+        }
+        media(first: 12) {
+          edges {
+            node {
+              mediaContentType
+              alt
+              ... on Video {
+                sources {
+                  url
+                  mimeType
+                }
+                previewImage {
+                  url
+                }
+              }
             }
           }
         }
@@ -374,33 +383,27 @@ export async function GET(
       variables: baseVariables,
     });
     const authHeaderOptions: Array<Record<string, string>> = [
-      {
-        "X-Shopify-Storefront-Access-Token": token,
-      },
+      { "X-Shopify-Storefront-Access-Token": token },
       {
         "Shopify-Storefront-Private-Token": token,
         "Shopify-Storefront-Buyer-IP": "127.0.0.1",
       },
     ];
+
     let response: Response | null = null;
     let authErrorMessage: string | null = null;
 
     for (const authHeaders of authHeaderOptions) {
       const candidate = await fetch(endpoint, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          ...authHeaders,
-        },
+        headers: { "Content-Type": "application/json", ...authHeaders },
         body: requestBodyWithInventory,
         cache: "no-store",
       });
-
       if (candidate.ok) {
         response = candidate;
         break;
       }
-
       const candidateError = await extractShopifyErrorMessage(candidate);
       authErrorMessage = mapShopifyErrorMessage(candidateError) || authErrorMessage;
     }
@@ -414,48 +417,33 @@ export async function GET(
 
     let payload = (await response.json()) as ShopifyProductResponse;
 
-    if (
-      payload.errors?.some((err) =>
-        (err.message || "").includes("quantityAvailable")
-      )
-    ) {
+    if (payload.errors?.some((err) => (err.message || "").includes("quantityAvailable"))) {
       let fallbackResponse: Response | null = null;
       let fallbackAuthError: string | null = null;
       const requestBodyWithoutInventory = JSON.stringify({
         query: queryWithoutInventory,
         variables: baseVariables,
       });
-
       for (const authHeaders of authHeaderOptions) {
         const candidate = await fetch(endpoint, {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            ...authHeaders,
-          },
+          headers: { "Content-Type": "application/json", ...authHeaders },
           body: requestBodyWithoutInventory,
           cache: "no-store",
         });
-
         if (candidate.ok) {
           fallbackResponse = candidate;
           break;
         }
-
         const candidateError = await extractShopifyErrorMessage(candidate);
         fallbackAuthError = mapShopifyErrorMessage(candidateError) || fallbackAuthError;
       }
-
       if (!fallbackResponse) {
         return NextResponse.json(
-          {
-            ok: false,
-            error: fallbackAuthError || "Error al consultar Shopify.",
-          },
+          { ok: false, error: fallbackAuthError || "Error al consultar Shopify." },
           { status: 502 }
         );
       }
-
       payload = (await fallbackResponse.json()) as ShopifyProductResponse;
     }
 
@@ -474,20 +462,25 @@ export async function GET(
     }
 
     const product = payload.data.product;
-    const sanitizedDescriptionHtml = sanitizeDescriptionHtml(
-      product.descriptionHtml
-    );
+    const sanitizedDescriptionHtml = sanitizeDescriptionHtml(product.descriptionHtml);
     const fallbackDescriptionHtml = plainTextToHtml(product.description || "");
     const variants = product.variants.edges.map((edge) => edge.node);
     const selectedVariant =
       variants.find((variant) => variant.availableForSale) || variants[0] || null;
-
     const variantGid = selectedVariant?.id;
     const variantNumericId = extractVariantNumericId(variantGid);
     const productUrl = `https://${domain}/products/${product.handle}`;
     const buyNowUrl = variantNumericId
       ? `https://${domain}/cart/${variantNumericId}:1`
       : productUrl;
+
+    const videos = (product.media?.edges || [])
+      .filter((edge) => edge.node.mediaContentType === "VIDEO")
+      .map((edge) => ({
+        sources: edge.node.sources || [],
+        previewImageUrl: edge.node.previewImage?.url || null,
+        alt: edge.node.alt || product.title,
+      }));
 
     return NextResponse.json(
       {
@@ -498,8 +491,7 @@ export async function GET(
           title: product.title,
           handle: product.handle,
           description: product.description,
-          descriptionHtml:
-            sanitizedDescriptionHtml || fallbackDescriptionHtml,
+          descriptionHtml: sanitizedDescriptionHtml || fallbackDescriptionHtml,
           availableForSale: product.availableForSale,
           vendor: product.vendor,
           productType: product.productType,
@@ -526,6 +518,7 @@ export async function GET(
             url: normalizeShopifyImageUrl(domain, edge.node.url),
             altText: edge.node.altText || product.title,
           })),
+          videos,
           productUrl,
           buyNowUrl,
         },
