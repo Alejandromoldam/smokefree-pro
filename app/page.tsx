@@ -520,7 +520,7 @@ export default function Home() {
 
       <section
         id="inicio"
-        className="hero-section hero-cinematic relative mx-auto flex min-h-[auto] w-full max-w-7xl flex-col justify-start gap-6 overflow-hidden px-4 pb-6 pt-8 sm:min-h-screen sm:justify-center sm:gap-14 sm:px-6 sm:pb-16 sm:pt-24 lg:flex-row lg:items-center lg:gap-20 lg:px-8 lg:pb-20 lg:pt-28"
+        className="hero-section hero-cinematic relative mx-auto flex min-h-[auto] w-full max-w-7xl flex-col justify-start gap-4 overflow-hidden px-4 pb-4 pt-5 sm:min-h-screen sm:justify-center sm:gap-14 sm:px-6 sm:pb-16 sm:pt-24 lg:flex-row lg:items-center lg:gap-20 lg:px-8 lg:pb-20 lg:pt-28"
       >
         <div className="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
           <div className="light-orb light-orb-a" />
@@ -530,7 +530,7 @@ export default function Home() {
         </div>
 
         <div className="parallax-layer depth-soft relative z-10 w-full lg:w-[44%]">
-          <p className="reveal-1 mb-5 inline-flex rounded-full border border-emerald-300/40 bg-emerald-300/10 px-4 py-2 text-xs uppercase tracking-[0.2em] text-emerald-100">
+          <p className="reveal-1 mb-3 inline-flex rounded-full border border-emerald-300/40 bg-emerald-300/10 px-4 py-2 text-xs uppercase tracking-[0.2em] text-emerald-100 sm:mb-5">
             Startup technology grade
           </p>
 
@@ -538,12 +538,12 @@ export default function Home() {
             Tecnología premium para la vida moderna
           </h1>
 
-          <p className="reveal-3 mt-6 max-w-[34rem] text-[0.99rem] leading-8 text-gray-300 sm:text-lg sm:leading-8">
+          <p className="reveal-3 mt-4 max-w-[34rem] text-[0.99rem] leading-7 text-gray-300 sm:mt-6 sm:text-lg sm:leading-8">
             All In One reúne productos tecnológicos y soluciones innovadoras
             seleccionadas para mejorar tu experiencia diaria.
           </p>
 
-          <div className="reveal-4 mt-8 flex flex-wrap items-center gap-3">
+          <div className="reveal-4 mt-5 flex flex-wrap items-center gap-3 sm:mt-8">
             <a
               href={PRODUCT_LINK}
               className="btn-premium px-7 py-3 text-sm font-semibold sm:px-8 sm:py-4 sm:text-base"
@@ -558,11 +558,11 @@ export default function Home() {
             </a>
           </div>
 
-          <div className="hero-trust-badges reveal-5 mt-5 grid w-full max-w-2xl gap-2 sm:grid-cols-2">
+          <div className="hero-trust-badges reveal-5 mt-4 grid w-full max-w-2xl grid-cols-2 gap-2 sm:mt-5">
             {heroTrustBadges.map((badge) => (
               <div
                 key={badge}
-                className="hero-trust-badge inline-flex items-center gap-2 rounded-xl border border-white/14 bg-white/[0.04] px-3 py-2 text-xs font-medium text-gray-100 sm:text-sm"
+                className="hero-trust-badge inline-flex items-center gap-2 rounded-xl border border-white/14 bg-white/[0.04] px-3 py-2 text-[0.72rem] font-medium text-gray-100 sm:text-sm"
               >
                 <span className="text-emerald-300">✓</span>
                 <span>{badge}</span>
@@ -570,11 +570,11 @@ export default function Home() {
             ))}
           </div>
 
-          <div className="mt-9 grid w-full max-w-xl grid-cols-3 gap-3">
+          <div className="mt-5 grid w-full max-w-xl grid-cols-3 gap-2 sm:mt-9 sm:gap-3">
             {metrics.map((metric) => (
               <article
                 key={metric.label}
-                className="glass-card rounded-2xl border border-white/12 px-3 py-4 text-center"
+                className="glass-card rounded-2xl border border-white/12 px-2.5 py-3 text-center sm:px-3 sm:py-4"
               >
                 <p className="text-xs uppercase tracking-[0.12em] text-gray-400">
                   {metric.label}

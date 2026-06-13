@@ -1845,8 +1845,9 @@ body {
   }
 
   .hero-section {
-    padding-top: 36px !important;
-    padding-bottom: 32px !important;
+    gap: 1rem !important;
+    padding-top: 20px !important;
+    padding-bottom: 20px !important;
   }
 
   .catalog-section {
@@ -1867,13 +1868,40 @@ body {
     animation: none !important;
   }
 
+  .reveal-1,
+  .reveal-2,
+  .reveal-3,
+  .reveal-4,
+  .reveal-5 {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+  }
+
   .hero-media-wrap {
-    margin-top: 16px !important;
+    margin-top: 8px !important;
   }
 
   .hero-carousel-stage {
-    min-height: clamp(12rem, 62vw, 17rem) !important;
-    aspect-ratio: 4 / 3 !important;
+    min-height: clamp(8.75rem, 44vw, 11.5rem) !important;
+    aspect-ratio: 16 / 10 !important;
+  }
+
+  .hero-frame {
+    padding: 0.45rem !important;
+    border-radius: 1.6rem !important;
+  }
+
+  .hero-trust-badges {
+    gap: 0.5rem !important;
+  }
+
+  .hero-trust-badge {
+    padding: 0.65rem 0.75rem !important;
+  }
+
+  .hero-section .glass-card {
+    padding: 0.75rem 0.5rem !important;
   }
 }
 
