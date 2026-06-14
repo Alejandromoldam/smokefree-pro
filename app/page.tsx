@@ -192,46 +192,6 @@ const heroTrustBadges = [
   "Atención personalizada",
 ];
 
-const categoryCards = [
-  {
-    title: "Smartwatches y Wearables",
-    description: "Dispositivos inteligentes para medir, entrenar y elevar tu estilo diario.",
-    accent: "cyan",
-  },
-  {
-    title: "Audio y Auriculares",
-    description: "Sonido envolvente, diseños compactos y opciones inalámbricas premium.",
-    accent: "blue",
-  },
-  {
-    title: "Tecnología para el Hogar",
-    description: "Gadgets prácticos para automatizar espacios y mejorar tu rutina.",
-    accent: "emerald",
-  },
-  {
-    title: "Accesorios para Celular",
-    description: "Carga, soporte y conectividad para mantener tu móvil listo en todo momento.",
-    accent: "violet",
-  },
-  {
-    title: "Energía y Accesorios",
-    description: "Soluciones portátiles para autonomía, seguridad y productividad.",
-    accent: "amber",
-  },
-  {
-    title: "Gaming y Entretenimiento",
-    description: "Consolas, proyección y accesorios visuales para una experiencia inmersiva.",
-    accent: "rose",
-  },
-] as const;
-
-const heroTechItems = [
-  { title: "Smartwatch", caption: "Wearables premium", tone: "cyan" },
-  { title: "Audífonos", caption: "Audio inalámbrico", tone: "blue" },
-  { title: "Mini proyector", caption: "Experiencia visual", tone: "emerald" },
-  { title: "Gadget hogar", caption: "Tecnología útil", tone: "violet" },
-] as const;
-
 const trustItems = [
   {
     title: "Envio rapido",
@@ -602,17 +562,6 @@ export default function Home() {
             <div className="hero-glow absolute -inset-10 -z-10" />
             <div className="fx-hero-electric" />
             <div className="fx-product-smoke" />
-            <div className="hero-tech-grid" aria-hidden="true">
-              {heroTechItems.map((item) => (
-                <div
-                  key={item.title}
-                  className={`hero-tech-chip hero-tech-chip-${item.tone}`}
-                >
-                  <span className="hero-tech-chip-title">{item.title}</span>
-                  <span className="hero-tech-chip-caption">{item.caption}</span>
-                </div>
-              ))}
-            </div>
             <div className="hero-stage-wrap">
               <div className="hero-stage-ring" />
               <div className="hero-stage-platform">
@@ -634,40 +583,11 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section-reveal mx-auto w-full max-w-7xl px-4 pb-10 sm:px-6 sm:pb-16 lg:px-8">
-        <div className="mb-5 sm:mb-8">
-          <p className="text-xs uppercase tracking-[0.22em] text-cyan-200/85 sm:text-sm">
-            Categorías
-          </p>
-          <h2 className="mt-3 text-3xl font-semibold text-white sm:text-4xl">
-            Explora nuestras categorías
-          </h2>
-          <p className="mt-2 max-w-2xl text-sm text-gray-300 sm:text-base">
-            Selección tecnológica pensada para compra impulsiva, utilidad diaria y alto
-            atractivo visual.
-          </p>
-        </div>
-
-        <div className="categories-grid">
-          {categoryCards.map((category) => (
-            <a
-              key={category.title}
-              href={CATALOG_LINK}
-              className={`category-card category-card-${category.accent}`}
-            >
-              <span className="category-card-eyebrow">Categoría destacada</span>
-              <h3 className="category-card-title">{category.title}</h3>
-              <p className="category-card-copy">{category.description}</p>
-              <span className="category-card-link">Explorar</span>
-            </a>
-          ))}
-        </div>
-      </section>
-
       <BestSellersSection />
-      <CustomerExperiencesSection />
 
       <CatalogSection />
+
+      <CustomerExperiencesSection />
 
       <section className="trust-section section-reveal mx-auto w-full max-w-7xl px-4 pb-12 sm:px-6 sm:pb-24 lg:px-8">
         <div className="mb-5 sm:mb-8">
