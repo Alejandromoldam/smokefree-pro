@@ -11,6 +11,7 @@ import CustomerExperiencesSection from "@/components/CustomerExperiencesSection"
 const PRODUCT_LINK =
   "/products/2-in-1-multifunctional-indoor-smokeless-ashtray-360-surround-suction-intelligent-air-purifier-ashtray-indoor-household-car-intelligent-ashtray-grey";
 const CATALOG_LINK = "#catalogo";
+const FEATURED_LINK = "#producto";
 const CART_LINK = "https://all-in-one-22092396.myshopify.com/cart";
 
 type BenefitIconType = "air" | "chip" | "shield";
@@ -184,27 +185,52 @@ const faqs = [
   },
 ];
 
-const metrics = [
-  {
-    label: "Diseno",
-    value: "Premium",
-  },
-  {
-    label: "Eficiencia",
-    value: "Alta",
-  },
-  {
-    label: "Uso",
-    value: "Hogar / Auto",
-  },
+const heroTrustBadges = [
+  "Pago seguro",
+  "Envío internacional",
+  "Productos verificados",
+  "Atención personalizada",
 ];
 
-const heroTrustBadges = [
-  "Pago Seguro",
-  "Envío Rápido",
-  "Garantía de Satisfacción",
-  "Atención Personalizada",
-];
+const categoryCards = [
+  {
+    title: "Smartwatches y Wearables",
+    description: "Dispositivos inteligentes para medir, entrenar y elevar tu estilo diario.",
+    accent: "cyan",
+  },
+  {
+    title: "Audio y Auriculares",
+    description: "Sonido envolvente, diseños compactos y opciones inalámbricas premium.",
+    accent: "blue",
+  },
+  {
+    title: "Tecnología para el Hogar",
+    description: "Gadgets prácticos para automatizar espacios y mejorar tu rutina.",
+    accent: "emerald",
+  },
+  {
+    title: "Accesorios para Celular",
+    description: "Carga, soporte y conectividad para mantener tu móvil listo en todo momento.",
+    accent: "violet",
+  },
+  {
+    title: "Energía y Accesorios",
+    description: "Soluciones portátiles para autonomía, seguridad y productividad.",
+    accent: "amber",
+  },
+  {
+    title: "Gaming y Entretenimiento",
+    description: "Consolas, proyección y accesorios visuales para una experiencia inmersiva.",
+    accent: "rose",
+  },
+] as const;
+
+const heroTechItems = [
+  { title: "Smartwatch", caption: "Wearables premium", tone: "cyan" },
+  { title: "Audífonos", caption: "Audio inalámbrico", tone: "blue" },
+  { title: "Mini proyector", caption: "Experiencia visual", tone: "emerald" },
+  { title: "Gadget hogar", caption: "Tecnología útil", tone: "violet" },
+] as const;
 
 const trustItems = [
   {
@@ -520,7 +546,7 @@ export default function Home() {
 
       <section
         id="inicio"
-        className="hero-section hero-cinematic relative mx-auto flex min-h-[auto] w-full max-w-7xl flex-col justify-start gap-4 overflow-hidden px-4 pb-4 pt-5 sm:min-h-screen sm:justify-center sm:gap-14 sm:px-6 sm:pb-16 sm:pt-24 lg:flex-row lg:items-center lg:gap-20 lg:px-8 lg:pb-20 lg:pt-28"
+        className="hero-section hero-home hero-cinematic relative mx-auto flex min-h-[auto] w-full max-w-7xl flex-col justify-start gap-6 overflow-hidden px-4 pb-6 pt-6 sm:min-h-screen sm:justify-center sm:gap-14 sm:px-6 sm:pb-16 sm:pt-24 lg:flex-row lg:items-center lg:gap-12 lg:px-8 lg:pb-12 lg:pt-16"
       >
         <div className="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
           <div className="light-orb light-orb-a" />
@@ -529,71 +555,112 @@ export default function Home() {
           <div className="hero-local-haze" />
         </div>
 
-        <div className="parallax-layer depth-soft relative z-10 w-full lg:w-[44%]">
-          <p className="reveal-1 mb-3 inline-flex rounded-full border border-emerald-300/40 bg-emerald-300/10 px-4 py-2 text-xs uppercase tracking-[0.2em] text-emerald-100 sm:mb-5">
-            Startup technology grade
+        <div className="parallax-layer depth-soft relative z-10 w-full lg:w-[43%]">
+          <p className="reveal-1 mb-3 inline-flex rounded-full border border-cyan-300/35 bg-cyan-300/10 px-4 py-2 text-xs uppercase tracking-[0.22em] text-cyan-100 sm:mb-5">
+            All In One Store
           </p>
 
-          <h1 className="reveal-2 max-w-[14ch] text-[clamp(2.2rem,5.8vw,4.75rem)] font-semibold leading-[1.14] text-white">
-            Tecnología premium para la vida moderna
+          <h1 className="reveal-2 max-w-[11.25ch] text-[clamp(2.6rem,5.6vw,5rem)] font-semibold leading-[0.98] text-white lg:max-w-[17ch] lg:text-[clamp(2.8rem,3.15vw,3.2rem)] lg:leading-[0.9]">
+            Tecnología innovadora para tu hogar y estilo de vida
           </h1>
 
-          <p className="reveal-3 mt-4 max-w-[34rem] text-[0.99rem] leading-7 text-gray-300 sm:mt-6 sm:text-lg sm:leading-8">
-            All In One reúne productos tecnológicos y soluciones innovadoras
-            seleccionadas para mejorar tu experiencia diaria.
+          <p className="reveal-3 mt-4 max-w-[35rem] text-[0.98rem] leading-7 text-gray-300 sm:mt-5 sm:text-lg sm:leading-8 lg:mt-4 lg:max-w-[28rem] lg:text-[0.98rem] lg:leading-6">
+            Descubre gadgets inteligentes, accesorios tecnológicos y productos
+            seleccionados con envío internacional y pago seguro.
           </p>
 
-          <div className="reveal-4 mt-5 flex flex-wrap items-center gap-3 sm:mt-8">
-            <a
-              href={PRODUCT_LINK}
-              className="btn-premium px-7 py-3 text-sm font-semibold sm:px-8 sm:py-4 sm:text-base"
-            >
-              Comprar ahora
-            </a>
+          <div className="reveal-4 mt-6 flex flex-wrap items-center gap-3 sm:mt-8 lg:mt-5">
             <a
               href={CATALOG_LINK}
+              className="btn-premium px-7 py-3 text-sm font-semibold sm:px-8 sm:py-4 sm:text-base"
+            >
+              Ver catálogo
+            </a>
+            <a
+              href={FEATURED_LINK}
               className="btn-ghost px-7 py-3 text-sm font-semibold sm:px-8 sm:py-4 sm:text-base"
             >
-              Ver catalogo
+              Producto estrella
             </a>
           </div>
 
-          <div className="hero-trust-badges reveal-5 mt-4 grid w-full max-w-2xl grid-cols-2 gap-2 sm:mt-5">
+          <div className="hero-trust-badges reveal-5 mt-5 grid w-full max-w-2xl grid-cols-2 gap-2.5 sm:mt-6 lg:mt-5">
             {heroTrustBadges.map((badge) => (
               <div
                 key={badge}
-                className="hero-trust-badge inline-flex items-center gap-2 rounded-xl border border-white/14 bg-white/[0.04] px-3 py-2 text-[0.72rem] font-medium text-gray-100 sm:text-sm"
+                className="hero-trust-badge inline-flex items-center gap-2 rounded-2xl border border-white/14 bg-white/[0.04] px-3 py-2.5 text-[0.72rem] font-medium text-gray-100 sm:text-sm"
               >
-                <span className="text-emerald-300">✓</span>
+                <span className="text-cyan-300">✓</span>
                 <span>{badge}</span>
               </div>
             ))}
           </div>
-
-          <div className="mt-5 grid w-full max-w-xl grid-cols-3 gap-2 sm:mt-9 sm:gap-3">
-            {metrics.map((metric) => (
-              <article
-                key={metric.label}
-                className="glass-card rounded-2xl border border-white/12 px-2.5 py-3 text-center sm:px-3 sm:py-4"
-              >
-                <p className="text-xs uppercase tracking-[0.12em] text-gray-400">
-                  {metric.label}
-                </p>
-                <p className="mt-1 text-sm font-semibold text-white sm:text-base">
-                  {metric.value}
-                </p>
-              </article>
-            ))}
-          </div>
         </div>
 
-        <div className="hero-media-wrap relative z-10 w-full lg:w-[56%]">
-          <div className="hero-frame hero-dominant parallax-layer depth-strong relative mx-auto max-w-2xl rounded-[2.2rem] border border-white/15 p-3 sm:p-5">
+        <div className="hero-media-wrap relative z-10 w-full lg:w-[57%]">
+          <div className="hero-tech-showcase hero-frame hero-dominant parallax-layer depth-strong relative mx-auto max-w-[46rem] rounded-[2.4rem] border border-white/15 p-4 sm:p-5">
             <div className="hero-glow absolute -inset-10 -z-10" />
             <div className="fx-hero-electric" />
             <div className="fx-product-smoke" />
-            <HeroProductCarousel />
+            <div className="hero-tech-grid" aria-hidden="true">
+              {heroTechItems.map((item) => (
+                <div
+                  key={item.title}
+                  className={`hero-tech-chip hero-tech-chip-${item.tone}`}
+                >
+                  <span className="hero-tech-chip-title">{item.title}</span>
+                  <span className="hero-tech-chip-caption">{item.caption}</span>
+                </div>
+              ))}
+            </div>
+            <div className="hero-stage-wrap">
+              <div className="hero-stage-ring" />
+              <div className="hero-stage-platform">
+                <HeroProductCarousel />
+              </div>
+            </div>
           </div>
+        </div>
+      </section>
+
+      <section className="section-reveal mx-auto w-full max-w-7xl px-4 pb-8 sm:px-6 sm:pb-14 lg:px-8">
+        <div className="hero-trust-bar grid gap-3 md:grid-cols-4">
+          {heroTrustBadges.map((badge) => (
+            <article key={`trust-bar-${badge}`} className="hero-trust-bar-card">
+              <span className="hero-trust-bar-check">✓</span>
+              <span>{badge}</span>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="section-reveal mx-auto w-full max-w-7xl px-4 pb-10 sm:px-6 sm:pb-16 lg:px-8">
+        <div className="mb-5 sm:mb-8">
+          <p className="text-xs uppercase tracking-[0.22em] text-cyan-200/85 sm:text-sm">
+            Categorías
+          </p>
+          <h2 className="mt-3 text-3xl font-semibold text-white sm:text-4xl">
+            Explora nuestras categorías
+          </h2>
+          <p className="mt-2 max-w-2xl text-sm text-gray-300 sm:text-base">
+            Selección tecnológica pensada para compra impulsiva, utilidad diaria y alto
+            atractivo visual.
+          </p>
+        </div>
+
+        <div className="categories-grid">
+          {categoryCards.map((category) => (
+            <a
+              key={category.title}
+              href={CATALOG_LINK}
+              className={`category-card category-card-${category.accent}`}
+            >
+              <span className="category-card-eyebrow">Categoría destacada</span>
+              <h3 className="category-card-title">{category.title}</h3>
+              <p className="category-card-copy">{category.description}</p>
+              <span className="category-card-link">Explorar</span>
+            </a>
+          ))}
         </div>
       </section>
 
