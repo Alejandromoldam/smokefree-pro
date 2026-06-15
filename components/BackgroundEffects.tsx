@@ -11,13 +11,13 @@ export default function BackgroundEffects() {
       <div className="electric-circuit-grid" />
 
       <div className="electric-lines">
-        {Array.from({ length: 10 }).map((_, idx) => (
+        {Array.from({ length: 6 }).map((_, idx) => (
           <span key={`line-${idx}`} className={`electric-line line-${idx + 1}`} />
         ))}
       </div>
 
       <div className="electric-particles">
-        {Array.from({ length: 52 }).map((_, idx) => (
+        {Array.from({ length: 24 }).map((_, idx) => (
           <span key={`particle-${idx}`} className={`electric-particle p-${idx + 1}`} />
         ))}
       </div>

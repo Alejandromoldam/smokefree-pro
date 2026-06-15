@@ -2,17 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
-
-type CatalogProduct = {
-  id: string;
-  title: string;
-  handle: string;
-  imageUrl: string;
-  imageAlt: string;
-  priceAmount: string;
-  priceCurrency: string;
-  productUrl: string;
-};
+import type { CatalogProduct } from "@/lib/shopifyCatalog";
 
 type CatalogApiResponse = {
   ok: boolean;
@@ -61,11 +51,19 @@ function matchByKeywords(product: CatalogProduct, keywords: string[]) {
   return keywords.some((keyword) => text.includes(keyword.toLowerCase()));
 }
 
-export default function BestSellersSection() {
-  const [loading, setLoading] = useState(true);
-  const [products, setProducts] = useState<CatalogProduct[]>([]);
+export default function BestSellersSection({
+  initialProducts = [],
+}: {
+  initialProducts?: CatalogProduct[];
+}) {
+  const [loading, setLoading] = useState(initialProducts.length === 0);
+  const [products, setProducts] = useState<CatalogProduct[]>(initialProducts);
 
   useEffect(() => {
+    if (initialProducts.length > 0) {
+      return;
+    }
+
     let active = true;
 
     async function loadCatalog() {
@@ -93,7 +91,7 @@ export default function BestSellersSection() {
     return () => {
       active = false;
     };
-  }, []);
+  }, [initialProducts]);
 
   const bestSellers = useMemo(() => {
     const selected: CatalogProduct[] = [];
@@ -167,7 +165,7 @@ export default function BestSellersSection() {
                   alt={product.imageAlt || product.title}
                   width={700}
                   height={700}
-                  unoptimized
+                  sizes="(max-width: 640px) 92vw, (max-width: 1280px) 46vw, 22vw"
                   className="h-40 w-full object-cover transition duration-500 hover:scale-[1.03] sm:h-44"
                 />
               </div>

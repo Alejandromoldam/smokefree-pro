@@ -7,6 +7,7 @@ import NavbarCartButton from "@/components/NavbarCartButton";
 import TopBenefitsBar from "@/components/TopBenefitsBar";
 import BestSellersSection from "@/components/BestSellersSection";
 import CustomerExperiencesSection from "@/components/CustomerExperiencesSection";
+import { fetchHomeCatalogSnapshot } from "@/lib/shopifyCatalog";
 
 const PRODUCT_LINK =
   "/products/2-in-1-multifunctional-indoor-smokeless-ashtray-360-surround-suction-intelligent-air-purifier-ashtray-indoor-household-car-intelligent-ashtray-grey";
@@ -464,7 +465,9 @@ function TrustSignalIcon({
   );
 }
 
-export default function Home() {
+export default async function Home() {
+  const catalogSnapshot = await fetchHomeCatalogSnapshot();
+
   return (
     <main className="premium-shell relative z-10 overflow-hidden bg-transparent pb-12 text-white sm:pb-16 md:pb-0">
       <nav className="glass-nav sticky inset-x-0 top-0 z-50 border-b border-white/10">
@@ -565,7 +568,7 @@ export default function Home() {
             <div className="hero-stage-wrap">
               <div className="hero-stage-ring" />
               <div className="hero-stage-platform">
-                <HeroProductCarousel />
+                <HeroProductCarousel initialProducts={catalogSnapshot.products} />
               </div>
             </div>
           </div>
@@ -583,9 +586,13 @@ export default function Home() {
         </div>
       </section>
 
-      <BestSellersSection />
+      <BestSellersSection initialProducts={catalogSnapshot.products} />
 
-      <CatalogSection />
+      <CatalogSection
+        initialProducts={catalogSnapshot.products}
+        initialHasMore={catalogSnapshot.hasMore}
+        initialNextCursor={catalogSnapshot.nextCursor}
+      />
 
       <CustomerExperiencesSection />
 

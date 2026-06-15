@@ -3,21 +3,7 @@
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { trackAddToCart, trackBeginCheckout, trackClickWhatsApp } from "@/lib/ga";
-
-type CatalogProduct = {
-  id: string;
-  title: string;
-  handle: string;
-  variantId?: string | null;
-  descriptionShort: string;
-  imageUrl: string;
-  imageAlt: string;
-  priceAmount: string;
-  priceCurrency: string;
-  availableForSale: boolean;
-  productUrl: string;
-  buyNowUrl: string;
-};
+import type { CatalogProduct } from "@/lib/shopifyCatalog";
 
 type CatalogApiResponse = {
   ok: boolean;
@@ -127,13 +113,21 @@ function shouldUseMobileCartPage() {
   return window.matchMedia("(max-width: 1023px)").matches;
 }
 
-export default function CatalogSection() {
-  const [loading, setLoading] = useState(true);
+export default function CatalogSection({
+  initialProducts = [],
+  initialHasMore = false,
+  initialNextCursor = null,
+}: {
+  initialProducts?: CatalogProduct[];
+  initialHasMore?: boolean;
+  initialNextCursor?: string | null;
+}) {
+  const [loading, setLoading] = useState(initialProducts.length === 0);
   const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [products, setProducts] = useState<CatalogProduct[]>([]);
-  const [hasMoreFromShopify, setHasMoreFromShopify] = useState(false);
-  const [nextCursor, setNextCursor] = useState<string | null>(null);
+  const [products, setProducts] = useState<CatalogProduct[]>(initialProducts);
+  const [hasMoreFromShopify, setHasMoreFromShopify] = useState(initialHasMore);
+  const [nextCursor, setNextCursor] = useState<string | null>(initialNextCursor);
   const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_PRODUCTS);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState<SortOption>("featured");
@@ -216,8 +210,11 @@ export default function CatalogSection() {
   );
 
   useEffect(() => {
+    if (initialProducts.length > 0) {
+      return;
+    }
     void loadCatalog();
-  }, [loadCatalog]);
+  }, [initialProducts, loadCatalog]);
 
   useEffect(() => {
     setCart(readLocalCartFromStorage());
@@ -698,7 +695,7 @@ export default function CatalogSection() {
                     width={700}
                     height={700}
                     loading="lazy"
-                    unoptimized
+                    sizes="(max-width: 640px) 92vw, (max-width: 1280px) 46vw, 22vw"
                     className="catalog-product-image h-40 w-full object-contain transition duration-500 group-hover:scale-[1.03] sm:h-52 sm:object-cover"
                   />
                 </div>

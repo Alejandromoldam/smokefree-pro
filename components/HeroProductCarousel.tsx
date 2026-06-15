@@ -2,14 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
-
-type CatalogProduct = {
-  id: string;
-  title: string;
-  imageUrl: string;
-  imageAlt: string;
-  productUrl: string;
-};
+import type { CatalogProduct } from "@/lib/shopifyCatalog";
 
 type CatalogApiResponse = {
   ok: boolean;
@@ -59,8 +52,15 @@ function dedupeSlides(products: CatalogProduct[]) {
   return unique;
 }
 
-export default function HeroProductCarousel() {
-  const [slides, setSlides] = useState<HeroSlide[]>([]);
+export default function HeroProductCarousel({
+  initialProducts = [],
+}: {
+  initialProducts?: CatalogProduct[];
+}) {
+  const [slides, setSlides] = useState<HeroSlide[]>(() => {
+    const parsed = dedupeSlides(initialProducts);
+    return parsed.length > 0 ? parsed : [FALLBACK_SLIDE];
+  });
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [failedSlideIds, setFailedSlideIds] = useState<string[]>([]);
@@ -68,6 +68,10 @@ export default function HeroProductCarousel() {
   const touchStartXRef = useRef<number | null>(null);
 
   useEffect(() => {
+    if (initialProducts.length > 0) {
+      return;
+    }
+
     let active = true;
 
     async function loadSlides() {
@@ -94,7 +98,7 @@ export default function HeroProductCarousel() {
     return () => {
       active = false;
     };
-  }, []);
+  }, [initialProducts]);
 
   const availableSlides = useMemo(() => {
     const filtered = slides.filter((slide) => !failedSlideIds.includes(slide.id));
@@ -197,6 +201,7 @@ export default function HeroProductCarousel() {
                 width={1200}
                 height={1200}
                 priority={index === 0}
+                sizes="(max-width: 640px) 90vw, (max-width: 1024px) 70vw, 42vw"
                 className="float-soft hero-product h-full w-full rounded-[1.72rem] object-contain"
                 onError={() => handleImageError(slide.id)}
               />
