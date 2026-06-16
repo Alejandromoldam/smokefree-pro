@@ -202,7 +202,7 @@ export default function HeroProductCarousel({
                 height={1200}
                 priority={index === 0}
                 sizes="(max-width: 640px) 90vw, (max-width: 1024px) 70vw, 42vw"
-                className="float-soft hero-product h-full w-full rounded-[1.72rem] object-contain"
+                className="float-soft hero-product hero-carousel-image h-full w-full rounded-[1.72rem] object-contain object-center"
                 onError={() => handleImageError(slide.id)}
               />
             </a>
