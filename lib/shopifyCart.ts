@@ -19,6 +19,10 @@ type StorefrontCart = {
   id: string;
   checkoutUrl: string;
   totalQuantity: number;
+  attributes?: Array<{
+    key?: string;
+    value?: string;
+  }>;
   cost?: {
     subtotalAmount?: {
       amount?: string;
@@ -62,6 +66,7 @@ type StorefrontCart = {
 
 export type CartLinePayload = {
   id: string;
+  merchandiseId?: string;
   quantity: number;
   title: string;
   variantTitle: string;
@@ -79,6 +84,10 @@ export type CartPayload = {
   id: string;
   checkoutUrl: string;
   totalQuantity: number;
+  attributes: Array<{
+    key: string;
+    value: string;
+  }>;
   subtotalAmount: string;
   subtotalCurrency: string;
   totalAmount: string;
@@ -104,6 +113,10 @@ const CART_FIELDS_FRAGMENT = `
     id
     checkoutUrl
     totalQuantity
+    attributes {
+      key
+      value
+    }
     cost {
       subtotalAmount {
         amount
@@ -323,6 +336,13 @@ function mapCart(domain: string, cart: StorefrontCart): CartPayload {
     id: cart.id,
     checkoutUrl: cart.checkoutUrl,
     totalQuantity: cart.totalQuantity || 0,
+    attributes:
+      cart.attributes
+        ?.filter((attribute) => attribute?.key && attribute?.value)
+        .map((attribute) => ({
+          key: String(attribute.key),
+          value: String(attribute.value),
+        })) || [],
     subtotalAmount: cart.cost?.subtotalAmount?.amount || "0.00",
     subtotalCurrency: cart.cost?.subtotalAmount?.currencyCode || "MXN",
     totalAmount: cart.cost?.totalAmount?.amount || cart.cost?.subtotalAmount?.amount || "0.00",
@@ -340,6 +360,7 @@ function mapCart(domain: string, cart: StorefrontCart): CartPayload {
 
       return {
         id: line.id,
+        merchandiseId: merchandise?.id || undefined,
         quantity: line.quantity || 1,
         title: productTitle,
         variantTitle,
@@ -356,6 +377,24 @@ function mapCart(domain: string, cart: StorefrontCart): CartPayload {
       };
     }),
   };
+}
+
+function mergeRequestedLines(
+  lines: Array<{ merchandiseId: string; quantity: number }>
+) {
+  const merged = new Map<string, number>();
+
+  for (const line of lines) {
+    const merchandiseId = String(line.merchandiseId || "").trim();
+    if (!merchandiseId) continue;
+    const nextQuantity = Math.max(1, Number(line.quantity || 1));
+    merged.set(merchandiseId, (merged.get(merchandiseId) || 0) + nextQuantity);
+  }
+
+  return Array.from(merged.entries()).map(([merchandiseId, quantity]) => ({
+    merchandiseId,
+    quantity,
+  }));
 }
 
 function extractCartUserError(userErrors?: Array<{ message?: string }>) {
@@ -419,34 +458,16 @@ export async function getCartById(cartId: string): Promise<CartMutationResult> {
   };
 }
 
-export async function createCart(options?: {
-  merchandiseId?: string;
-  quantity?: number;
-  lines?: Array<{
+async function createCartRequest(options: {
+  lines: Array<{
     merchandiseId: string;
-    quantity?: number;
+    quantity: number;
+  }>;
+  attributes?: Array<{
+    key: string;
+    value: string;
   }>;
 }): Promise<CartMutationResult> {
-  const safeLinesFromPayload =
-    options?.lines
-      ?.filter((line) => Boolean(line?.merchandiseId))
-      .map((line) => ({
-        merchandiseId: line.merchandiseId,
-        quantity: Math.max(1, Number(line.quantity || 1)),
-      })) || [];
-
-  const lines =
-    safeLinesFromPayload.length > 0
-      ? safeLinesFromPayload
-      : options?.merchandiseId
-      ? [
-          {
-            merchandiseId: options.merchandiseId,
-            quantity: Math.max(1, options.quantity || 1),
-          },
-        ]
-      : [];
-
   const query = `
     ${CART_FIELDS_FRAGMENT}
     mutation CartCreate($input: CartInput) {
@@ -467,7 +488,10 @@ export async function createCart(options?: {
       userErrors?: Array<{ message?: string }>;
     };
   }>(query, {
-    input: { lines },
+    input: {
+      lines: options.lines,
+      ...(options.attributes?.length ? { attributes: options.attributes } : {}),
+    },
   });
 
   if (!result.ok) {
@@ -488,6 +512,95 @@ export async function createCart(options?: {
     ok: true,
     cart: mapCart(result.domain || "", payload.cart),
   };
+}
+
+export async function createCart(options?: {
+  merchandiseId?: string;
+  quantity?: number;
+  lines?: Array<{
+    merchandiseId: string;
+    quantity?: number;
+  }>;
+  attributes?: Array<{
+    key: string;
+    value: string;
+  }>;
+}): Promise<CartMutationResult> {
+  const safeLinesFromPayload =
+    options?.lines
+      ?.filter((line) => Boolean(line?.merchandiseId))
+      .map((line) => ({
+        merchandiseId: line.merchandiseId,
+        quantity: Math.max(1, Number(line.quantity || 1)),
+      })) || [];
+
+  const requestedLines =
+    safeLinesFromPayload.length > 0
+      ? safeLinesFromPayload
+      : options?.merchandiseId
+      ? [
+          {
+            merchandiseId: options.merchandiseId,
+            quantity: Math.max(1, options.quantity || 1),
+          },
+        ]
+      : [];
+
+  const lines = mergeRequestedLines(requestedLines);
+
+  if (requestedLines.length > 0 && lines.length === 0) {
+    return {
+      ok: false,
+      error:
+        "Los productos del carrito ya no estan disponibles para checkout. Vuelve a agregarlos desde el catalogo.",
+    };
+  }
+
+  const attributes =
+    options?.attributes
+      ?.filter((attribute) => Boolean(attribute?.key) && Boolean(attribute?.value))
+      .map((attribute) => ({
+        key: String(attribute.key),
+        value: String(attribute.value),
+      })) || [];
+
+  let createdCart: CartPayload | null = null;
+
+  for (let index = 0; index < lines.length; index += 1) {
+    const line = lines[index];
+    if (!createdCart) {
+      const createResult = await createCartRequest({
+        lines: [line],
+        attributes: index === 0 ? attributes : [],
+      });
+
+      if (createResult.ok && createResult.cart) {
+        createdCart = createResult.cart;
+      }
+
+      continue;
+    }
+
+    const addResult = await addCartLine({
+      cartId: createdCart.id,
+      merchandiseId: line.merchandiseId,
+      quantity: line.quantity,
+    });
+
+    if (addResult.ok && addResult.cart) {
+      createdCart = addResult.cart;
+    }
+  }
+
+  if (!createdCart || createdCart.totalQuantity < 1) {
+    return {
+      ok: false,
+      error:
+        "Los productos del carrito ya no estan disponibles para checkout. Vuelve a agregarlos desde el catalogo.",
+    };
+  }
+
+  return { ok: true, cart: createdCart };
 }
 
 export async function addCartLine(options: {

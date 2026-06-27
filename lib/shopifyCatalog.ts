@@ -54,6 +54,7 @@ type ShopifyProductsResponse = {
             edges: Array<{
               node: {
                 id: string;
+                availableForSale?: boolean | null;
               };
             }>;
           };
@@ -154,10 +155,11 @@ export async function fetchHomeCatalogSnapshot(
                 currencyCode
               }
             }
-            variants(first: 1) {
+            variants(first: 20) {
               edges {
                 node {
                   id
+                  availableForSale
                 }
               }
             }
@@ -192,13 +194,15 @@ export async function fetchHomeCatalogSnapshot(
 
     const products = edges.map(({ node }) => {
       const image = node.images.edges[0]?.node;
-      const variantGid = node.variants.edges[0]?.node.id;
+      const selectedVariant =
+        node.variants.edges.find(
+          ({ node: variantNode }) => variantNode?.availableForSale === true
+        )?.node || node.variants.edges[0]?.node;
+      const variantGid = selectedVariant?.id;
       const variantNumericId = extractVariantNumericId(variantGid);
       const handle = node.handle || "";
       const productUrl = handle ? `/products/${handle}` : "/#catalogo";
-      const buyNowUrl = variantNumericId
-        ? `https://${domain}/cart/${variantNumericId}:1`
-        : productUrl;
+      const buyNowUrl = variantNumericId ? "/cart" : productUrl;
       const title = node.title || "Producto";
       const description = node.description || node.descriptionHtml || "";
 

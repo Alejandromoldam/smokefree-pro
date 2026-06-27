@@ -38,6 +38,7 @@ type CheckoutApiResponse = {
   error: string | null;
   cart: {
     checkoutUrl?: string;
+    lines?: CartLineItem[];
   } | null;
 };
 
@@ -509,6 +510,10 @@ export default function CatalogSection({
       if (!response.ok || !payload.ok || !payload.cart?.checkoutUrl) {
         setCartActionError(payload.error || "No se pudo generar checkout Shopify.");
         return;
+      }
+
+      if (Array.isArray(payload.cart.lines)) {
+        setCart({ lines: payload.cart.lines });
       }
 
       trackBeginCheckout({
