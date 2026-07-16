@@ -4,7 +4,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "next/navigation";
-import { NavbarCartButtonWithHref } from "@/components/NavbarCartButton";
+import PillButton from "@/components/elora/PillButton";
+import RevealOnScroll from "@/components/elora/RevealOnScroll";
+import EloraCartLink from "@/components/elora/EloraCartLink";
 import { trackAddToCart, trackBeginCheckout, trackViewItem } from "@/lib/ga";
 
 type ProductImage = {
@@ -371,7 +373,7 @@ export default function ProductPage() {
 
   const currentImage = useMemo(() => {
     if (!product?.images?.length) {
-      return { url: "/producto-real.png", altText: "Producto All In One Store" };
+      return { url: "/producto-real.png", altText: "Producto Elora Skin" };
     }
     return product.images[Math.min(activeImage, product.images.length - 1)];
   }, [activeImage, product]);
@@ -510,40 +512,45 @@ export default function ProductPage() {
   }
 
   return (
-    <main className="premium-shell min-h-[100svh] bg-transparent text-white">
-      <div className="mx-auto w-full max-w-7xl px-4 pb-[calc(6.8rem+env(safe-area-inset-bottom))] pt-14 sm:px-6 sm:pb-20 sm:pt-24 lg:px-8 lg:pb-20">
+    <main className="elora-shop relative min-h-[100svh]">
+      <div className="elora-bg" aria-hidden="true" />
+      <div className="mx-auto w-full max-w-7xl px-4 pb-[calc(6.8rem+env(safe-area-inset-bottom))] pt-14 sm:px-6 sm:pb-20 sm:pt-20 lg:px-8 lg:pb-20">
         <div className="mb-8 flex flex-wrap items-center justify-between gap-3">
-          <Link href="/" className="btn-ghost inline-flex px-4 py-2 text-sm font-semibold">Volver al catalogo</Link>
-          <NavbarCartButtonWithHref href="/cart" />
+          <Link href="/" className="elora-pill is-outline elora-shop-cta-sm">
+            <span className="elora-pill-label">Volver al catálogo</span>
+          </Link>
+          <EloraCartLink />
         </div>
 
         {loading ? (
-          <div className="glass-card rounded-3xl border border-white/12 p-8">
-            <div className="h-6 w-56 animate-pulse rounded bg-white/10" />
-            <div className="mt-4 h-4 w-72 animate-pulse rounded bg-white/10" />
-            <div className="mt-8 h-[22rem] animate-pulse rounded-2xl bg-white/10" />
+          <div className="elora-shop-panel p-8">
+            <div className="elora-shop-skeleton h-6 w-56" />
+            <div className="elora-shop-skeleton mt-4 h-4 w-72" />
+            <div className="elora-shop-skeleton mt-8 h-[22rem]" />
           </div>
         ) : null}
 
         {!loading && error ? (
-          <div className="glass-card rounded-3xl border border-red-300/35 p-8 text-center">
-            <p className="text-red-100">{error}</p>
-            <Link href="/" className="btn-premium mt-4 inline-flex px-6 py-2 text-sm font-semibold">Ir al inicio</Link>
+          <div className="elora-shop-panel p-8 text-center">
+            <p className="text-[#b3244f]">{error}</p>
+            <Link href="/" className="elora-pill elora-shop-cta-sm mt-4">
+              <span className="elora-pill-label">Ir al inicio</span>
+            </Link>
           </div>
         ) : null}
 
         {!loading && !error && product ? (
           <>
-            <section className="glass-card grid gap-8 rounded-3xl border border-white/12 p-6 sm:p-8 lg:grid-cols-[1.05fr_0.95fr]">
+            <RevealOnScroll as="section" className="elora-shop-panel grid gap-8 p-6 sm:p-8 lg:grid-cols-[1.05fr_0.95fr]">
               <div>
-                <div className="overflow-hidden rounded-3xl border border-white/12 bg-black/30 p-3">
+                <div className="elora-shop-media overflow-hidden p-3">
                   <Image src={currentImage.url} alt={currentImage.altText} width={1200} height={1200} unoptimized className="h-auto w-full rounded-2xl object-cover" />
                 </div>
 
                 {product.images.length > 1 ? (
                   <div className="mt-4 grid grid-cols-4 gap-3 sm:grid-cols-5">
                     {product.images.map((image, index) => (
-                      <button key={`${image.url}-${index}`} type="button" onClick={() => setActiveImage(index)} className={index === activeImage ? "overflow-hidden rounded-xl border border-cyan-300/50" : "overflow-hidden rounded-xl border border-white/12 opacity-80 transition hover:opacity-100"}>
+                      <button key={`${image.url}-${index}`} type="button" onClick={() => setActiveImage(index)} className={index === activeImage ? "elora-shop-thumb is-active" : "elora-shop-thumb"}>
                         <Image src={image.url} alt={image.altText} width={280} height={280} unoptimized className="h-20 w-full object-cover" />
                       </button>
                     ))}
@@ -552,13 +559,13 @@ export default function ProductPage() {
 
                 {product.videos && product.videos.length > 0 ? (
                   <div className="mt-6">
-                    <p className="mb-3 text-xs uppercase tracking-[0.15em] text-cyan-200/85">Videos del producto</p>
+                    <p className="elora-shop-eyebrow mb-3">Videos del producto</p>
                     <div className="grid gap-4">
                       {product.videos.map((video, index) => {
                         const src = video.sources.find((s) => s.mimeType.includes("mp4")) || video.sources[0];
                         if (!src?.url) return null;
                         return (
-                          <video key={`video-${index}`} controls playsInline poster={video.previewImageUrl || undefined} className="w-full rounded-2xl border border-white/12 bg-black/30" aria-label={video.alt}>
+                          <video key={`video-${index}`} controls playsInline poster={video.previewImageUrl || undefined} className="elora-shop-media w-full" aria-label={video.alt}>
                             {video.sources.map((s) => <source key={s.url} src={s.url} type={s.mimeType} />)}
                           </video>
                         );
@@ -569,164 +576,166 @@ export default function ProductPage() {
               </div>
 
               <div>
-                <p className="text-xs uppercase tracking-[0.2em] text-cyan-200/85">Producto</p>
-                <h1 className="mt-3 break-words text-2xl font-semibold leading-tight text-white sm:text-4xl">{product.title}</h1>
-                <p className="mt-4 text-2xl font-semibold text-white">{formatMoney(selectedVariant?.priceAmount || product.priceAmount, selectedVariant?.priceCurrency || product.priceCurrency)}</p>
+                <p className="elora-shop-eyebrow">Producto</p>
+                <h1 className="mt-3 break-words text-2xl font-semibold leading-tight sm:text-4xl">{product.title}</h1>
+                <p className="elora-shop-price mt-4 text-2xl">{formatMoney(selectedVariant?.priceAmount || product.priceAmount, selectedVariant?.priceCurrency || product.priceCurrency)}</p>
 
                 {typeof selectedVariant?.quantityAvailable === "number" && selectedVariant.quantityAvailable > 0 && selectedVariant.quantityAvailable <= 10 ? (
-                  <p className="mt-3 inline-flex items-center gap-1.5 rounded-full border border-amber-300/40 bg-amber-400/10 px-3 py-1.5 text-xs font-semibold text-amber-200">
+                  <p className="elora-shop-lowstock mt-3">
                     <span aria-hidden="true">⚡</span>
                     {selectedVariant.quantityAvailable === 1 ? "¡Última unidad disponible!" : `¡Últimas ${selectedVariant.quantityAvailable} unidades disponibles!`}
                   </p>
                 ) : null}
 
-                <div className="mt-4 rounded-2xl border border-white/12 bg-black/30 p-4">
+                <div className="elora-shop-soft mt-4 p-4">
                   <div className="grid gap-2">
-                    <p className="inline-flex items-center gap-2 text-sm font-medium text-white"><span className="text-emerald-300">✓</span>{inventoryText}</p>
-                    <p className="inline-flex items-center gap-2 text-sm font-medium text-white"><span className="text-emerald-300">✓</span>Envío rápido</p>
-                    <p className="inline-flex items-center gap-2 text-sm font-medium text-white"><span className="text-emerald-300">✓</span>Pago seguro</p>
+                    <p className="inline-flex items-center gap-2 text-sm font-medium"><span className="elora-shop-check">✓</span>{inventoryText}</p>
+                    <p className="inline-flex items-center gap-2 text-sm font-medium"><span className="elora-shop-check">✓</span>Envío rápido</p>
+                    <p className="inline-flex items-center gap-2 text-sm font-medium"><span className="elora-shop-check">✓</span>Pago seguro</p>
                   </div>
                 </div>
 
                 {product.variants.length > 1 ? (
                   <div className="mt-4">
-                    <label className="text-xs uppercase tracking-[0.12em] text-gray-400">Variante</label>
-                    <select value={selectedVariant?.id || ""} onChange={(e) => setSelectedVariantId(e.target.value)} className="mt-2 w-full rounded-xl border border-white/15 bg-black/35 px-3 py-2 text-sm text-white outline-none transition focus:border-cyan-300/50">
+                    <label className="elora-shop-eyebrow">Variante</label>
+                    <select value={selectedVariant?.id || ""} onChange={(e) => setSelectedVariantId(e.target.value)} className="elora-shop-select mt-2">
                       {product.variants.map((v) => <option key={v.id} value={v.id}>{v.title} - {formatMoney(v.priceAmount, v.priceCurrency)}</option>)}
                     </select>
                   </div>
                 ) : null}
 
                 <div className="mt-4">
-                  <p className="text-xs uppercase tracking-[0.12em] text-gray-400">Cantidad</p>
-                  <div className="mt-2 inline-flex items-center gap-2 rounded-xl border border-white/12 bg-black/35 p-1">
-                    <button type="button" onClick={() => setQuantity((c) => Math.max(1, c - 1))} className="btn-ghost px-3 py-1 text-xs font-semibold">-</button>
-                    <span className="min-w-10 text-center text-sm font-semibold text-white">{quantity}</span>
-                    <button type="button" onClick={() => setQuantity((c) => Math.min(maxQuantity, c + 1))} className="btn-ghost px-3 py-1 text-xs font-semibold">+</button>
+                  <p className="elora-shop-eyebrow">Cantidad</p>
+                  <div className="elora-shop-qty mt-2">
+                    <button type="button" onClick={() => setQuantity((c) => Math.max(1, c - 1))} className="elora-shop-qty-btn" aria-label="Disminuir cantidad">-</button>
+                    <span className="elora-shop-qty-value">{quantity}</span>
+                    <button type="button" onClick={() => setQuantity((c) => Math.min(maxQuantity, c + 1))} className="elora-shop-qty-btn" aria-label="Aumentar cantidad">+</button>
                   </div>
                 </div>
 
-                {cartMessage ? <div className="mt-4 rounded-xl border border-cyan-300/35 bg-cyan-400/10 px-3 py-2 text-xs text-cyan-100">{cartMessage}</div> : null}
+                {cartMessage ? <div className="elora-shop-msg mt-4">{cartMessage}</div> : null}
 
                 <div className="mt-6 grid gap-3 sm:grid-cols-2">
-                  <button type="button" onClick={() => void addToCart()} disabled={addingToCart || !selectedVariant?.availableForSale} className="btn-premium px-6 py-3.5 text-center text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-70">
+                  <PillButton onClick={() => void addToCart()} disabled={addingToCart || !selectedVariant?.availableForSale} className="elora-shop-cta">
                     {addingToCart ? "Agregando..." : "Agregar al carrito"}
-                  </button>
-                  <a href={buyNowUrl} target="_blank" rel="noreferrer" onClick={trackBuyNowIntent} className="btn-ghost px-6 py-3.5 text-center text-sm font-semibold">Comprar ahora</a>
+                  </PillButton>
+                  <PillButton href={buyNowUrl} target="_blank" rel="noreferrer" onClick={trackBuyNowIntent} variant="outline" className="elora-shop-cta">
+                    Comprar ahora
+                  </PillButton>
                 </div>
 
-                <div className="product-description-rich mt-6 text-sm text-gray-300 sm:text-base" dangerouslySetInnerHTML={{ __html: descriptionHtml }} />
-                <p className="mt-4 text-xs uppercase tracking-[0.12em] text-gray-400">{product.vendor || "All In One"} - {product.productType || "Tecnologia premium"}</p>
+                <div className="product-description-rich mt-6 text-sm sm:text-base" dangerouslySetInnerHTML={{ __html: descriptionHtml }} />
+                <p className="elora-shop-eyebrow mt-4">{product.vendor || "Elora Skin"} - {product.productType || "Skincare premium"}</p>
 
-                <section className="glass-card mt-6 rounded-2xl border border-cyan-300/20 bg-black/35 p-4">
-                  <p className="text-[0.7rem] uppercase tracking-[0.18em] text-cyan-200/85">Confianza premium</p>
+                <div className="elora-shop-soft mt-6 p-4">
+                  <p className="elora-shop-eyebrow">Confianza Elora</p>
                   <div className="mt-3 grid gap-2 sm:grid-cols-2">
                     {productTrustSignals.map((signal) => (
-                      <article key={signal.title} className="rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 shadow-[0_0_0_1px_rgba(34,211,238,0.08)_inset]">
-                        <div className="flex items-center gap-2 text-cyan-100">
-                          <span className="inline-flex h-7 w-7 items-center justify-center rounded-lg border border-cyan-200/30 bg-cyan-300/10"><TrustSignalIcon icon={signal.icon} className="h-4 w-4" /></span>
-                          <span className="text-xs font-medium text-gray-100">{signal.title}</span>
-                        </div>
+                      <article key={signal.title} className="elora-shop-trust-item">
+                        <span className="elora-shop-trust-ico"><TrustSignalIcon icon={signal.icon} className="h-4 w-4" /></span>
+                        <span>{signal.title}</span>
                       </article>
                     ))}
                   </div>
-                </section>
+                </div>
               </div>
-            </section>
+            </RevealOnScroll>
 
-            <section className="mt-10">
-              <div className="mb-5">
-                <p className="text-xs uppercase tracking-[0.2em] text-cyan-200/85">Recomendados</p>
-                <h2 className="mt-2 text-2xl font-semibold text-white sm:text-3xl">También te puede interesar</h2>
+            <RevealOnScroll as="section" className="mt-14">
+              <div className="mb-6 text-center">
+                <p className="elora-shop-eyebrow">Recomendados</p>
+                <h2 className="mt-2 text-2xl font-semibold sm:text-3xl">También te puede interesar</h2>
               </div>
               {loadingRelated ? (
                 <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
                   {Array.from({ length: 4 }).map((_, i) => (
-                    <article key={`sk-${i}`} className="glass-card rounded-3xl border border-white/12 p-4">
-                      <div className="h-44 animate-pulse rounded-2xl bg-white/10" />
-                      <div className="mt-4 h-4 w-4/5 animate-pulse rounded bg-white/10" />
-                      <div className="mt-3 h-4 w-1/3 animate-pulse rounded bg-white/10" />
+                    <article key={`sk-${i}`} className="elora-shop-card p-4">
+                      <div className="elora-shop-skeleton h-44" />
+                      <div className="elora-shop-skeleton mt-4 h-4 w-4/5" />
+                      <div className="elora-shop-skeleton mt-3 h-4 w-1/3" />
                       <div className="mt-4 grid grid-cols-2 gap-2">
-                        <div className="h-9 animate-pulse rounded-full bg-white/10" />
-                        <div className="h-9 animate-pulse rounded-full bg-white/10" />
+                        <div className="elora-shop-skeleton h-9 rounded-full" />
+                        <div className="elora-shop-skeleton h-9 rounded-full" />
                       </div>
                     </article>
                   ))}
                 </div>
               ) : null}
-              {!loadingRelated && relatedError ? <div className="glass-card rounded-2xl border border-amber-300/35 p-4"><p className="text-sm text-amber-100">{relatedError}</p></div> : null}
-              {!loadingRelated && !relatedError && relatedProducts.length === 0 ? <div className="glass-card rounded-2xl border border-white/12 p-4"><p className="text-sm text-gray-300">No hay recomendaciones disponibles.</p></div> : null}
+              {!loadingRelated && relatedError ? <div className="elora-shop-soft p-4"><p className="elora-shop-muted text-sm">{relatedError}</p></div> : null}
+              {!loadingRelated && !relatedError && relatedProducts.length === 0 ? <div className="elora-shop-soft p-4"><p className="elora-shop-muted text-sm">No hay recomendaciones disponibles.</p></div> : null}
               {!loadingRelated && relatedProducts.length > 0 ? (
                 <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
                   {relatedProducts.map((related) => (
-                    <article key={related.id} className="glass-card rounded-3xl border border-white/12 p-4">
-                      <div className="overflow-hidden rounded-2xl border border-white/10 bg-black/30">
+                    <article key={related.id} className="elora-shop-card flex flex-col p-4">
+                      <div className="elora-shop-media overflow-hidden">
                         <Image src={related.imageUrl} alt={related.imageAlt} width={700} height={700} unoptimized className="h-44 w-full object-cover" />
                       </div>
-                      <h3 className="mt-4 line-clamp-2 text-base font-semibold text-white">{related.title}</h3>
+                      <h3 className="mt-4 line-clamp-2 text-base font-semibold">{related.title}</h3>
                       <div className="mt-2 flex items-center justify-between gap-2">
-                        <p className="text-lg font-semibold text-cyan-100">{formatMoney(related.priceAmount, related.priceCurrency)}</p>
-                        <span className={related.availableForSale ? "rounded-full border border-emerald-300/40 bg-emerald-300/10 px-2 py-1 text-[0.65rem] uppercase tracking-[0.1em] text-emerald-100" : "rounded-full border border-white/20 bg-white/5 px-2 py-1 text-[0.65rem] uppercase tracking-[0.1em] text-gray-300"}>
+                        <p className="elora-shop-price text-lg">{formatMoney(related.priceAmount, related.priceCurrency)}</p>
+                        <span className={related.availableForSale ? "elora-shop-badge-ok" : "elora-shop-badge-off"}>
                           {related.availableForSale ? "Disponible" : "Agotado"}
                         </span>
                       </div>
                       <div className="mt-4 grid grid-cols-2 gap-2">
-                        <button type="button" onClick={() => void addRelatedToCart(related)} disabled={addingRelatedId === related.id || !related.availableForSale || !related.variantId} className="btn-premium card-action-button disabled:cursor-not-allowed disabled:opacity-70">
-                          <span className="card-action-label">{addingRelatedId === related.id ? "Agregando..." : "Agregar al carrito"}</span>
-                        </button>
-                        <Link href={related.handle ? `/products/${related.handle}` : related.productUrl} className="btn-ghost card-action-button">
-                          <span className="card-action-label">Ver detalles</span>
+                        <PillButton onClick={() => void addRelatedToCart(related)} disabled={addingRelatedId === related.id || !related.availableForSale || !related.variantId} className="elora-shop-cta elora-shop-cta-sm">
+                          {addingRelatedId === related.id ? "Agregando..." : "Agregar"}
+                        </PillButton>
+                        <Link href={related.handle ? `/products/${related.handle}` : related.productUrl} className="elora-pill is-outline elora-shop-cta elora-shop-cta-sm">
+                          <span className="elora-pill-label">Ver detalles</span>
                         </Link>
                       </div>
                     </article>
                   ))}
                 </div>
               ) : null}
-            </section>
+            </RevealOnScroll>
 
-            <section className="mt-10">
-              <div className="mb-5">
-                <p className="text-xs uppercase tracking-[0.2em] text-cyan-200/85">Opiniones de clientes</p>
-                <h2 className="mt-2 text-2xl font-semibold text-white sm:text-3xl">Lo que dicen quienes ya compraron</h2>
+            <RevealOnScroll as="section" className="mt-14">
+              <div className="mb-6 text-center">
+                <p className="elora-shop-eyebrow">Opiniones de clientes</p>
+                <h2 className="mt-2 text-2xl font-semibold sm:text-3xl">Lo que dicen quienes ya compraron</h2>
               </div>
               <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
                 {productReviewCards.map((review) => (
-                  <article key={`${review.name}-${review.location}`} className="glass-card rounded-3xl border border-white/12 p-5 transition duration-300 hover:-translate-y-1 hover:border-cyan-300/45">
+                  <article key={`${review.name}-${review.location}`} className="elora-shop-card p-5">
                     <div className="mb-4 flex items-center gap-3">
-                      <div className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-cyan-200/25 bg-gradient-to-br from-cyan-300/20 to-emerald-300/10 p-[1px]">
-                        <Image src={review.avatar} alt={`Foto de ${review.name}`} width={88} height={88} className="h-full w-full rounded-full border border-white/15 object-cover" loading="lazy" />
+                      <div className="elora-shop-avatar inline-flex h-11 w-11 items-center justify-center p-[1px]">
+                        <Image src={review.avatar} alt={`Foto de ${review.name}`} width={88} height={88} className="h-full w-full rounded-full border border-white/60 object-cover" loading="lazy" />
                       </div>
                       <div>
-                        <p className="text-sm font-semibold text-white">{review.name}</p>
-                        <p className="text-xs text-gray-400">{review.location}</p>
+                        <p className="text-sm font-semibold text-[#5c2340]">{review.name}</p>
+                        <p className="elora-shop-muted text-xs">{review.location}</p>
                       </div>
                     </div>
-                    <div className="mb-3 inline-flex items-center gap-1 text-amber-300">
+                    <div className="elora-shop-stars mb-3 inline-flex items-center gap-1">
                       {Array.from({ length: review.rating }).map((_, idx) => <ReviewStarIcon key={`${review.name}-${idx}`} />)}
                     </div>
-                    <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-emerald-300/40 bg-emerald-300/10 px-3 py-1 text-[0.68rem] uppercase tracking-[0.13em] text-emerald-100">
+                    <div className="elora-shop-badge-ok mb-3">
                       <VerifiedBadgeIcon />Compra verificada
                     </div>
-                    <p className="text-sm leading-relaxed text-gray-200 sm:text-base">&ldquo;{review.comment}&rdquo;</p>
+                    <p className="text-sm leading-relaxed text-[#6b4a55] sm:text-base">&ldquo;{review.comment}&rdquo;</p>
                   </article>
                 ))}
               </div>
-            </section>
+            </RevealOnScroll>
           </>
         ) : null}
       </div>
 
       {!loading && !error && product ? (
-        <div className="fixed inset-x-0 bottom-0 z-50 border-t border-white/12 bg-[#05070c]/97 px-4 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-3 backdrop-blur-md lg:hidden">
+        <div className="elora-shop-stickybar fixed inset-x-0 bottom-0 z-50 px-4 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-3 lg:hidden">
           <div className="mx-auto flex w-full max-w-7xl items-center gap-3">
             <div className="min-w-0 flex-1">
-              <p className="truncate text-xs font-medium text-gray-300">{shortenTitle(product.title, 34)}</p>
-              <p className="text-base font-semibold text-white">{formatMoney(selectedVariant?.priceAmount || product.priceAmount, selectedVariant?.priceCurrency || product.priceCurrency)}</p>
+              <p className="elora-shop-muted truncate text-xs font-medium">{shortenTitle(product.title, 34)}</p>
+              <p className="elora-shop-price text-base">{formatMoney(selectedVariant?.priceAmount || product.priceAmount, selectedVariant?.priceCurrency || product.priceCurrency)}</p>
             </div>
-            <button type="button" onClick={() => void addToCart()} disabled={addingToCart || !selectedVariant?.availableForSale} className="btn-ghost shrink-0 px-4 py-3 text-xs font-semibold disabled:cursor-not-allowed disabled:opacity-70">
+            <PillButton onClick={() => void addToCart()} disabled={addingToCart || !selectedVariant?.availableForSale} variant="outline" className="elora-shop-cta-sm shrink-0">
               {addingToCart ? "..." : "Agregar"}
-            </button>
-            <a href={buyNowUrl} target="_blank" rel="noreferrer" onClick={trackBuyNowIntent} className="btn-premium shrink-0 px-5 py-3 text-center text-xs font-semibold">Comprar ahora</a>
+            </PillButton>
+            <PillButton href={buyNowUrl} target="_blank" rel="noreferrer" onClick={trackBuyNowIntent} className="elora-shop-cta-sm shrink-0">
+              Comprar
+            </PillButton>
           </div>
         </div>
       ) : null}

@@ -3905,3 +3905,268 @@ body.cart-page-active .whatsapp-float-root {
   .elora-reveal { opacity: 1 !important; transform: none !important; }
   .elora-underline::after { transform: scaleX(1) !important; }
 }
+
+/* =====================================================================
+   ELORA SKIN — shop pages (product detail + cart)
+   Same rose / cream / gold palette as the home, scoped to .elora-shop so
+   the rest of the store styling stays untouched. Defines the same design
+   tokens so the shared reusable classes (.elora-pill, .elora-reveal,
+   .elora-icon-btn, .elora-cart-count) and the PillButton / RevealOnScroll /
+   EloraCartLink components render correctly here too.
+   ===================================================================== */
+.elora-shop {
+  --blush: #ffd7e3;
+  --blush-2: #ffb8cf;
+  --blush-deep: #f490b0;
+  --blush-soft: #fff0f5;
+  --cream: #fff8f5;
+  --ink: #5c2340;
+  --ink-soft: #8a6570;
+  --gold: #e8b4a0;
+
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  background: var(--cream);
+  color: var(--ink);
+  color-scheme: light;
+  font-family: var(--font-poppins), "Poppins", sans-serif;
+  font-weight: 300;
+}
+.elora-shop h1,
+.elora-shop h2,
+.elora-shop h3 {
+  font-family: var(--font-playfair), "Playfair Display", serif;
+  font-weight: 600;
+  color: #6e2946;
+}
+.elora-shop-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #c76f8c;
+  font-weight: 600;
+}
+.elora-shop-muted { color: var(--ink-soft); }
+.elora-shop-price { color: #c05275; font-weight: 600; }
+.elora-shop-check { color: #d67aa0; }
+
+/* ---- panels / surfaces ---- */
+.elora-shop-panel {
+  position: relative;
+  background: #fff;
+  border: 1px solid rgba(244, 144, 176, 0.22);
+  border-radius: 28px;
+  box-shadow: 0 18px 46px rgba(200, 120, 150, 0.12);
+}
+.elora-shop-soft {
+  background: var(--blush-soft);
+  border: 1px solid rgba(244, 144, 176, 0.2);
+  border-radius: 18px;
+}
+.elora-shop-media {
+  background: linear-gradient(160deg, #fff, #fff0f5);
+  border: 1px solid rgba(244, 144, 176, 0.22);
+  border-radius: 22px;
+}
+
+/* ---- product thumbnails ---- */
+.elora-shop-thumb {
+  overflow: hidden;
+  border-radius: 14px;
+  border: 1px solid rgba(244, 144, 176, 0.25);
+  background: #fff;
+  opacity: 0.75;
+  transition: opacity 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.elora-shop-thumb:hover { opacity: 1; }
+.elora-shop-thumb.is-active {
+  opacity: 1;
+  border-color: var(--blush-deep);
+  box-shadow: 0 0 0 2px rgba(244, 144, 176, 0.3);
+}
+
+/* ---- variant select ---- */
+.elora-shop-select {
+  width: 100%;
+  border-radius: 14px;
+  border: 1.5px solid rgba(244, 144, 176, 0.4);
+  background: #fff;
+  color: #6e2946;
+  padding: 11px 14px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.elora-shop-select:focus {
+  border-color: var(--blush-deep);
+  box-shadow: 0 0 0 4px rgba(244, 144, 176, 0.18);
+}
+
+/* ---- quantity stepper ---- */
+.elora-shop-qty {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 999px;
+  border: 1.5px solid rgba(244, 144, 176, 0.35);
+  background: #fff;
+  padding: 5px;
+}
+.elora-shop-qty-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  border: none;
+  background: var(--blush-soft);
+  color: #c05275;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+.elora-shop-qty-btn:hover { background: var(--blush-deep); color: #fff; }
+.elora-shop-qty-value {
+  min-width: 40px;
+  text-align: center;
+  font-weight: 600;
+  color: #6e2946;
+}
+
+/* ---- badges / chips ---- */
+.elora-shop-lowstock {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 999px;
+  border: 1px solid rgba(232, 140, 100, 0.4);
+  background: rgba(232, 180, 160, 0.22);
+  color: #b25b46;
+  font-weight: 600;
+  font-size: 12px;
+  padding: 6px 14px;
+}
+.elora-shop-trust-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 14px;
+  border: 1px solid rgba(244, 144, 176, 0.18);
+  background: #fff;
+  padding: 10px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #7a4a58;
+}
+.elora-shop-trust-ico {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 10px;
+  border: 1px solid rgba(244, 144, 176, 0.3);
+  background: var(--blush-soft);
+  color: var(--blush-deep);
+  flex-shrink: 0;
+}
+.elora-shop-badge-ok {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 999px;
+  border: 1px solid rgba(212, 122, 160, 0.4);
+  background: rgba(255, 214, 227, 0.4);
+  color: #a2415f;
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+}
+.elora-shop-badge-off {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  border: 1px solid rgba(160, 120, 135, 0.3);
+  background: #f4e9ee;
+  color: #9a7280;
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+}
+
+/* ---- status message ---- */
+.elora-shop-msg {
+  border-radius: 14px;
+  border: 1px solid rgba(122, 42, 72, 0.18);
+  background: var(--blush-soft);
+  color: #7a2a48;
+  font-size: 13px;
+  padding: 10px 14px;
+}
+
+/* ---- review + product cards ---- */
+.elora-shop-card {
+  background: #fff;
+  border: 1px solid rgba(244, 144, 176, 0.2);
+  border-radius: 24px;
+  box-shadow: 0 12px 30px rgba(200, 120, 150, 0.1);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+.elora-shop-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 42px rgba(200, 120, 150, 0.18);
+}
+.elora-shop-stars { color: #f0a52b; }
+.elora-shop-avatar {
+  background: linear-gradient(135deg, var(--blush-2), var(--blush-deep));
+  border-radius: 999px;
+}
+
+/* ---- pill helpers (composed with .elora-pill / PillButton) ---- */
+.elora-shop .elora-pill.elora-shop-cta { width: 100%; }
+.elora-shop .elora-pill.elora-shop-cta-sm { padding: 12px 22px; font-size: 12px; }
+
+/* ---- sticky mobile buy bar ---- */
+.elora-shop-stickybar {
+  background: rgba(255, 248, 245, 0.94);
+  border-top: 1px solid rgba(244, 144, 176, 0.25);
+  box-shadow: 0 -10px 30px rgba(200, 120, 150, 0.14);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* ---- skeleton shimmer ---- */
+.elora-shop-skeleton {
+  background: linear-gradient(160deg, #fff, #fff0f5);
+  border-radius: 16px;
+  animation: eSparkle 1.6s ease-in-out infinite;
+}
+
+/* ---- rich product description on the light theme ---- */
+.elora-shop .product-description-rich { color: #6b4a55; }
+.elora-shop .product-description-rich strong,
+.elora-shop .product-description-rich b { color: #6e2946; }
+.elora-shop .product-description-rich a { color: #c05275; }
+
+/* ---- cart line + summary ---- */
+.elora-shop-line {
+  background: #fff;
+  border: 1px solid rgba(244, 144, 176, 0.2);
+  border-radius: 20px;
+}
+.elora-shop-summary {
+  background: linear-gradient(160deg, #fff, #fff0f5);
+  border: 1px solid rgba(244, 144, 176, 0.22);
+  border-radius: 22px;
+}
+.elora-shop-remove {
+  color: #b3244f;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  transition: color 0.3s ease;
+}
+.elora-shop-remove:hover { color: #7a2a48; }
+.elora-shop-divide { border-top: 1px solid rgba(244, 144, 176, 0.2); }

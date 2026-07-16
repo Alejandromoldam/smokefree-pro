@@ -12,7 +12,7 @@ const DEFAULT_API_VERSION = "2025-04";
 const DEFAULT_STORE_DOMAIN = "all-in-one-22092396.myshopify.com";
 const FALLBACK_TITLE = "Producto premium";
 const FALLBACK_DESCRIPTION =
-  "Compra productos de tecnologia premium en All In One con disponibilidad real, pago seguro y envio confiable.";
+  "Compra skincare premium en Elora Skin con disponibilidad real, pago seguro y envio confiable.";
 
 export const revalidate = 1800;
 
@@ -254,7 +254,7 @@ export async function generateMetadata({
 
   const seoProduct = await fetchSeoProduct(params.handle);
   const productName = seoProduct?.title || FALLBACK_TITLE;
-  const socialTitle = `Comprar ${productName} | All In One`;
+  const socialTitle = `Comprar ${productName} | Elora Skin`;
   const description = compactDescription(seoProduct?.description || "");
   const productPathHandle = seoProduct?.handle || params.handle;
   const productPageUrl = `${siteUrl}/products/${productPathHandle}`;
@@ -274,7 +274,7 @@ export async function generateMetadata({
       images: [
         {
           url: imageUrl,
-          alt: seoProduct?.imageAlt || "Producto All In One",
+          alt: seoProduct?.imageAlt || "Producto Elora Skin",
         },
       ],
     },

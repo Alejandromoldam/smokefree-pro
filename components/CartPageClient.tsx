@@ -1,7 +1,10 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import PillButton from "@/components/elora/PillButton";
+import RevealOnScroll from "@/components/elora/RevealOnScroll";
 import { trackAddToCart, trackBeginCheckout } from "@/lib/ga";
 
 type CartLineItem = {
@@ -235,26 +238,30 @@ export default function CartPageClient() {
   }
 
   return (
-    <main className="cart-page-shell mx-auto min-h-screen w-full max-w-3xl px-4 pb-8 pt-[max(1rem,env(safe-area-inset-top))] sm:px-6 sm:pb-12 lg:px-8">
-      <section className="rounded-[2rem] border border-white/12 bg-[rgba(4,10,20,0.92)] p-4 shadow-[0_20px_60px_rgba(0,0,0,0.38)] sm:p-6">
-        <div className="mb-5">
-          <p className="text-xs uppercase tracking-[0.18em] text-cyan-200/90">Carrito</p>
-          <h1 className="mt-2 text-2xl font-semibold text-white sm:text-3xl">
+    <main className="elora-shop cart-page-shell relative mx-auto min-h-screen w-full max-w-3xl px-4 pb-8 pt-[max(1rem,env(safe-area-inset-top))] sm:px-6 sm:pb-12 lg:px-8">
+      <div className="elora-bg" aria-hidden="true" />
+      <RevealOnScroll as="section" className="elora-shop-panel p-4 sm:p-6">
+        <div className="mb-5 text-center">
+          <p className="elora-shop-eyebrow">Carrito</p>
+          <h1 className="mt-2 text-2xl font-semibold sm:text-3xl">
             Finaliza tu compra
           </h1>
         </div>
 
         {cartActionError ? (
-          <div className="mb-4 rounded-xl border border-amber-300/35 bg-amber-300/10 p-3 text-sm text-amber-100">
+          <div className="elora-shop-msg mb-4">
             {cartActionError}
           </div>
         ) : null}
 
         {cart.lines.length === 0 ? (
-          <div className="rounded-2xl border border-white/12 bg-black/20 p-5">
-            <p className="text-sm text-gray-300">
+          <div className="elora-shop-soft p-5 text-center">
+            <p className="elora-shop-muted text-sm">
               Tu carrito esta vacio. Agrega productos desde el catalogo para continuar.
             </p>
+            <Link href="/" className="elora-pill is-outline elora-shop-cta-sm mt-4">
+              <span className="elora-pill-label">Explorar catálogo</span>
+            </Link>
           </div>
         ) : (
           <>
@@ -262,10 +269,10 @@ export default function CartPageClient() {
               {cart.lines.map((line) => (
                 <article
                   key={line.id}
-                  className="rounded-2xl border border-white/12 bg-black/20 p-3"
+                  className="elora-shop-line p-3"
                 >
                   <div className="flex gap-3">
-                    <div className="h-20 w-20 shrink-0 overflow-hidden rounded-xl border border-white/10 bg-black/30">
+                    <div className="elora-shop-media h-20 w-20 shrink-0 overflow-hidden">
                       <Image
                         src={line.imageUrl}
                         alt={line.imageAlt}
@@ -276,36 +283,40 @@ export default function CartPageClient() {
                       />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <h2 className="line-clamp-2 text-sm font-semibold text-white">
+                      <h2 className="line-clamp-2 text-sm font-semibold">
                         {line.title}
                       </h2>
-                      <p className="mt-1 text-xs text-gray-400">{line.variantTitle}</p>
-                      <p className="mt-1 text-sm font-semibold text-white">
+                      <p className="elora-shop-muted mt-1 text-xs">{line.variantTitle}</p>
+                      <p className="elora-shop-price mt-1 text-sm">
                         {formatMoney(line.unitPriceAmount, line.unitPriceCurrency)}
                       </p>
 
                       <div className="mt-2 flex flex-wrap items-center gap-2">
-                        <button
-                          type="button"
-                          onClick={() => updateLineQuantity(line.id, line.quantity - 1)}
-                          className="btn-ghost px-3 py-1 text-xs font-semibold"
-                        >
-                          -
-                        </button>
-                        <span className="rounded-lg border border-white/12 px-3 py-1 text-xs text-white">
-                          {line.quantity}
-                        </span>
-                        <button
-                          type="button"
-                          onClick={() => updateLineQuantity(line.id, line.quantity + 1)}
-                          className="btn-ghost px-3 py-1 text-xs font-semibold"
-                        >
-                          +
-                        </button>
+                        <div className="elora-shop-qty">
+                          <button
+                            type="button"
+                            onClick={() => updateLineQuantity(line.id, line.quantity - 1)}
+                            className="elora-shop-qty-btn"
+                            aria-label="Disminuir cantidad"
+                          >
+                            -
+                          </button>
+                          <span className="elora-shop-qty-value">
+                            {line.quantity}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => updateLineQuantity(line.id, line.quantity + 1)}
+                            className="elora-shop-qty-btn"
+                            aria-label="Aumentar cantidad"
+                          >
+                            +
+                          </button>
+                        </div>
                         <button
                           type="button"
                           onClick={() => updateLineQuantity(line.id, 0)}
-                          className="text-xs font-semibold uppercase tracking-[0.08em] text-rose-200 transition hover:text-rose-100"
+                          className="elora-shop-remove"
                         >
                           Eliminar
                         </button>
@@ -313,9 +324,9 @@ export default function CartPageClient() {
                     </div>
                   </div>
 
-                  <div className="mt-3 flex items-center justify-between border-t border-white/10 pt-3 text-xs text-gray-300">
-                    <span>Subtotal</span>
-                    <span className="text-sm font-semibold text-white">
+                  <div className="elora-shop-divide mt-3 flex items-center justify-between pt-3 text-xs">
+                    <span className="elora-shop-muted">Subtotal</span>
+                    <span className="elora-shop-price text-sm">
                       {formatMoney(line.lineTotalAmount, line.lineTotalCurrency)}
                     </span>
                   </div>
@@ -323,40 +334,39 @@ export default function CartPageClient() {
               ))}
             </div>
 
-            <div className="mt-5 rounded-2xl border border-white/12 bg-black/30 p-4">
-              <div className="mb-3 flex items-center justify-between text-sm text-gray-300">
-                <span>Total productos</span>
-                <span className="text-base font-semibold text-white">{cartTotalQuantity}</span>
+            <div className="elora-shop-summary mt-5 p-4">
+              <div className="mb-3 flex items-center justify-between text-sm">
+                <span className="elora-shop-muted">Total productos</span>
+                <span className="text-base font-semibold text-[#5c2340]">{cartTotalQuantity}</span>
               </div>
-              <div className="mb-3 flex items-center justify-between text-sm text-gray-300">
-                <span>Subtotal</span>
-                <span className="text-lg font-semibold text-white">
+              <div className="mb-3 flex items-center justify-between text-sm">
+                <span className="elora-shop-muted">Subtotal</span>
+                <span className="elora-shop-price text-lg">
                   {formatMoney(cartSubtotalAmount, cartCurrency)}
                 </span>
               </div>
-              <div className="mb-4 flex items-center justify-between border-t border-white/10 pt-3 text-sm text-gray-200">
-                <span>Total</span>
-                <span className="text-xl font-semibold text-white">
+              <div className="elora-shop-divide mb-4 flex items-center justify-between pt-3 text-sm">
+                <span className="text-[#5c2340]">Total</span>
+                <span className="elora-shop-price text-xl">
                   {formatMoney(cartSubtotalAmount, cartCurrency)}
                 </span>
               </div>
-              <button
-                type="button"
+              <PillButton
                 onClick={() => void handleFinalizeCheckout()}
                 disabled={checkoutLoading}
-                className="btn-premium w-full px-5 py-3 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-70"
+                className="elora-shop-cta"
               >
                 {checkoutLoading ? "Abriendo checkout seguro..." : "Finalizar compra"}
-              </button>
+              </PillButton>
               {checkoutLoading ? (
-                <p className="mt-3 text-center text-xs text-cyan-100/85">
+                <p className="elora-shop-muted mt-3 text-center text-xs">
                   Conectando con el checkout seguro de Shopify. Esto puede tardar unos segundos.
                 </p>
               ) : null}
             </div>
           </>
         )}
-      </section>
+      </RevealOnScroll>
     </main>
   );
 }
