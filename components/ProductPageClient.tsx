@@ -573,6 +573,13 @@ export default function ProductPage() {
                 <h1 className="mt-3 break-words text-2xl font-semibold leading-tight text-white sm:text-4xl">{product.title}</h1>
                 <p className="mt-4 text-2xl font-semibold text-white">{formatMoney(selectedVariant?.priceAmount || product.priceAmount, selectedVariant?.priceCurrency || product.priceCurrency)}</p>
 
+                {typeof selectedVariant?.quantityAvailable === "number" && selectedVariant.quantityAvailable > 0 && selectedVariant.quantityAvailable <= 10 ? (
+                  <p className="mt-3 inline-flex items-center gap-1.5 rounded-full border border-amber-300/40 bg-amber-400/10 px-3 py-1.5 text-xs font-semibold text-amber-200">
+                    <span aria-hidden="true">⚡</span>
+                    {selectedVariant.quantityAvailable === 1 ? "¡Última unidad disponible!" : `¡Últimas ${selectedVariant.quantityAvailable} unidades disponibles!`}
+                  </p>
+                ) : null}
+
                 <div className="mt-4 rounded-2xl border border-white/12 bg-black/30 p-4">
                   <div className="grid gap-2">
                     <p className="inline-flex items-center gap-2 text-sm font-medium text-white"><span className="text-emerald-300">✓</span>{inventoryText}</p>
