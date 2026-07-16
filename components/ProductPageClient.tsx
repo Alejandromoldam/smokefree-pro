@@ -599,17 +599,17 @@ export default function ProductPage() {
                   </div>
                 </div>
 
-                <div className="product-description-rich mt-5 text-sm text-gray-300 sm:text-base" dangerouslySetInnerHTML={{ __html: descriptionHtml }} />
-                <p className="mt-4 text-xs uppercase tracking-[0.12em] text-gray-400">{product.vendor || "All In One"} - {product.productType || "Tecnologia premium"}</p>
-
                 {cartMessage ? <div className="mt-4 rounded-xl border border-cyan-300/35 bg-cyan-400/10 px-3 py-2 text-xs text-cyan-100">{cartMessage}</div> : null}
 
-                <div className="mt-8 grid gap-3 sm:grid-cols-2">
+                <div className="mt-6 grid gap-3 sm:grid-cols-2">
                   <button type="button" onClick={() => void addToCart()} disabled={addingToCart || !selectedVariant?.availableForSale} className="btn-premium px-6 py-3.5 text-center text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-70">
                     {addingToCart ? "Agregando..." : "Agregar al carrito"}
                   </button>
                   <a href={buyNowUrl} target="_blank" rel="noreferrer" onClick={trackBuyNowIntent} className="btn-ghost px-6 py-3.5 text-center text-sm font-semibold">Comprar ahora</a>
                 </div>
+
+                <div className="product-description-rich mt-6 text-sm text-gray-300 sm:text-base" dangerouslySetInnerHTML={{ __html: descriptionHtml }} />
+                <p className="mt-4 text-xs uppercase tracking-[0.12em] text-gray-400">{product.vendor || "All In One"} - {product.productType || "Tecnologia premium"}</p>
 
                 <section className="glass-card mt-6 rounded-2xl border border-cyan-300/20 bg-black/35 p-4">
                   <p className="text-[0.7rem] uppercase tracking-[0.18em] text-cyan-200/85">Confianza premium</p>
@@ -708,6 +708,21 @@ export default function ProductPage() {
           </>
         ) : null}
       </div>
+
+      {!loading && !error && product ? (
+        <div className="fixed inset-x-0 bottom-0 z-50 border-t border-white/12 bg-[#05070c]/97 px-4 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-3 backdrop-blur-md lg:hidden">
+          <div className="mx-auto flex w-full max-w-7xl items-center gap-3">
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-xs font-medium text-gray-300">{shortenTitle(product.title, 34)}</p>
+              <p className="text-base font-semibold text-white">{formatMoney(selectedVariant?.priceAmount || product.priceAmount, selectedVariant?.priceCurrency || product.priceCurrency)}</p>
+            </div>
+            <button type="button" onClick={() => void addToCart()} disabled={addingToCart || !selectedVariant?.availableForSale} className="btn-ghost shrink-0 px-4 py-3 text-xs font-semibold disabled:cursor-not-allowed disabled:opacity-70">
+              {addingToCart ? "..." : "Agregar"}
+            </button>
+            <a href={buyNowUrl} target="_blank" rel="noreferrer" onClick={trackBuyNowIntent} className="btn-premium shrink-0 px-5 py-3 text-center text-xs font-semibold">Comprar ahora</a>
+          </div>
+        </div>
+      ) : null}
     </main>
   );
 }
