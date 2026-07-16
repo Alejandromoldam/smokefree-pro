@@ -278,7 +278,6 @@ export default function CartPageClient() {
                         alt={line.imageAlt}
                         width={220}
                         height={220}
-                        unoptimized
                         className="h-full w-full object-cover"
                       />
                     </div>

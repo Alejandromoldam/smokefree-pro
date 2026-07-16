@@ -15,7 +15,7 @@ function buildWhatsappUrl(number: string) {
 }
 
 export const metadata: Metadata = {
-  title: `${PAGE_TITLE} | Elora Skin`,
+  title: PAGE_TITLE,
   description: PAGE_DESCRIPTION,
   alternates: {
     canonical: "https://allinonestore.lat/contacto",
@@ -44,25 +44,25 @@ export default function ContactPage() {
       updatedAt="31/05/2026"
     >
       <section className="space-y-3">
-        <h2 className="text-xl font-semibold text-white">Atencion comercial</h2>
+        <h2 className="text-xl font-semibold">Atencion comercial</h2>
         <p>Escribenos para asesoria de producto, estado de pedido y soporte postventa.</p>
       </section>
 
       <section className="grid gap-4 sm:grid-cols-2">
-        <article className="rounded-2xl border border-white/12 bg-white/5 p-4">
-          <p className="text-xs uppercase tracking-[0.12em] text-cyan-200/85">Correo</p>
-          <a href="mailto:support@allinonestore.lat" className="mt-2 inline-flex text-sm text-cyan-100 hover:text-cyan-50">
+        <article className="elora-shop-soft p-4">
+          <p className="elora-shop-eyebrow">Correo</p>
+          <a href="mailto:support@allinonestore.lat" className="elora-shop-price mt-2 inline-flex text-sm">
             support@allinonestore.lat
           </a>
         </article>
 
-        <article className="rounded-2xl border border-white/12 bg-white/5 p-4">
-          <p className="text-xs uppercase tracking-[0.12em] text-cyan-200/85">WhatsApp</p>
+        <article className="elora-shop-soft p-4">
+          <p className="elora-shop-eyebrow">WhatsApp</p>
           <a
             href={whatsappUrl}
             target="_blank"
             rel="noreferrer"
-            className="mt-2 inline-flex text-sm text-cyan-100 hover:text-cyan-50"
+            className="elora-shop-price mt-2 inline-flex text-sm"
           >
             Hablar con asesor
           </a>
@@ -70,13 +70,13 @@ export default function ContactPage() {
       </section>
 
       <section className="space-y-3">
-        <h2 className="text-xl font-semibold text-white">Horario de atencion</h2>
+        <h2 className="text-xl font-semibold">Horario de atencion</h2>
         <p>Soporte digital con monitoreo continuo para solicitudes de clientes.</p>
       </section>
 
       <section className="space-y-3">
-        <h2 className="text-xl font-semibold text-white">Datos recomendados al escribirnos</h2>
-        <ul className="list-disc space-y-2 pl-5 text-gray-200">
+        <h2 className="text-xl font-semibold">Datos recomendados al escribirnos</h2>
+        <ul className="list-disc space-y-2 pl-5">
           <li>Numero de pedido.</li>
           <li>Correo usado en la compra.</li>
           <li>Resumen breve de la solicitud.</li>

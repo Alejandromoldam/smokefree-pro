@@ -6,7 +6,7 @@ const PAGE_DESCRIPTION =
   "Tiempos de entrega, cobertura, costos y seguimiento de pedidos en Elora Skin.";
 
 export const metadata: Metadata = {
-  title: `${PAGE_TITLE} | Elora Skin`,
+  title: PAGE_TITLE,
   description: PAGE_DESCRIPTION,
   alternates: {
     canonical: "https://allinonestore.lat/politica-de-envios",
@@ -32,7 +32,7 @@ export default function ShippingPolicyPage() {
       updatedAt="31/05/2026"
     >
       <section className="space-y-3">
-        <h2 className="text-xl font-semibold text-white">1. Cobertura</h2>
+        <h2 className="text-xl font-semibold">1. Cobertura</h2>
         <p>
           Realizamos envios a las zonas habilitadas al momento de la compra. La
           disponibilidad final depende del destino y de la logistica activa.
@@ -40,7 +40,7 @@ export default function ShippingPolicyPage() {
       </section>
 
       <section className="space-y-3">
-        <h2 className="text-xl font-semibold text-white">2. Tiempos estimados</h2>
+        <h2 className="text-xl font-semibold">2. Tiempos estimados</h2>
         <p>
           Los tiempos de entrega se muestran en checkout antes de pagar. Pueden variar
           por demanda, temporada, aduanas o condiciones del transportista.
@@ -48,7 +48,7 @@ export default function ShippingPolicyPage() {
       </section>
 
       <section className="space-y-3">
-        <h2 className="text-xl font-semibold text-white">3. Costos de envio</h2>
+        <h2 className="text-xl font-semibold">3. Costos de envio</h2>
         <p>
           El costo de envio se calcula automaticamente segun ubicacion, peso y metodo
           de envio seleccionado. El valor final se confirma antes del pago.
@@ -56,7 +56,7 @@ export default function ShippingPolicyPage() {
       </section>
 
       <section className="space-y-3">
-        <h2 className="text-xl font-semibold text-white">4. Seguimiento</h2>
+        <h2 className="text-xl font-semibold">4. Seguimiento</h2>
         <p>
           Una vez despachado, enviamos un numero de rastreo para que puedas monitorear
           el estado del pedido hasta su entrega.
@@ -64,7 +64,7 @@ export default function ShippingPolicyPage() {
       </section>
 
       <section className="space-y-3">
-        <h2 className="text-xl font-semibold text-white">5. Incidencias de entrega</h2>
+        <h2 className="text-xl font-semibold">5. Incidencias de entrega</h2>
         <p>
           Si detectas retraso, direccion incorrecta o novedad logistica, escribe a
           soporte para revisar el caso y darte asistencia.

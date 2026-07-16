@@ -137,63 +137,6 @@ const productTrustSignals: Array<{
   { title: "Productos verificados", icon: "badge" },
 ];
 
-const productReviewCards: Array<{
-  name: string;
-  location: string;
-  comment: string;
-  avatar: string;
-  rating: number;
-}> = [
-  {
-    name: "Carla M.",
-    location: "Guadalajara, MX",
-    comment:
-      "Me gusto la calidad del producto y la rapidez para concretar la compra. Todo muy profesional.",
-    avatar: "https://i.pravatar.cc/160?img=38",
-    rating: 5,
-  },
-  {
-    name: "Ricardo T.",
-    location: "Medellin, CO",
-    comment:
-      "La pagina de producto explica muy bien todo. Agregar al carrito fue instantaneo y seguro.",
-    avatar: "https://i.pravatar.cc/160?img=22",
-    rating: 5,
-  },
-  {
-    name: "Fernanda V.",
-    location: "CDMX, MX",
-    comment:
-      "Excelente experiencia desde celular. El checkout fue rapido y el soporte respondio al momento.",
-    avatar: "https://i.pravatar.cc/160?img=48",
-    rating: 5,
-  },
-  {
-    name: "Nicolas A.",
-    location: "Buenos Aires, AR",
-    comment:
-      "Me dio confianza ver toda la info del producto. Llego en tiempo y en perfectas condiciones.",
-    avatar: "https://i.pravatar.cc/160?img=14",
-    rating: 5,
-  },
-  {
-    name: "Paula G.",
-    location: "Lima, PE",
-    comment:
-      "Diseño premium, proceso claro y producto muy bien presentado. Volveria a comprar sin duda.",
-    avatar: "https://i.pravatar.cc/160?img=33",
-    rating: 5,
-  },
-  {
-    name: "Esteban R.",
-    location: "Santiago, CL",
-    comment:
-      "Compra verificada y sin fricciones. La integracion de pago se nota robusta y confiable.",
-    avatar: "https://i.pravatar.cc/160?img=61",
-    rating: 5,
-  },
-];
-
 function formatMoney(amount: string, currencyCode: string) {
   const value = Number(amount);
   if (Number.isNaN(value)) {
@@ -299,23 +242,6 @@ function TrustSignalIcon({
     <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" className={className}>
       <circle cx="12" cy="12" r="8.5" stroke="currentColor" strokeWidth="1.7" />
       <path d="m8.9 12 1.9 1.9 4.3-4.2" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
-function ReviewStarIcon() {
-  return (
-    <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" className="h-4 w-4">
-      <path d="m10 2.4 2.2 4.4 4.9.7-3.5 3.4.8 4.9-4.4-2.3-4.4 2.3.8-4.9-3.5-3.4 4.9-.7L10 2.4Z" fill="currentColor" />
-    </svg>
-  );
-}
-
-function VerifiedBadgeIcon() {
-  return (
-    <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" className="h-4 w-4">
-      <circle cx="10" cy="10" r="8.2" stroke="currentColor" strokeWidth="1.4" />
-      <path d="m6.2 10.2 2.2 2.2 5.3-5.1" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
@@ -544,14 +470,14 @@ export default function ProductPage() {
             <RevealOnScroll as="section" className="elora-shop-panel grid gap-8 p-6 sm:p-8 lg:grid-cols-[1.05fr_0.95fr]">
               <div>
                 <div className="elora-shop-media overflow-hidden p-3">
-                  <Image src={currentImage.url} alt={currentImage.altText} width={1200} height={1200} unoptimized className="h-auto w-full rounded-2xl object-cover" />
+                  <Image src={currentImage.url} alt={currentImage.altText} width={1200} height={1200} priority className="h-auto w-full rounded-2xl object-cover" />
                 </div>
 
                 {product.images.length > 1 ? (
                   <div className="mt-4 grid grid-cols-4 gap-3 sm:grid-cols-5">
                     {product.images.map((image, index) => (
                       <button key={`${image.url}-${index}`} type="button" onClick={() => setActiveImage(index)} className={index === activeImage ? "elora-shop-thumb is-active" : "elora-shop-thumb"}>
-                        <Image src={image.url} alt={image.altText} width={280} height={280} unoptimized className="h-20 w-full object-cover" />
+                        <Image src={image.url} alt={image.altText} width={280} height={280} className="h-20 w-full object-cover" />
                       </button>
                     ))}
                   </div>
@@ -668,7 +594,7 @@ export default function ProductPage() {
                   {relatedProducts.map((related) => (
                     <article key={related.id} className="elora-shop-card flex flex-col p-4">
                       <div className="elora-shop-media overflow-hidden">
-                        <Image src={related.imageUrl} alt={related.imageAlt} width={700} height={700} unoptimized className="h-44 w-full object-cover" />
+                        <Image src={related.imageUrl} alt={related.imageAlt} width={700} height={700} className="h-44 w-full object-cover" />
                       </div>
                       <h3 className="mt-4 line-clamp-2 text-base font-semibold">{related.title}</h3>
                       <div className="mt-2 flex items-center justify-between gap-2">
@@ -689,35 +615,6 @@ export default function ProductPage() {
                   ))}
                 </div>
               ) : null}
-            </RevealOnScroll>
-
-            <RevealOnScroll as="section" className="mt-14">
-              <div className="mb-6 text-center">
-                <p className="elora-shop-eyebrow">Opiniones de clientes</p>
-                <h2 className="mt-2 text-2xl font-semibold sm:text-3xl">Lo que dicen quienes ya compraron</h2>
-              </div>
-              <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                {productReviewCards.map((review) => (
-                  <article key={`${review.name}-${review.location}`} className="elora-shop-card p-5">
-                    <div className="mb-4 flex items-center gap-3">
-                      <div className="elora-shop-avatar inline-flex h-11 w-11 items-center justify-center p-[1px]">
-                        <Image src={review.avatar} alt={`Foto de ${review.name}`} width={88} height={88} className="h-full w-full rounded-full border border-white/60 object-cover" loading="lazy" />
-                      </div>
-                      <div>
-                        <p className="text-sm font-semibold text-[#5c2340]">{review.name}</p>
-                        <p className="elora-shop-muted text-xs">{review.location}</p>
-                      </div>
-                    </div>
-                    <div className="elora-shop-stars mb-3 inline-flex items-center gap-1">
-                      {Array.from({ length: review.rating }).map((_, idx) => <ReviewStarIcon key={`${review.name}-${idx}`} />)}
-                    </div>
-                    <div className="elora-shop-badge-ok mb-3">
-                      <VerifiedBadgeIcon />Compra verificada
-                    </div>
-                    <p className="text-sm leading-relaxed text-[#6b4a55] sm:text-base">&ldquo;{review.comment}&rdquo;</p>
-                  </article>
-                ))}
-              </div>
             </RevealOnScroll>
           </>
         ) : null}

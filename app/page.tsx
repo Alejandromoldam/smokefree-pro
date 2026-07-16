@@ -8,6 +8,7 @@ import Marquee from "@/components/elora/Marquee";
 import EloraBestsellers from "@/components/elora/EloraBestsellers";
 import EloraCartLink from "@/components/elora/EloraCartLink";
 import NewsletterForm from "@/components/elora/NewsletterForm";
+import MobileNav from "@/components/elora/MobileNav";
 
 // Reviews are only shown when real, connected reviews exist. No system is
 // wired yet, so the section stays hidden behind this flag instead of inventing
@@ -21,6 +22,13 @@ const TRUST_ITEMS = [
   "🔒 Pago 100% seguro",
   "🌿 Ingredientes reales, sin relleno",
   "💬 Atención personalizada",
+];
+
+const NAV_ITEMS = [
+  { label: "Novedades", href: "#bestsellers" },
+  { label: "Skincare", href: "/categorias" },
+  { label: "Rituales", href: "#bestsellers" },
+  { label: "Nuestra historia", href: "#filosofia" },
 ];
 
 const PHILOSOPHY = [
@@ -95,6 +103,7 @@ export default async function Home() {
               <span aria-hidden="true">🔍</span>
             </a>
             <EloraCartLink />
+            <MobileNav items={NAV_ITEMS} />
           </div>
         </nav>
       </header>
@@ -146,11 +155,11 @@ export default async function Home() {
                   />
                 </div>
                 {/* Only real data on badges: featured product price + a brand
-                    value. No invented ratings or percentages. */}
+                    value. No invented ratings, rankings or percentages. */}
                 <div className="elora-hero-badge b1">
                   <span>
                     Desde {formatMoney(featured.priceAmount, featured.priceCurrency)}
-                    <small>Bestseller de la comunidad</small>
+                    <small>Producto destacado</small>
                   </span>
                 </div>
                 <div className="elora-hero-badge b2">🌿 Ingredientes reales</div>

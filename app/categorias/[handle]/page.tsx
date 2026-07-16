@@ -57,7 +57,7 @@ export async function generateMetadata({
   const imageUrl = category?.products?.[0]?.imageUrl || `${siteUrl}/producto-real.png`;
 
   return {
-    title: `${title} | Elora Skin`,
+    title,
     description,
     alternates: {
       canonical: canonicalUrl,
@@ -107,29 +107,27 @@ export default async function CategoryDetailPage({
   );
 
   return (
-    <main className="premium-shell min-h-screen bg-transparent text-white">
+    <main className="elora-shop min-h-screen">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: breadcrumbJsonLd }}
       />
       <div className="mx-auto w-full max-w-7xl px-4 pb-24 pt-24 sm:px-6 lg:px-8">
         <div className="mb-8">
-          <Link href="/categorias" className="btn-ghost inline-flex px-4 py-2 text-xs font-semibold sm:text-sm">
+          <Link href="/categorias" className="elora-pill is-outline">
             Volver a categorias
           </Link>
-          <p className="mt-5 text-xs uppercase tracking-[0.2em] text-cyan-200/85">
-            Categoria
-          </p>
+          <p className="elora-shop-eyebrow mt-5">Categoria</p>
           <h1 className="mt-3 text-3xl font-semibold sm:text-4xl">{category.title}</h1>
-          <p className="mt-3 max-w-3xl text-sm leading-relaxed text-gray-300 sm:text-base">
+          <p className="elora-shop-muted mt-3 max-w-3xl text-sm leading-relaxed sm:text-base">
             {category.description?.trim() ||
               "Productos seleccionados con enfoque premium, compra segura y checkout rapido."}
           </p>
         </div>
 
         {category.products.length === 0 ? (
-          <div className="glass-card rounded-2xl border border-white/12 p-5">
-            <p className="text-sm text-gray-300">
+          <div className="elora-shop-panel p-5">
+            <p className="elora-shop-muted text-sm">
               No hay productos visibles en esta categoria por ahora.
             </p>
           </div>
@@ -138,30 +136,29 @@ export default async function CategoryDetailPage({
             {category.products.map((product) => (
               <article
                 key={product.id}
-                className="glass-card rounded-3xl border border-white/12 p-4 transition duration-300 hover:-translate-y-1 hover:border-cyan-300/40"
+                className="elora-shop-panel p-4 transition duration-300 hover:-translate-y-1"
               >
-                <div className="overflow-hidden rounded-2xl border border-white/10 bg-black/35">
+                <div className="overflow-hidden rounded-2xl">
                   <Image
                     src={product.imageUrl}
                     alt={product.imageAlt}
                     width={700}
                     height={700}
                     className="h-44 w-full object-cover"
-                    unoptimized
                   />
                 </div>
-                <h2 className="mt-4 line-clamp-2 text-base font-semibold text-white">
+                <h2 className="mt-4 line-clamp-2 text-base font-semibold">
                   {product.title}
                 </h2>
                 <div className="mt-3 flex items-center justify-between gap-2">
-                  <p className="text-lg font-semibold text-cyan-100">
+                  <p className="elora-shop-price text-lg">
                     {formatMoney(product.priceAmount, product.priceCurrency)}
                   </p>
                   <span
                     className={
                       product.availableForSale
-                        ? "rounded-full border border-emerald-300/40 bg-emerald-300/10 px-2 py-1 text-[0.65rem] uppercase tracking-[0.1em] text-emerald-100"
-                        : "rounded-full border border-white/20 bg-white/5 px-2 py-1 text-[0.65rem] uppercase tracking-[0.1em] text-gray-300"
+                        ? "rounded-full border border-emerald-600/30 bg-emerald-50 px-2 py-1 text-[0.65rem] uppercase tracking-[0.1em] text-emerald-700"
+                        : "elora-shop-muted rounded-full border border-black/10 bg-black/5 px-2 py-1 text-[0.65rem] uppercase tracking-[0.1em]"
                     }
                   >
                     {product.availableForSale ? "Disponible" : "Agotado"}
@@ -169,7 +166,7 @@ export default async function CategoryDetailPage({
                 </div>
                 <Link
                   href={`/products/${product.handle}`}
-                  className="btn-premium mt-4 inline-flex px-4 py-2 text-xs font-semibold sm:text-sm"
+                  className="elora-pill mt-4"
                 >
                   Ver producto
                 </Link>

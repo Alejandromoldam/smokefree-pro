@@ -12,8 +12,8 @@ type CatalogApiResponse = {
   products: CatalogProduct[];
 };
 
-// Same local-cart contract used by CatalogSection / CartPageClient — kept
-// identical so the existing cart + Shopify checkout flow stays intact.
+// Same local-cart contract used by CartPageClient — kept identical so the
+// existing cart + Shopify checkout flow stays intact.
 const LOCAL_CART_STORAGE_KEY = "sf_local_cart_v1";
 const LOCAL_CART_EVENT = "sf-local-cart-updated";
 

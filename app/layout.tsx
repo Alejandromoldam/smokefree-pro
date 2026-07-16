@@ -6,7 +6,6 @@ import {
   Poppins,
   Cormorant_Garamond,
 } from "next/font/google";
-import BackgroundEffects from "@/components/BackgroundEffects";
 import AIAssistantWidget from "@/components/AIAssistantWidget";
 import FloatingWhatsAppButton from "@/components/FloatingWhatsAppButton";
 import GaPageTracker from "@/components/GaPageTracker";
@@ -160,8 +159,6 @@ export default function RootLayout({
           </>
         ) : null}
         {hasGaMeasurementId || hasMetaPixelId ? <GaPageTracker /> : null}
-
-        <BackgroundEffects />
 
         <div className="app-content">{children}</div>
         <AIAssistantWidget />

@@ -20,7 +20,7 @@ function compactText(text: string, maxLength = 160) {
 }
 
 export const metadata: Metadata = {
-  title: "Catálogo por categorías | Elora Skin",
+  title: "Catálogo por categorías",
   description: FALLBACK_DESCRIPTION,
   alternates: {
     canonical: "https://allinonestore.lat/categorias",
@@ -50,28 +50,26 @@ export default async function CategoriesIndexPage() {
   );
 
   return (
-    <main className="premium-shell min-h-screen bg-transparent text-white">
+    <main className="elora-shop min-h-screen">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: breadcrumbJsonLd }}
       />
       <div className="mx-auto w-full max-w-7xl px-4 pb-24 pt-24 sm:px-6 lg:px-8">
         <div className="mb-8">
-          <p className="text-xs uppercase tracking-[0.2em] text-cyan-200/85">
-            Categorias
-          </p>
+          <p className="elora-shop-eyebrow">Categorias</p>
           <h1 className="mt-3 text-3xl font-semibold sm:text-4xl">
             Explora por categoria
           </h1>
-          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-gray-300 sm:text-base">
+          <p className="elora-shop-muted mt-3 max-w-2xl text-sm leading-relaxed sm:text-base">
             Selecciona una categoria para ver productos reales sincronizados desde
             Shopify en Elora Skin.
           </p>
         </div>
 
         {categories.length === 0 ? (
-          <div className="glass-card rounded-2xl border border-white/12 p-5">
-            <p className="text-sm text-gray-300">
+          <div className="elora-shop-panel p-5">
+            <p className="elora-shop-muted text-sm">
               No hay categorias disponibles por el momento.
             </p>
           </div>
@@ -80,20 +78,18 @@ export default async function CategoriesIndexPage() {
             {categories.map((category) => (
               <article
                 key={category.handle}
-                className="glass-card rounded-3xl border border-white/12 p-5 transition duration-300 hover:-translate-y-1 hover:border-cyan-300/40"
+                className="elora-shop-panel p-5 transition duration-300 hover:-translate-y-1"
               >
-                <p className="text-xs uppercase tracking-[0.14em] text-cyan-200/85">
-                  Categoria
-                </p>
-                <h2 className="mt-2 text-xl font-semibold text-white">
+                <p className="elora-shop-eyebrow">Categoria</p>
+                <h2 className="mt-2 text-xl font-semibold">
                   {category.title}
                 </h2>
-                <p className="mt-3 text-sm leading-relaxed text-gray-300">
+                <p className="elora-shop-muted mt-3 text-sm leading-relaxed">
                   {compactText(category.description, 140)}
                 </p>
                 <Link
                   href={`/categorias/${category.handle}`}
-                  className="btn-ghost mt-5 inline-flex px-4 py-2 text-xs font-semibold sm:text-sm"
+                  className="elora-pill is-outline mt-5"
                 >
                   Ver categoria
                 </Link>
@@ -102,7 +98,7 @@ export default async function CategoriesIndexPage() {
           </section>
         )}
 
-        <p className="mt-10 text-xs text-gray-500">
+        <p className="elora-shop-muted mt-10 text-xs">
           Canonical: {siteUrl}/categorias
         </p>
       </div>
