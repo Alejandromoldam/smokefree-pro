@@ -1,11 +1,6 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import {
-  Inter,
-  Playfair_Display,
-  Poppins,
-  Cormorant_Garamond,
-} from "next/font/google";
+import { Inter, Fraunces, Outfit } from "next/font/google";
 import AIAssistantWidget from "@/components/AIAssistantWidget";
 import FloatingWhatsAppButton from "@/components/FloatingWhatsAppButton";
 import GaPageTracker from "@/components/GaPageTracker";
@@ -21,25 +16,18 @@ import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
-// Elora Skin brand type system (loaded via next/font, exposed as CSS variables).
-const playfair = Playfair_Display({
+// Elora Skin "Glow Ritual" brand type system (loaded via next/font, exposed as CSS variables).
+const fraunces = Fraunces({
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
+  weight: ["400", "500", "600"],
   style: ["normal", "italic"],
-  variable: "--font-playfair",
+  variable: "--font-display",
   display: "swap",
 });
-const poppins = Poppins({
+const outfit = Outfit({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600"],
-  variable: "--font-poppins",
-  display: "swap",
-});
-const cormorant = Cormorant_Garamond({
-  subsets: ["latin"],
-  weight: ["400", "500"],
-  style: ["italic"],
-  variable: "--font-cormorant",
+  variable: "--font-body",
   display: "swap",
 });
 const SITE_DESCRIPTION =
@@ -105,7 +93,7 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body
-        className={`${inter.className} ${playfair.variable} ${poppins.variable} ${cormorant.variable} relative overflow-x-hidden`}
+        className={`${inter.className} ${fraunces.variable} ${outfit.variable} relative overflow-x-hidden`}
       >
         <script
           type="application/ld+json"

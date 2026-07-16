@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { BagIcon } from "./Icons";
 
 const LOCAL_CART_STORAGE_KEY = "sf_local_cart_v1";
 const LOCAL_CART_EVENT = "sf-local-cart-updated";
@@ -51,10 +52,11 @@ export default function EloraCartLink() {
   return (
     <a
       href="/cart"
-      className="elora-icon-btn"
-      aria-label={`Ir al carrito${quantity > 0 ? ` con ${quantity} producto${quantity === 1 ? "" : "s"}` : ""}`}
+      className="elora-bag-btn"
+      aria-label={`Ir a la bolsa${quantity > 0 ? ` con ${quantity} producto${quantity === 1 ? "" : "s"}` : ""}`}
     >
-      <span aria-hidden="true">🛍️</span>
+      <BagIcon className="elora-bag-icon" />
+      Bolsa
       {quantity > 0 ? <span className="elora-cart-count">{quantity}</span> : null}
     </a>
   );

@@ -126,10 +126,8 @@ export default async function CategoryDetailPage({
         </div>
 
         {category.products.length === 0 ? (
-          <div className="elora-shop-panel p-5">
-            <p className="elora-shop-muted text-sm">
-              No hay productos visibles en esta categoria por ahora.
-            </p>
+          <div className="elora-empty-card p-5">
+            <p className="elora-empty-card-text">Muy pronto ✦ nueva colección</p>
           </div>
         ) : (
           <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">

@@ -68,10 +68,8 @@ export default async function CategoriesIndexPage() {
         </div>
 
         {categories.length === 0 ? (
-          <div className="elora-shop-panel p-5">
-            <p className="elora-shop-muted text-sm">
-              No hay categorias disponibles por el momento.
-            </p>
+          <div className="elora-empty-card p-5">
+            <p className="elora-empty-card-text">Muy pronto ✦ nueva colección</p>
           </div>
         ) : (
           <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

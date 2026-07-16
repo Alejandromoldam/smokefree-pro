@@ -168,12 +168,8 @@ export default function EloraBestsellers({
     }, 1600);
   }
 
-  if (!loading && selected.length === 0) {
-    // Never invent placeholder products: hide the section if the catalog is empty.
-    return null;
-  }
-
   const [feature, ...rest] = selected;
+  const isEmpty = !loading && selected.length === 0;
 
   return (
     <section className="elora-section" id="bestsellers">
@@ -197,6 +193,19 @@ export default function EloraBestsellers({
               className={`elora-skeleton ${index === 0 ? "elora-bento-feature" : "elora-card"}`}
               aria-hidden="true"
             />
+          ))}
+        </div>
+      ) : isEmpty ? (
+        // No invented products: an elegant "coming soon" placeholder instead
+        // of fake items. Disappears on its own once real products load.
+        <div className="elora-bento">
+          {Array.from({ length: 5 }).map((_, index) => (
+            <div
+              key={`bento-empty-${index}`}
+              className={`elora-empty-card ${index === 0 ? "elora-bento-feature" : ""}`}
+            >
+              <p className="elora-empty-card-text">Muy pronto ✦ nueva colección</p>
+            </div>
           ))}
         </div>
       ) : (

@@ -7,6 +7,7 @@ import { useParams } from "next/navigation";
 import PillButton from "@/components/elora/PillButton";
 import RevealOnScroll from "@/components/elora/RevealOnScroll";
 import EloraCartLink from "@/components/elora/EloraCartLink";
+import { LightningIcon } from "@/components/elora/Icons";
 import { trackAddToCart, trackBeginCheckout, trackViewItem } from "@/lib/ga";
 
 type ProductImage = {
@@ -508,7 +509,7 @@ export default function ProductPage() {
 
                 {typeof selectedVariant?.quantityAvailable === "number" && selectedVariant.quantityAvailable > 0 && selectedVariant.quantityAvailable <= 10 ? (
                   <p className="elora-shop-lowstock mt-3">
-                    <span aria-hidden="true">⚡</span>
+                    <LightningIcon className="h-3.5 w-3.5" />
                     {selectedVariant.quantityAvailable === 1 ? "¡Última unidad disponible!" : `¡Últimas ${selectedVariant.quantityAvailable} unidades disponibles!`}
                   </p>
                 ) : null}
@@ -588,7 +589,7 @@ export default function ProductPage() {
                 </div>
               ) : null}
               {!loadingRelated && relatedError ? <div className="elora-shop-soft p-4"><p className="elora-shop-muted text-sm">{relatedError}</p></div> : null}
-              {!loadingRelated && !relatedError && relatedProducts.length === 0 ? <div className="elora-shop-soft p-4"><p className="elora-shop-muted text-sm">No hay recomendaciones disponibles.</p></div> : null}
+              {!loadingRelated && !relatedError && relatedProducts.length === 0 ? <div className="elora-empty-card p-4"><p className="elora-empty-card-text">Muy pronto ✦ nueva colección</p></div> : null}
               {!loadingRelated && relatedProducts.length > 0 ? (
                 <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
                   {relatedProducts.map((related) => (
@@ -596,7 +597,7 @@ export default function ProductPage() {
                       <div className="elora-shop-media overflow-hidden">
                         <Image src={related.imageUrl} alt={related.imageAlt} width={700} height={700} className="h-44 w-full object-cover" />
                       </div>
-                      <h3 className="mt-4 line-clamp-2 text-base font-semibold">{related.title}</h3>
+                      <h3 className="elora-shop-card-title mt-4 line-clamp-2 text-base font-semibold">{related.title}</h3>
                       <div className="mt-2 flex items-center justify-between gap-2">
                         <p className="elora-shop-price text-lg">{formatMoney(related.priceAmount, related.priceCurrency)}</p>
                         <span className={related.availableForSale ? "elora-shop-badge-ok" : "elora-shop-badge-off"}>

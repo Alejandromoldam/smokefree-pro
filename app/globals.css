@@ -3185,22 +3185,24 @@ body.cart-page-active .whatsapp-float-root {
    existing dark store theme (product page, legal pages, cart) is untouched.
    ===================================================================== */
 .elora-home {
-  --blush: #ffd7e3;
-  --blush-2: #ffb8cf;
-  --blush-deep: #f490b0;
-  --blush-soft: #fff0f5;
-  --cream: #fff8f5;
-  --ink: #5c2340;
-  --ink-soft: #8a6570;
-  --gold: #e8b4a0;
+  --milk: #fffaf6;
+  --milk-2: #fdf3ec;
+  --blush: #ffdfe7;
+  --blush-deep: #e98aa6;
+  --rose: #d96d8f;
+  --peach: #ffd9c2;
+  --ink: #4a2b38;
+  --ink-soft: #93707e;
+  --line: #f2dfd6;
+  --gold: #d8ae8e;
 
   position: relative;
   z-index: 1;
   min-height: 100vh;
-  background: var(--cream);
+  background: var(--milk);
   color: var(--ink);
   color-scheme: light;
-  font-family: var(--font-poppins), "Poppins", sans-serif;
+  font-family: var(--font-body), "Outfit", sans-serif;
   font-weight: 300;
   overflow-x: hidden;
 }
@@ -3210,14 +3212,14 @@ body.cart-page-active .whatsapp-float-root {
   position: fixed;
   inset: 0;
   z-index: -1;
-  background: var(--cream);
+  background: var(--milk);
   pointer-events: none;
 }
 
 .elora-home h1,
 .elora-home h2,
 .elora-home h3 {
-  font-family: var(--font-playfair), "Playfair Display", serif;
+  font-family: var(--font-display), "Fraunces", serif;
   font-weight: 600;
 }
 .elora-home a {
@@ -3233,7 +3235,7 @@ body.cart-page-active .whatsapp-float-root {
   font-size: 11px;
   letter-spacing: 0.26em;
   text-transform: uppercase;
-  color: #c76f8c;
+  color: var(--rose);
   font-weight: 600;
 }
 
@@ -3261,9 +3263,9 @@ body.cart-page-active .whatsapp-float-root {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background: linear-gradient(135deg, var(--blush-2), var(--blush-deep));
+  background: linear-gradient(135deg, var(--rose), var(--blush-deep));
   color: #fff;
-  font-family: var(--font-poppins), "Poppins", sans-serif;
+  font-family: var(--font-body), "Outfit", sans-serif;
   font-weight: 600;
   font-size: 13px;
   letter-spacing: 0.03em;
@@ -3294,17 +3296,33 @@ body.cart-page-active .whatsapp-float-root {
 .elora-pill:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 .elora-pill.is-outline {
   background: transparent;
-  border: 1.5px solid #e88fab;
-  color: #a2415f;
+  border: 1.5px solid var(--ink);
+  color: var(--ink);
   box-shadow: none;
 }
 
 /* ---- keyframes ---- */
 @keyframes eFloatY { 0%, 100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-16px) rotate(3deg); } }
 @keyframes eDrift { 0% { transform: translate(0, 0) rotate(0); } 50% { transform: translate(14px, -26px) rotate(10deg); } 100% { transform: translate(0, 0) rotate(0); } }
-@keyframes eSparkle { 0%, 100% { opacity: 0.25; transform: scale(0.7); } 50% { opacity: 1; transform: scale(1.15); } }
+@keyframes eSparkle { 0%, 100% { opacity: 0.15; transform: scale(0.7); } 50% { opacity: 1; transform: scale(1.15); } }
 @keyframes eMarquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 @keyframes eGradient { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+@keyframes heroBreathe { 0%, 100% { background-size: 100% 100%; } 50% { background-size: 112% 112%; } }
+@keyframes petalFall {
+  0% { transform: translate(0, -12%) rotate(0deg); opacity: 0; }
+  8% { opacity: 0.7; }
+  92% { opacity: 0.6; }
+  100% { transform: translate(18px, 112%) rotate(70deg); opacity: 0; }
+}
+@keyframes bubbleCross {
+  0% { transform: translate(-8vw, 40%) scale(0.9); opacity: 0; }
+  10% { opacity: 0.8; }
+  90% { opacity: 0.6; }
+  100% { transform: translate(108vw, -10%) scale(1.1); opacity: 0; }
+}
+@keyframes bagPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.18); } }
+@keyframes iconFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+@keyframes numberPulse { 0%, 100% { opacity: 0.55; transform: scale(1); } 50% { opacity: 1; transform: scale(1.06); } }
 
 /* ---- header / nav ---- */
 .elora-header {
@@ -3324,15 +3342,15 @@ body.cart-page-active .whatsapp-float-root {
   margin: 0 auto;
 }
 .elora-logo {
-  font-family: var(--font-playfair), "Playfair Display", serif;
+  font-family: var(--font-display), "Fraunces", serif;
   font-size: 23px;
   font-weight: 600;
-  color: #8a3352;
+  color: var(--ink);
 }
 .elora-logo span {
-  font-family: var(--font-cormorant), "Cormorant Garamond", serif;
+  font-family: var(--font-display), "Fraunces", serif;
   font-style: italic;
-  color: var(--blush-deep);
+  color: var(--rose);
   font-weight: 400;
 }
 .elora-nav-links {
@@ -3342,12 +3360,13 @@ body.cart-page-active .whatsapp-float-root {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   font-weight: 500;
-  color: #7a4a58;
+  color: var(--ink-soft);
   list-style: none;
   margin: 0;
   padding: 0;
 }
-.elora-nav-links a { position: relative; padding-bottom: 4px; }
+.elora-nav-links a { position: relative; padding-bottom: 4px; transition: color 0.3s ease; }
+.elora-nav-links a:hover { color: var(--rose); }
 .elora-nav-links a::after {
   content: "";
   position: absolute;
@@ -3355,7 +3374,7 @@ body.cart-page-active .whatsapp-float-root {
   bottom: 0;
   width: 0;
   height: 1px;
-  background: var(--blush-deep);
+  background: var(--rose);
   transition: width 0.35s ease;
 }
 .elora-nav-links a:hover::after { width: 100%; }
@@ -3365,7 +3384,7 @@ body.cart-page-active .whatsapp-float-root {
   width: 38px;
   height: 38px;
   border-radius: 50%;
-  background: var(--blush-soft);
+  background: var(--milk-2);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3373,6 +3392,26 @@ body.cart-page-active .whatsapp-float-root {
   transition: background 0.3s;
 }
 .elora-icon-btn:hover { background: var(--blush); }
+.elora-bag-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 18px;
+  border-radius: 999px;
+  background: var(--blush);
+  color: var(--ink);
+  font-family: var(--font-body), sans-serif;
+  font-size: 12.5px;
+  font-weight: 600;
+  transition: background 0.3s ease;
+}
+.elora-bag-btn:hover { background: var(--blush-deep); color: #fff; }
+.elora-bag-icon {
+  width: 17px;
+  height: 17px;
+  animation: bagPulse 2.4s ease-in-out infinite;
+}
 .elora-cart-count {
   position: absolute;
   top: -4px;
@@ -3383,7 +3422,7 @@ body.cart-page-active .whatsapp-float-root {
   border-radius: 999px;
   background: var(--blush-deep);
   color: #fff;
-  font-family: var(--font-poppins), sans-serif;
+  font-family: var(--font-body), sans-serif;
   font-size: 10px;
   font-weight: 700;
   display: inline-flex;
@@ -3399,7 +3438,7 @@ body.cart-page-active .whatsapp-float-root {
   height: 38px;
   border-radius: 50%;
   border: none;
-  background: var(--blush-soft);
+  background: var(--milk-2);
   cursor: pointer;
 }
 .elora-mobile-toggle-bar,
@@ -3410,7 +3449,7 @@ body.cart-page-active .whatsapp-float-root {
   width: 18px;
   height: 2px;
   border-radius: 2px;
-  background: #8a3352;
+  background: var(--ink);
   transition: transform 0.25s ease, opacity 0.25s ease, top 0.25s ease;
 }
 .elora-mobile-toggle-bar { top: 18px; }
@@ -3433,7 +3472,7 @@ body.cart-page-active .whatsapp-float-root {
   right: 0;
   height: 100%;
   width: min(84vw, 360px);
-  background: var(--cream);
+  background: var(--milk);
   box-shadow: -18px 0 44px rgba(92, 35, 64, 0.22);
   padding: 22px 26px;
   display: flex;
@@ -3458,8 +3497,8 @@ body.cart-page-active .whatsapp-float-root {
   height: 36px;
   border-radius: 50%;
   border: none;
-  background: var(--blush-soft);
-  color: #8a3352;
+  background: var(--milk-2);
+  color: var(--ink);
   font-size: 14px;
   cursor: pointer;
 }
@@ -3472,7 +3511,7 @@ body.cart-page-active .whatsapp-float-root {
   gap: 22px;
 }
 .elora-mobile-links a {
-  font-family: var(--font-playfair), "Playfair Display", serif;
+  font-family: var(--font-display), "Fraunces", serif;
   font-size: 22px;
   color: var(--ink);
 }
@@ -3487,25 +3526,41 @@ body.cart-page-active .whatsapp-float-root {
   position: relative;
   padding: 70px 32px 40px;
   overflow: hidden;
-  background: radial-gradient(60% 55% at 82% 15%, #ffe3ec 0%, transparent 60%),
-    radial-gradient(55% 45% at 10% 85%, #ffd9e6 0%, transparent 60%),
-    linear-gradient(180deg, #fff6f8 0%, #ffeaf0 55%, #ffd9e4 100%);
+  background: radial-gradient(60% 55% at 82% 15%, var(--blush) 0%, transparent 60%),
+    radial-gradient(55% 45% at 10% 85%, var(--peach) 0%, transparent 60%),
+    linear-gradient(180deg, var(--milk) 0%, var(--milk-2) 55%, var(--blush) 100%);
+  background-size: 100% 100%;
+  animation: heroBreathe 10s ease-in-out infinite;
 }
 .elora-petal {
   position: absolute;
-  border-radius: 50% 0 50% 50%;
-  background: var(--blush-2);
-  opacity: 0.55;
-  animation: eDrift 9s ease-in-out infinite;
+  width: 14px;
+  height: 14px;
+  pointer-events: none;
+  animation: petalFall 13s ease-in-out infinite;
 }
+.elora-petal svg { width: 100%; height: 100%; display: block; }
 .elora-sparkle {
   position: absolute;
-  width: 6px;
-  height: 6px;
+  width: 16px;
+  height: 16px;
+  color: var(--gold);
+  pointer-events: none;
+  animation: eSparkle 2.6s ease-in-out infinite;
+}
+.elora-sparkle svg { width: 100%; height: 100%; display: block; }
+.elora-bubble {
+  position: absolute;
+  top: 22%;
+  left: 0;
+  width: 46px;
+  height: 46px;
   border-radius: 50%;
-  background: #fff;
-  box-shadow: 0 0 8px 2px rgba(255, 255, 255, 0.8);
-  animation: eSparkle 3.4s ease-in-out infinite;
+  pointer-events: none;
+  border: 1.5px solid rgba(255, 255, 255, 0.75);
+  background: radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.65), transparent 60%);
+  box-shadow: inset 0 0 14px rgba(255, 255, 255, 0.35);
+  animation: bubbleCross 16s linear infinite;
 }
 .elora-hero-grid {
   display: grid;
@@ -3523,19 +3578,19 @@ body.cart-page-active .whatsapp-float-root {
   font-size: clamp(38px, 5vw, 60px);
   line-height: 1.06;
   font-weight: 600;
-  color: #6e2946;
+  color: var(--ink);
   margin: 20px 0 24px;
   letter-spacing: -0.01em;
 }
 .elora-hero-title em {
-  font-family: var(--font-cormorant), "Cormorant Garamond", serif;
+  font-family: var(--font-display), "Fraunces", serif;
   font-style: italic;
   font-weight: 500;
-  color: var(--blush-deep);
+  color: var(--rose);
 }
 .elora-hero-lead {
   font-size: 15.5px;
-  color: #8a5b68;
+  color: var(--ink-soft);
   max-width: 420px;
   line-height: 1.75;
   margin-bottom: 34px;
@@ -3548,10 +3603,32 @@ body.cart-page-active .whatsapp-float-root {
   width: min(360px, 80%);
   border-radius: 34px;
   padding: 18px;
-  background: linear-gradient(160deg, #fff, #ffe4ec);
-  border: 1.5px solid #f5a8c3;
-  box-shadow: 0 30px 60px rgba(200, 90, 130, 0.25);
+  background: linear-gradient(160deg, #fff, var(--blush));
+  border: 1.5px solid var(--blush-deep);
+  box-shadow: 0 30px 60px rgba(217, 109, 143, 0.25);
   animation: eFloatY 7s ease-in-out infinite;
+}
+.elora-hero-frame.is-placeholder {
+  display: flex;
+  min-height: 340px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 32px;
+  background: linear-gradient(160deg, var(--milk), var(--blush));
+  border-style: dashed;
+}
+.elora-hero-frame-placeholder-icon {
+  width: 46px;
+  height: 46px;
+  margin: 0 auto 14px;
+  color: var(--blush-deep);
+}
+.elora-hero-frame-placeholder-text {
+  font-family: var(--font-display), "Fraunces", serif;
+  font-style: italic;
+  font-size: 17px;
+  color: var(--ink);
 }
 .elora-hero-frame img {
   width: 100%;
@@ -3560,24 +3637,26 @@ body.cart-page-active .whatsapp-float-root {
   display: block;
   object-fit: cover;
 }
-.elora-hero-badge {
+.elora-hero-chip {
   position: absolute;
   background: #fff;
-  border-radius: 18px;
-  padding: 13px 20px;
-  box-shadow: 0 20px 40px rgba(200, 100, 140, 0.2);
-  display: flex;
+  border-radius: 999px;
+  padding: 10px 18px;
+  box-shadow: 0 20px 40px rgba(217, 109, 143, 0.2);
+  display: inline-flex;
   align-items: center;
-  gap: 10px;
-  font-family: var(--font-poppins), sans-serif;
-  font-size: 12.5px;
+  gap: 8px;
+  font-family: var(--font-body), sans-serif;
+  font-size: 12px;
   font-weight: 600;
-  color: #8a3352;
+  color: var(--ink);
+  white-space: nowrap;
   z-index: 3;
 }
-.elora-hero-badge.b1 { top: 8px; left: 0; animation: eFloatY 6s ease-in-out infinite 0.3s; }
-.elora-hero-badge.b2 { bottom: 40px; right: 0; animation: eFloatY 6.5s ease-in-out infinite 0.6s; }
-.elora-hero-badge small { display: block; font-weight: 400; color: var(--ink-soft); font-size: 10.5px; }
+.elora-hero-chip.c1 { top: 4px; left: -6px; animation: eFloatY 6s ease-in-out infinite 0.3s; }
+.elora-hero-chip.c2 { top: 46%; right: -14px; animation: eFloatY 6.5s ease-in-out infinite 0.6s; }
+.elora-hero-chip.c3 { bottom: 24px; left: 6%; animation: eFloatY 7s ease-in-out infinite 0.9s; }
+.elora-hero-chip-dot { color: var(--blush-deep); }
 
 /* ---- marquee strip ---- */
 .elora-strip {
@@ -3594,10 +3673,11 @@ body.cart-page-active .whatsapp-float-root {
   animation-iteration-count: infinite;
 }
 .elora-marquee-item {
-  font-family: var(--font-cormorant), "Cormorant Garamond", serif;
-  font-style: italic;
-  font-size: 16px;
-  color: #ffd7e3;
+  font-family: var(--font-body), "Outfit", sans-serif;
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  color: var(--blush);
   padding: 0 34px;
   white-space: nowrap;
   display: inline-flex;
@@ -3612,8 +3692,8 @@ body.cart-page-active .whatsapp-float-root {
 /* ---- trust bar ---- */
 .elora-trust {
   background: #fff;
-  padding: 26px 0;
-  border-bottom: 1px solid #fbe4ea;
+  padding: 30px 0;
+  border-bottom: 1px solid var(--line);
 }
 .elora-trust-row {
   display: flex;
@@ -3622,29 +3702,39 @@ body.cart-page-active .whatsapp-float-root {
   margin: 0 auto;
   padding: 0 32px;
   flex-wrap: wrap;
-  gap: 18px;
+  gap: 22px;
 }
 .elora-trust-item {
   display: flex;
   align-items: center;
   gap: 10px;
   font-size: 13px;
-  color: #8a5b68;
+  color: var(--ink-soft);
   font-weight: 500;
 }
+.elora-trust-ico {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  color: var(--rose);
+  animation: iconFloat 3.4s ease-in-out infinite;
+}
+.elora-trust-item:nth-child(2) .elora-trust-ico { color: var(--gold); animation-delay: 0.4s; }
+.elora-trust-item:nth-child(3) .elora-trust-ico { animation-delay: 0.8s; }
+.elora-trust-item:nth-child(4) .elora-trust-ico { color: var(--gold); animation-delay: 1.2s; }
 
 /* ---- section shell ---- */
 .elora-section { padding: 96px 32px; max-width: 1280px; margin: 0 auto; }
 .elora-section-head { text-align: center; max-width: 580px; margin: 0 auto 60px; }
 .elora-h2 {
   font-size: clamp(30px, 4vw, 40px);
-  color: #6e2946;
+  color: var(--ink);
   margin-top: 12px;
   font-weight: 600;
   position: relative;
   display: inline-block;
 }
-.elora-section-sub { color: #8a6570; margin-top: 16px; line-height: 1.75; }
+.elora-section-sub { color: var(--ink-soft); margin-top: 16px; line-height: 1.75; }
 .elora-underline {
   display: block;
   width: 70px;
@@ -3690,7 +3780,7 @@ body.cart-page-active .whatsapp-float-root {
   left: 24px;
   background: var(--blush-deep);
   color: #fff;
-  font-family: var(--font-poppins), sans-serif;
+  font-family: var(--font-body), sans-serif;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.06em;
@@ -3698,18 +3788,36 @@ body.cart-page-active .whatsapp-float-root {
   border-radius: 999px;
   z-index: 2;
 }
+.elora-card,
+.elora-bento-feature {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+.elora-card::before,
+.elora-bento-feature::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(115deg, transparent 40%, rgba(255, 255, 255, 0.55) 50%, transparent 60%);
+  transform: translateX(-120%);
+  transition: transform 0.9s ease;
+}
+.elora-card:hover::before,
+.elora-bento-feature:hover::before { transform: translateX(120%); }
 .elora-card {
   background: #fff;
   border-radius: 24px;
   padding: 26px 22px 30px;
   text-align: center;
-  box-shadow: 0 12px 30px rgba(200, 120, 150, 0.08);
+  box-shadow: 0 12px 30px rgba(217, 109, 143, 0.08);
   transition: transform 0.35s ease, box-shadow 0.35s ease;
-  position: relative;
   display: flex;
   flex-direction: column;
 }
-.elora-card:hover { transform: translateY(-8px); box-shadow: 0 24px 48px rgba(200, 120, 150, 0.2); }
+.elora-card:hover { transform: translateY(-6px); box-shadow: 0 24px 48px rgba(217, 109, 143, 0.2); }
 .elora-feature-media { margin: 8px auto 20px; max-width: 240px; }
 .elora-card-media { display: block; margin: 0 auto 16px; max-width: 150px; }
 .elora-product-img {
@@ -3721,16 +3829,45 @@ body.cart-page-active .whatsapp-float-root {
 }
 .elora-card:hover .elora-product-img,
 .elora-bento-feature:hover .elora-product-img { transform: scale(1.05) rotate(-1deg); }
-.elora-card-title { font-size: 16px; font-weight: 500; margin-bottom: 6px; color: #6e2946; }
-.elora-feature-title { font-size: 24px; font-weight: 600; margin: 6px 0 8px; color: #6e2946; }
+.elora-card-title,
+.elora-feature-title {
+  position: relative;
+  display: inline-block;
+  transition: color 0.3s ease;
+}
+.elora-card-title::after,
+.elora-feature-title::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 0;
+  height: 2px;
+  background: var(--rose);
+  transition: width 0.35s ease;
+}
+.elora-card:hover .elora-card-title,
+.elora-bento-feature:hover .elora-feature-title { color: var(--rose); }
+.elora-card:hover .elora-card-title::after,
+.elora-bento-feature:hover .elora-feature-title::after { width: 100%; }
+.elora-card-title { font-size: 16px; font-weight: 500; margin-bottom: 6px; color: var(--ink); }
+.elora-feature-title { font-size: 24px; font-weight: 600; margin: 6px 0 8px; color: var(--ink); }
 .elora-feature-desc {
-  color: #8a5b68;
+  color: var(--ink-soft);
   font-size: 13.5px;
   margin: 0 auto 18px;
   max-width: 280px;
   line-height: 1.7;
 }
-.elora-price { color: #c05275; font-weight: 600; font-size: 16px; margin-bottom: 16px; }
+.elora-price {
+  color: var(--blush-deep);
+  font-weight: 600;
+  font-size: 16px;
+  margin-bottom: 16px;
+  transition: color 0.3s ease, font-weight 0.3s ease;
+}
+.elora-card:hover .elora-price,
+.elora-bento-feature:hover .elora-price { color: var(--rose); font-weight: 700; }
 .elora-card-actions {
   display: flex;
   flex-direction: column;
@@ -3741,10 +3878,10 @@ body.cart-page-active .whatsapp-float-root {
 .elora-add {
   padding: 12px 26px;
   border-radius: 999px;
-  border: 1.5px solid #f3b9cc;
-  background: #fff6f9;
-  color: #c05275;
-  font-family: var(--font-poppins), sans-serif;
+  border: 1.5px solid var(--blush);
+  background: var(--milk-2);
+  color: var(--rose);
+  font-family: var(--font-body), sans-serif;
   font-weight: 600;
   font-size: 13px;
   cursor: pointer;
@@ -3756,22 +3893,74 @@ body.cart-page-active .whatsapp-float-root {
 .elora-card-link {
   font-size: 12.5px;
   font-weight: 600;
-  color: #a2415f;
+  color: var(--rose);
   letter-spacing: 0.02em;
   border-bottom: 1px solid transparent;
   transition: border-color 0.3s;
 }
-.elora-card-link:hover { border-color: #a2415f; }
+.elora-card-link:hover { border-color: var(--rose); }
 .elora-skeleton {
   min-height: 220px;
   border-radius: 24px;
-  background: linear-gradient(160deg, #fff, #fff0f5);
+  background: linear-gradient(160deg, #fff, var(--milk-2));
   animation: eSparkle 1.6s ease-in-out infinite;
 }
 .elora-skeleton.elora-bento-feature { grid-row: span 2; min-height: 460px; }
 
+/* ---- empty-state placeholder cards (catalog with no products yet) ---- */
+.elora-empty-card {
+  min-height: 220px;
+  border-radius: 24px;
+  border: 2px dashed var(--blush-deep);
+  background: var(--milk-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 24px;
+}
+.elora-empty-card.elora-bento-feature { grid-row: span 2; min-height: 460px; border-width: 2.5px; }
+.elora-empty-card-text {
+  font-family: var(--font-display), "Fraunces", serif;
+  font-style: italic;
+  font-size: 16px;
+  color: var(--ink-soft);
+}
+
+/* ---- ritual (3-step) section ---- */
+.elora-ritual-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+.elora-ritual-step {
+  text-align: center;
+  padding: 8px 14px;
+}
+.elora-ritual-number {
+  font-family: var(--font-display), "Fraunces", serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: 42px;
+  color: var(--rose);
+  display: inline-block;
+  animation: numberPulse 3.2s ease-in-out infinite;
+}
+.elora-ritual-step:nth-child(2) .elora-ritual-number { animation-delay: 0.3s; }
+.elora-ritual-step:nth-child(3) .elora-ritual-number { animation-delay: 0.6s; }
+.elora-ritual-icon {
+  width: 32px;
+  height: 32px;
+  margin: 10px auto 14px;
+  color: var(--blush-deep);
+}
+.elora-ritual-step h3 { font-size: 19px; font-weight: 600; color: var(--ink); margin-bottom: 8px; }
+.elora-ritual-step p { font-size: 13.5px; color: var(--ink-soft); line-height: 1.7; max-width: 30ch; margin: 0 auto; }
+
 /* ---- story / philosophy ---- */
-.elora-story { background: linear-gradient(180deg, #fff 0%, #fff6f8 100%); position: relative; overflow: hidden; }
+.elora-story { background: linear-gradient(180deg, #fff 0%, var(--milk-2) 100%); position: relative; overflow: hidden; }
 .elora-story-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -3785,19 +3974,19 @@ body.cart-page-active .whatsapp-float-root {
   border-radius: 28px;
   overflow: hidden;
   min-height: 360px;
-  background: linear-gradient(160deg, #ffeef3, #ffd9e4);
-  box-shadow: 0 24px 50px rgba(200, 120, 150, 0.16);
+  background: linear-gradient(160deg, var(--blush), var(--peach));
+  box-shadow: 0 24px 50px rgba(217, 109, 143, 0.16);
 }
 .elora-story-visual img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.elora-story h2 { font-size: clamp(28px, 3.6vw, 38px); color: #6e2946; margin: 14px 0 18px; }
-.elora-story p { color: #8a6570; line-height: 1.85; margin-bottom: 16px; }
+.elora-story h2 { font-size: clamp(28px, 3.6vw, 38px); color: var(--ink); margin: 14px 0 18px; }
+.elora-story p { color: var(--ink-soft); line-height: 1.85; margin-bottom: 16px; }
 .elora-checklist { margin-top: 24px; display: flex; flex-direction: column; gap: 14px; list-style: none; padding: 0; }
 .elora-checklist li {
   display: flex;
   align-items: center;
   gap: 12px;
   font-size: 14px;
-  color: #6e2946;
+  color: var(--ink);
   font-weight: 500;
 }
 .elora-dot {
@@ -3823,10 +4012,10 @@ body.cart-page-active .whatsapp-float-root {
   border-radius: 999px;
   padding: 8px 16px;
   box-shadow: 0 8px 20px rgba(200, 120, 150, 0.1);
-  font-family: var(--font-poppins), sans-serif;
+  font-family: var(--font-body), sans-serif;
   font-size: 12px;
   font-weight: 600;
-  color: #8a3352;
+  color: var(--ink);
   white-space: nowrap;
 }
 
@@ -3838,13 +4027,20 @@ body.cart-page-active .whatsapp-float-root {
   text-align: center;
   position: relative;
   overflow: hidden;
-  background: linear-gradient(120deg, #ffb3c9, #ffd9e4, #ff9fc0, #ffe9ee);
+  background: linear-gradient(120deg, var(--rose), var(--blush-deep), var(--gold), var(--blush-deep));
   background-size: 300% 300%;
   animation: eGradient 10s ease infinite;
 }
-.elora-cta h2 { font-size: clamp(28px, 3.4vw, 36px); color: #6e2946; margin-bottom: 16px; }
-.elora-cta p { color: #8a3352; max-width: 460px; margin: 0 auto 30px; }
-.elora-cta-sparkles span { position: absolute; font-size: 18px; color: #fff; animation: eSparkle 3s ease-in-out infinite; }
+.elora-cta h2 { font-size: clamp(28px, 3.4vw, 36px); color: #fff; margin-bottom: 16px; }
+.elora-cta p { color: #fff; max-width: 460px; margin: 0 auto 30px; opacity: 0.92; }
+.elora-cta-sparkles span {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  color: #fff;
+  animation: eSparkle 2.6s ease-in-out infinite;
+}
+.elora-cta-sparkles svg { width: 100%; height: 100%; }
 
 /* ---- newsletter ---- */
 .elora-newsletter { max-width: 460px; margin: 0 auto; }
@@ -3862,21 +4058,21 @@ body.cart-page-active .whatsapp-float-root {
   border-radius: 999px;
   border: 1.5px solid rgba(255, 255, 255, 0.7);
   background: rgba(255, 255, 255, 0.85);
-  color: #6e2946;
-  font-family: var(--font-poppins), sans-serif;
+  color: var(--ink);
+  font-family: var(--font-body), sans-serif;
   font-size: 14px;
   outline: none;
   transition: border-color 0.3s, box-shadow 0.3s;
 }
-.elora-newsletter-input::placeholder { color: #b98ba0; }
+.elora-newsletter-input::placeholder { color: var(--ink-soft); }
 .elora-newsletter-input:focus { border-color: #fff; box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.4); }
-.elora-newsletter-input[aria-invalid="true"] { border-color: #d94f7a; }
+.elora-newsletter-input[aria-invalid="true"] { border-color: var(--rose); }
 .elora-newsletter-msg { margin-top: 14px; font-size: 13px; font-weight: 500; }
-.elora-newsletter-msg.is-success { color: #7a2a48; }
-.elora-newsletter-msg.is-error { color: #b3244f; }
+.elora-newsletter-msg.is-success { color: var(--ink); }
+.elora-newsletter-msg.is-error { color: var(--rose); }
 
 /* ---- footer ---- */
-.elora-footer { background: #5c2036; color: #f6d7e2; padding: 70px 32px 30px; }
+.elora-footer { background: var(--ink); color: var(--blush); padding: 70px 32px 30px; }
 .elora-footer-grid {
   display: grid;
   grid-template-columns: 1.4fr 1fr 1fr 1fr;
@@ -3885,20 +4081,37 @@ body.cart-page-active .whatsapp-float-root {
   margin: 0 auto 50px;
 }
 .elora-footer-logo {
-  font-family: var(--font-playfair), "Playfair Display", serif;
+  font-family: var(--font-display), "Fraunces", serif;
   font-size: 24px;
   color: #fff;
   margin-bottom: 14px;
 }
-.elora-footer-tag { font-size: 13px; color: #e8b8c8; line-height: 1.7; }
-.elora-footer h4 { font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 18px; color: #ffc2d6; }
+.elora-footer-tag { font-size: 13px; color: var(--blush); line-height: 1.7; }
+.elora-footer h4 { font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 18px; color: var(--blush); }
 .elora-footer ul { list-style: none; margin: 0; padding: 0; }
-.elora-footer li { margin-bottom: 10px; font-size: 13px; color: #e8b8c8; transition: color 0.3s; }
-.elora-footer a:hover { color: #fff; }
+.elora-footer li { margin-bottom: 10px; font-size: 13px; }
+.elora-footer li a {
+  position: relative;
+  color: var(--blush);
+  padding-bottom: 2px;
+  transition: color 0.3s ease;
+}
+.elora-footer li a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 1px;
+  background: var(--rose);
+  transition: width 0.35s ease;
+}
+.elora-footer li a:hover { color: #fff; }
+.elora-footer li a:hover::after { width: 100%; }
 .elora-footer-bottom {
   text-align: center;
   font-size: 12px;
-  color: #c98ba0;
+  color: var(--blush);
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   padding-top: 24px;
 }
@@ -3909,9 +4122,13 @@ body.cart-page-active .whatsapp-float-root {
   .elora-story-grid { grid-template-columns: 1fr; }
   .elora-hero-media { min-height: 380px; margin-top: 24px; }
   .elora-bento { grid-template-columns: 1fr 1fr; }
-  .elora-bento-feature { grid-column: span 2; grid-row: auto; }
-  .elora-skeleton.elora-bento-feature { grid-column: span 2; grid-row: auto; min-height: 260px; }
+  .elora-bento-feature,
+  .elora-skeleton.elora-bento-feature,
+  .elora-empty-card.elora-bento-feature { grid-column: span 2; grid-row: auto; }
+  .elora-skeleton.elora-bento-feature,
+  .elora-empty-card.elora-bento-feature { min-height: 260px; }
   .elora-nav-links { display: none; }
+  .elora-ritual-grid { grid-template-columns: 1fr; gap: 40px; }
   .elora-footer-grid { grid-template-columns: 1fr 1fr; }
   .elora-section { padding: 72px 24px; }
 }
@@ -3921,7 +4138,8 @@ body.cart-page-active .whatsapp-float-root {
   .elora-hero { padding: 48px 20px 30px; }
   .elora-bento { grid-template-columns: 1fr; }
   .elora-bento-feature,
-  .elora-skeleton.elora-bento-feature { grid-column: span 1; }
+  .elora-skeleton.elora-bento-feature,
+  .elora-empty-card.elora-bento-feature { grid-column: span 1; }
   .elora-trust-row { justify-content: flex-start; }
   .elora-cta { margin: 30px 20px 72px; padding: 56px 26px; }
 }
@@ -3948,41 +4166,61 @@ body.cart-page-active .whatsapp-float-root {
    EloraCartLink components render correctly here too.
    ===================================================================== */
 .elora-shop {
-  --blush: #ffd7e3;
-  --blush-2: #ffb8cf;
-  --blush-deep: #f490b0;
-  --blush-soft: #fff0f5;
-  --cream: #fff8f5;
-  --ink: #5c2340;
-  --ink-soft: #8a6570;
-  --gold: #e8b4a0;
+  --milk: #fffaf6;
+  --milk-2: #fdf3ec;
+  --blush: #ffdfe7;
+  --blush-deep: #e98aa6;
+  --rose: #d96d8f;
+  --peach: #ffd9c2;
+  --ink: #4a2b38;
+  --ink-soft: #93707e;
+  --line: #f2dfd6;
+  --gold: #d8ae8e;
 
   position: relative;
   z-index: 1;
   min-height: 100vh;
-  background: var(--cream);
+  background: var(--milk);
   color: var(--ink);
   color-scheme: light;
-  font-family: var(--font-poppins), "Poppins", sans-serif;
+  font-family: var(--font-body), "Outfit", sans-serif;
   font-weight: 300;
 }
 .elora-shop h1,
 .elora-shop h2,
 .elora-shop h3 {
-  font-family: var(--font-playfair), "Playfair Display", serif;
+  font-family: var(--font-display), "Fraunces", serif;
   font-weight: 600;
-  color: #6e2946;
+  color: var(--ink);
 }
 .elora-shop-eyebrow {
   font-size: 11px;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: #c76f8c;
+  color: var(--rose);
   font-weight: 600;
 }
 .elora-shop-muted { color: var(--ink-soft); }
-.elora-shop-price { color: #c05275; font-weight: 600; }
-.elora-shop-check { color: #d67aa0; }
+.elora-shop-price { color: var(--blush-deep); font-weight: 600; transition: color 0.3s ease, font-weight 0.3s ease; }
+.elora-shop-check { color: var(--rose); }
+.elora-shop-card-title {
+  position: relative;
+  display: inline-block;
+  transition: color 0.3s ease;
+}
+.elora-shop-card-title::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 0;
+  height: 2px;
+  background: var(--rose);
+  transition: width 0.35s ease;
+}
+.elora-shop-card:hover .elora-shop-card-title { color: var(--rose); }
+.elora-shop-card:hover .elora-shop-card-title::after { width: 100%; }
+.elora-shop-card:hover .elora-shop-price { color: var(--rose); font-weight: 700; }
 
 /* ---- panels / surfaces ---- */
 .elora-shop-panel {
@@ -3993,7 +4231,7 @@ body.cart-page-active .whatsapp-float-root {
   box-shadow: 0 18px 46px rgba(200, 120, 150, 0.12);
 }
 .elora-shop-soft {
-  background: var(--blush-soft);
+  background: var(--milk-2);
   border: 1px solid rgba(244, 144, 176, 0.2);
   border-radius: 18px;
 }
@@ -4025,7 +4263,7 @@ body.cart-page-active .whatsapp-float-root {
   border-radius: 14px;
   border: 1.5px solid rgba(244, 144, 176, 0.4);
   background: #fff;
-  color: #6e2946;
+  color: var(--ink);
   padding: 11px 14px;
   font-size: 14px;
   outline: none;
@@ -4051,8 +4289,8 @@ body.cart-page-active .whatsapp-float-root {
   height: 32px;
   border-radius: 999px;
   border: none;
-  background: var(--blush-soft);
-  color: #c05275;
+  background: var(--milk-2);
+  color: var(--rose);
   font-weight: 700;
   cursor: pointer;
   transition: background 0.3s ease, color 0.3s ease;
@@ -4062,7 +4300,7 @@ body.cart-page-active .whatsapp-float-root {
   min-width: 40px;
   text-align: center;
   font-weight: 600;
-  color: #6e2946;
+  color: var(--ink);
 }
 
 /* ---- badges / chips ---- */
@@ -4088,7 +4326,7 @@ body.cart-page-active .whatsapp-float-root {
   padding: 10px 12px;
   font-size: 12px;
   font-weight: 500;
-  color: #7a4a58;
+  color: var(--ink-soft);
 }
 .elora-shop-trust-ico {
   display: inline-flex;
@@ -4098,7 +4336,7 @@ body.cart-page-active .whatsapp-float-root {
   height: 28px;
   border-radius: 10px;
   border: 1px solid rgba(244, 144, 176, 0.3);
-  background: var(--blush-soft);
+  background: var(--milk-2);
   color: var(--blush-deep);
   flex-shrink: 0;
 }
@@ -4109,7 +4347,7 @@ body.cart-page-active .whatsapp-float-root {
   border-radius: 999px;
   border: 1px solid rgba(212, 122, 160, 0.4);
   background: rgba(255, 214, 227, 0.4);
-  color: #a2415f;
+  color: var(--rose);
   font-size: 10.5px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -4121,7 +4359,7 @@ body.cart-page-active .whatsapp-float-root {
   border-radius: 999px;
   border: 1px solid rgba(160, 120, 135, 0.3);
   background: #f4e9ee;
-  color: #9a7280;
+  color: var(--ink-soft);
   font-size: 10.5px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -4132,27 +4370,41 @@ body.cart-page-active .whatsapp-float-root {
 .elora-shop-msg {
   border-radius: 14px;
   border: 1px solid rgba(122, 42, 72, 0.18);
-  background: var(--blush-soft);
-  color: #7a2a48;
+  background: var(--milk-2);
+  color: var(--ink);
   font-size: 13px;
   padding: 10px 14px;
 }
 
 /* ---- review + product cards ---- */
 .elora-shop-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   background: #fff;
   border: 1px solid rgba(244, 144, 176, 0.2);
   border-radius: 24px;
-  box-shadow: 0 12px 30px rgba(200, 120, 150, 0.1);
+  box-shadow: 0 12px 30px rgba(217, 109, 143, 0.1);
   transition: transform 0.35s ease, box-shadow 0.35s ease;
 }
+.elora-shop-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(115deg, transparent 40%, rgba(255, 255, 255, 0.55) 50%, transparent 60%);
+  transform: translateX(-120%);
+  transition: transform 0.9s ease;
+}
+.elora-shop-card:hover::before { transform: translateX(120%); }
 .elora-shop-card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 20px 42px rgba(200, 120, 150, 0.18);
+  box-shadow: 0 20px 42px rgba(217, 109, 143, 0.18);
 }
 .elora-shop-stars { color: #f0a52b; }
 .elora-shop-avatar {
-  background: linear-gradient(135deg, var(--blush-2), var(--blush-deep));
+  background: linear-gradient(135deg, var(--rose), var(--blush-deep));
   border-radius: 999px;
 }
 
@@ -4177,10 +4429,10 @@ body.cart-page-active .whatsapp-float-root {
 }
 
 /* ---- rich product description on the light theme ---- */
-.elora-shop .product-description-rich { color: #6b4a55; }
+.elora-shop .product-description-rich { color: var(--ink-soft); }
 .elora-shop .product-description-rich strong,
-.elora-shop .product-description-rich b { color: #6e2946; }
-.elora-shop .product-description-rich a { color: #c05275; }
+.elora-shop .product-description-rich b { color: var(--ink); }
+.elora-shop .product-description-rich a { color: var(--rose); }
 
 /* ---- cart line + summary ---- */
 .elora-shop-line {
@@ -4194,12 +4446,12 @@ body.cart-page-active .whatsapp-float-root {
   border-radius: 22px;
 }
 .elora-shop-remove {
-  color: #b3244f;
+  color: var(--rose);
   font-size: 12px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   transition: color 0.3s ease;
 }
-.elora-shop-remove:hover { color: #7a2a48; }
+.elora-shop-remove:hover { color: var(--ink); }
 .elora-shop-divide { border-top: 1px solid rgba(244, 144, 176, 0.2); }

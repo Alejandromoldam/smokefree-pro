@@ -9,33 +9,84 @@ import EloraBestsellers from "@/components/elora/EloraBestsellers";
 import EloraCartLink from "@/components/elora/EloraCartLink";
 import NewsletterForm from "@/components/elora/NewsletterForm";
 import MobileNav from "@/components/elora/MobileNav";
+import {
+  PackageIcon,
+  LockIcon,
+  LeafIcon,
+  HeartIcon,
+  DropIcon,
+  BubbleIcon,
+  BrushIcon,
+  SparkleStar,
+  PetalShape,
+} from "@/components/elora/Icons";
 
 // Reviews are only shown when real, connected reviews exist. No system is
 // wired yet, so the section stays hidden behind this flag instead of inventing
 // testimonials.
 const SHOW_REVIEWS = false;
 
-const BRAND_VALUES = ["SKIN FIRST", "FÓRMULAS LIMPIAS", "RESULTADOS REALES", "HECHO PARA TI"];
-
-const TRUST_ITEMS = [
-  "🚚 Envíos a todo el mundo",
-  "🔒 Pago 100% seguro",
-  "🌿 Ingredientes reales, sin relleno",
-  "💬 Atención personalizada",
+const ANNOUNCEMENT_ITEMS = [
+  "Envío gratis desde USD 40",
+  "Ingredientes reales",
+  "Cruelty free",
+  "Pago seguro · Visa · Mastercard · PSE · Bancolombia",
 ];
 
 const NAV_ITEMS = [
-  { label: "Novedades", href: "#bestsellers" },
   { label: "Skincare", href: "/categorias" },
-  { label: "Rituales", href: "#bestsellers" },
-  { label: "Nuestra historia", href: "#filosofia" },
+  { label: "Maquillaje", href: "/categorias" },
+  { label: "Tu ritual", href: "#ritual" },
+  { label: "Contacto", href: "/contacto" },
 ];
 
-const PHILOSOPHY = [
-  "Ingredientes reales, sin relleno",
-  "Fórmulas limpias y conscientes",
-  "Pensado para pieles reales",
-  "Cruelty-free",
+const TRUST_ITEMS = [
+  { Icon: PackageIcon, label: "Envíos a todo el mundo" },
+  { Icon: LockIcon, label: "Pago 100% seguro" },
+  { Icon: LeafIcon, label: "Ingredientes reales" },
+  { Icon: HeartIcon, label: "Cruelty free" },
+];
+
+const RITUAL_STEPS = [
+  {
+    number: "01",
+    title: "Limpia",
+    desc: "Retira impurezas y maquillaje sin resecar la piel.",
+    Icon: DropIcon,
+  },
+  {
+    number: "02",
+    title: "Trata & hidrata",
+    desc: "Nutre en profundidad con ingredientes reales, sin relleno.",
+    Icon: BubbleIcon,
+  },
+  {
+    number: "03",
+    title: "Realza",
+    desc: "Un toque final que ilumina tu piel tal como es.",
+    Icon: BrushIcon,
+  },
+];
+
+const HONEST_BEAUTY = [
+  "Sin cifras infladas ni promesas imposibles",
+  "Sin reseñas inventadas: solo lo que es real",
+  "Cruelty free, siempre",
+  "Precios claros en USD, sin sorpresas",
+];
+
+const HERO_PETALS = [
+  { top: "10%", left: "4%", size: 14, duration: 13, delay: 0, tone: "blush" as const },
+  { top: "24%", left: "16%", size: 10, duration: 16, delay: 2.4, tone: "blush-deep" as const },
+  { top: "6%", left: "34%", size: 12, duration: 14, delay: 4.8, tone: "blush" as const },
+  { top: "18%", left: "46%", size: 16, duration: 18, delay: 1.2, tone: "blush-deep" as const },
+  { top: "4%", left: "60%", size: 11, duration: 15, delay: 6, tone: "blush" as const },
+];
+
+const HERO_SPARKLES = [
+  { top: "8%", right: "26%", delay: 0 },
+  { top: "58%", right: "6%", delay: 0.9 },
+  { top: "34%", right: "44%", delay: 1.8 },
 ];
 
 export const metadata: Metadata = {
@@ -57,135 +108,142 @@ export const metadata: Metadata = {
   },
 };
 
-function formatMoney(amount: string, currencyCode: string) {
-  const value = Number(amount);
-  if (Number.isNaN(value)) {
-    return `${amount} ${currencyCode}`;
-  }
-  return new Intl.NumberFormat("es-MX", {
-    style: "currency",
-    currency: currencyCode || "USD",
-    maximumFractionDigits: 2,
-  }).format(value);
-}
-
 export default async function Home() {
   const catalogSnapshot = await fetchHomeCatalogSnapshot();
   const featured = catalogSnapshot.products[0] ?? null;
-  const shopHref = featured?.productUrl || "#bestsellers";
 
   return (
     <main className="elora-home">
       <div className="elora-bg" aria-hidden="true" />
 
-      {/* 1 — Nav ---------------------------------------------------------- */}
+      {/* 1 — Announcement bar --------------------------------------------- */}
+      <div className="elora-strip">
+        <Marquee
+          items={ANNOUNCEMENT_ITEMS}
+          durationSeconds={28}
+          ariaLabel="Beneficios de Elora Skin"
+        />
+      </div>
+
+      {/* 2 — Nav ------------------------------------------------------------ */}
       <header className="elora-header">
         <nav className="elora-nav">
           <Link href="/" className="elora-logo">
             Elora <span>Skin</span>
           </Link>
           <ul className="elora-nav-links">
-            <li>
-              <a href="#bestsellers">Novedades</a>
-            </li>
-            <li>
-              <a href="/categorias">Skincare</a>
-            </li>
-            <li>
-              <a href="#bestsellers">Rituales</a>
-            </li>
-            <li>
-              <a href="#filosofia">Nuestra historia</a>
-            </li>
+            {NAV_ITEMS.map((item) => (
+              <li key={item.label}>
+                <a href={item.href}>{item.label}</a>
+              </li>
+            ))}
           </ul>
           <div className="elora-nav-icons">
-            <a href="/categorias" className="elora-icon-btn" aria-label="Explorar catálogo">
-              <span aria-hidden="true">🔍</span>
-            </a>
             <EloraCartLink />
             <MobileNav items={NAV_ITEMS} />
           </div>
         </nav>
       </header>
 
-      {/* 2 — Hero -------------------------------------------------------- */}
+      {/* 3 — Hero ------------------------------------------------------------ */}
       <section className="elora-hero" id="inicio">
-        <span className="elora-petal" style={{ width: 26, height: 26, top: 120, left: "6%" }} />
-        <span
-          className="elora-petal"
-          style={{ width: 18, height: 18, top: 320, left: "20%", animationDelay: "2s" }}
-        />
-        <span
-          className="elora-petal"
-          style={{ width: 22, height: 22, bottom: 60, left: "12%", animationDelay: "4s" }}
-        />
-        <span className="elora-sparkle" style={{ top: 90, right: "30%" }} />
-        <span className="elora-sparkle" style={{ top: 260, right: "8%", animationDelay: "1.2s" }} />
-        <span className="elora-sparkle" style={{ bottom: 120, right: "40%", animationDelay: "2.4s" }} />
+        {HERO_PETALS.map((petal, index) => (
+          <span
+            key={`petal-${index}`}
+            className="elora-petal"
+            aria-hidden="true"
+            style={{
+              top: petal.top,
+              left: petal.left,
+              width: petal.size,
+              height: petal.size,
+              color: `var(--${petal.tone})`,
+              animationDuration: `${petal.duration}s`,
+              animationDelay: `${petal.delay}s`,
+            }}
+          >
+            <PetalShape />
+          </span>
+        ))}
+        {HERO_SPARKLES.map((sparkle, index) => (
+          <span
+            key={`sparkle-${index}`}
+            className="elora-sparkle"
+            aria-hidden="true"
+            style={{ top: sparkle.top, right: sparkle.right, animationDelay: `${sparkle.delay}s` }}
+          >
+            <SparkleStar />
+          </span>
+        ))}
+        <span className="elora-bubble" aria-hidden="true" />
 
         <div className="elora-hero-grid">
           <div className="elora-hero-copy">
             <span className="elora-eyebrow">Nueva colección facial · 2026</span>
             <h1 className="elora-hero-title">
-              Descubre la belleza <em>que</em> llevas dentro
+              Tu piel, pero en su <em>mejor día.</em>
             </h1>
             <p className="elora-hero-lead">
               Rituales de skincare formulados con ingredientes reales, fórmulas
               limpias y un cuidado que se siente como un abrazo.
             </p>
             <div className="elora-hero-cta">
-              <PillButton href={shopHref}>Comprar ahora ✨</PillButton>
-              <PillButton href="#filosofia" variant="outline">
-                Ver rituales
+              <PillButton href="#bestsellers">Comprar bestsellers</PillButton>
+              <PillButton href="#ritual" variant="outline">
+                Descubre tu ritual
               </PillButton>
             </div>
           </div>
 
           <div className="elora-hero-media">
             {featured ? (
-              <>
-                <div className="elora-hero-frame">
-                  <Image
-                    src={featured.imageUrl}
-                    alt={featured.imageAlt || featured.title}
-                    width={640}
-                    height={800}
-                    priority
-                    sizes="(max-width: 980px) 80vw, 360px"
-                  />
-                </div>
-                {/* Only real data on badges: featured product price + a brand
-                    value. No invented ratings, rankings or percentages. */}
-                <div className="elora-hero-badge b1">
-                  <span>
-                    Desde {formatMoney(featured.priceAmount, featured.priceCurrency)}
-                    <small>Producto destacado</small>
-                  </span>
-                </div>
-                <div className="elora-hero-badge b2">🌿 Ingredientes reales</div>
-              </>
+              <div className="elora-hero-frame">
+                <Image
+                  src={featured.imageUrl}
+                  alt={featured.imageAlt || featured.title}
+                  width={640}
+                  height={800}
+                  priority
+                  sizes="(max-width: 980px) 80vw, 360px"
+                />
+              </div>
             ) : (
-              <div className="elora-hero-frame" aria-hidden="true" style={{ minHeight: 360 }} />
+              <div className="elora-hero-frame is-placeholder" aria-hidden="true">
+                <div>
+                  <SparkleStar className="elora-hero-frame-placeholder-icon" />
+                  <p className="elora-hero-frame-placeholder-text">
+                    Muy pronto — nueva colección
+                  </p>
+                </div>
+              </div>
             )}
+
+            {/* Static, non-invented taglines — no price or rating tied to
+                real-time catalog data, so they render even while the catalog
+                is empty. */}
+            <div className="elora-hero-chip c1">
+              <SparkleStar className="elora-hero-chip-dot" />
+              Glow real
+            </div>
+            <div className="elora-hero-chip c2">
+              <SparkleStar className="elora-hero-chip-dot" />
+              Dermo-amigable
+            </div>
+            <div className="elora-hero-chip c3">
+              <SparkleStar className="elora-hero-chip-dot" />
+              Pago seguro · Tarjeta · PSE · Bancolombia
+            </div>
           </div>
         </div>
       </section>
 
-      {/* 3 — Brand values marquee --------------------------------------- */}
-      <div className="elora-strip">
-        <Marquee
-          items={BRAND_VALUES}
-          durationSeconds={26}
-          ariaLabel="Valores de marca Elora Skin"
-        />
-      </div>
-
       {/* 4 — Trust bar -------------------------------------------------- */}
       <div className="elora-trust">
         <div className="elora-trust-row">
-          {TRUST_ITEMS.map((item) => (
-            <div key={item} className="elora-trust-item">
-              {item}
+          {TRUST_ITEMS.map(({ Icon, label }) => (
+            <div key={label} className="elora-trust-item">
+              <Icon className="elora-trust-ico" />
+              {label}
             </div>
           ))}
         </div>
@@ -194,7 +252,37 @@ export default async function Home() {
       {/* 5 — Bestsellers (real /api/catalog data) ----------------------- */}
       <EloraBestsellers initialProducts={catalogSnapshot.products} />
 
-      {/* 6 — Philosophy with cascading checklist ------------------------ */}
+      {/* 6 — Un ritual de 3 minutos -------------------------------------- */}
+      <section className="elora-section" id="ritual">
+        <RevealOnScroll className="elora-section-head" as="div">
+          <span className="elora-eyebrow">Tu ritual</span>
+          <h2 className="elora-h2">
+            Un ritual de 3 minutos
+            <span className="elora-underline" />
+          </h2>
+          <p className="elora-section-sub">
+            Tres pasos simples, pensados para volverse un momento tuyo cada día.
+          </p>
+        </RevealOnScroll>
+
+        <div className="elora-ritual-grid">
+          {RITUAL_STEPS.map((step, index) => (
+            <RevealOnScroll
+              key={step.number}
+              as="article"
+              className="elora-ritual-step"
+              delay={(Math.min(index + 1, 4) as 1 | 2 | 3 | 4)}
+            >
+              <span className="elora-ritual-number">{step.number}</span>
+              <step.Icon className="elora-ritual-icon" />
+              <h3>{step.title}</h3>
+              <p>{step.desc}</p>
+            </RevealOnScroll>
+          ))}
+        </div>
+      </section>
+
+      {/* 7 — Belleza honesta ---------------------------------------------- */}
       <section className="elora-section elora-story" id="filosofia">
         <div className="elora-story-grid">
           <RevealOnScroll className="elora-story-visual" as="div">
@@ -210,7 +298,7 @@ export default async function Home() {
           </RevealOnScroll>
           <div>
             <RevealOnScroll as="span" className="elora-eyebrow">
-              Nuestra filosofía
+              Belleza honesta
             </RevealOnScroll>
             <RevealOnScroll as="div" delay={1}>
               <h2>Ingredientes reales, rituales honestos</h2>
@@ -223,7 +311,7 @@ export default async function Home() {
               </p>
             </RevealOnScroll>
             <ul className="elora-checklist">
-              {PHILOSOPHY.map((item, index) => (
+              {HONEST_BEAUTY.map((item, index) => (
                 <RevealOnScroll
                   key={item}
                   as="li"
@@ -240,7 +328,7 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* 7 — Reviews (only when real reviews are connected) -------------- */}
+      {/* Reviews (only when real reviews are connected) ------------------ */}
       {SHOW_REVIEWS ? (
         <section className="elora-section" id="resenas">
           <div className="elora-section-head">
@@ -258,11 +346,17 @@ export default async function Home() {
       <section id="newsletter">
         <RevealOnScroll className="elora-cta" as="div">
           <div className="elora-cta-sparkles" aria-hidden="true">
-            <span style={{ top: 20, left: "10%" }}>✦</span>
-            <span style={{ top: 60, right: "14%", animationDelay: "1s" }}>✦</span>
-            <span style={{ bottom: 24, left: "22%", animationDelay: "2s" }}>✦</span>
+            <span style={{ top: 20, left: "10%" }}>
+              <SparkleStar />
+            </span>
+            <span style={{ top: 60, right: "14%", animationDelay: "1s" }}>
+              <SparkleStar />
+            </span>
+            <span style={{ bottom: 24, left: "22%", animationDelay: "2s" }}>
+              <SparkleStar />
+            </span>
           </div>
-          <h2>Tu ritual de belleza comienza hoy</h2>
+          <h2>Únete al club del glow</h2>
           <p>Suscríbete y recibe novedades y beneficios de Elora Skin en tu correo.</p>
           <NewsletterForm />
         </RevealOnScroll>
@@ -281,13 +375,13 @@ export default async function Home() {
             <h4>Tienda</h4>
             <ul>
               <li>
-                <a href="#bestsellers">Novedades</a>
-              </li>
-              <li>
-                <a href="#bestsellers">Bestsellers</a>
-              </li>
-              <li>
                 <a href="/categorias">Skincare</a>
+              </li>
+              <li>
+                <a href="/categorias">Maquillaje</a>
+              </li>
+              <li>
+                <a href="/cart">Mi bolsa</a>
               </li>
             </ul>
           </div>
@@ -295,13 +389,13 @@ export default async function Home() {
             <h4>Ayuda</h4>
             <ul>
               <li>
+                <a href="/contacto">Contacto</a>
+              </li>
+              <li>
                 <a href="/politica-de-envios">Envíos</a>
               </li>
               <li>
                 <a href="/politica-de-devoluciones">Devoluciones</a>
-              </li>
-              <li>
-                <a href="/contacto">Contacto</a>
               </li>
             </ul>
           </div>
