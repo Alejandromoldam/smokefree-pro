@@ -16,7 +16,7 @@ import {
 export const revalidate = 1800;
 
 const FALLBACK_DESCRIPTION =
-  "Categoria de productos premium en All In One Store.";
+  "Categoria de productos premium en Elora Skin.";
 
 function formatMoney(amount: string, currencyCode: string) {
   const value = Number(amount);
@@ -57,13 +57,13 @@ export async function generateMetadata({
   const imageUrl = category?.products?.[0]?.imageUrl || `${siteUrl}/producto-real.png`;
 
   return {
-    title: `${title} | All In One Store`,
+    title: `${title} | Elora Skin`,
     description,
     alternates: {
       canonical: canonicalUrl,
     },
     openGraph: {
-      title: `${title} | All In One Store`,
+      title: `${title} | Elora Skin`,
       description,
       url: canonicalUrl,
       type: "website",
@@ -76,7 +76,7 @@ export async function generateMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title: `${title} | All In One Store`,
+      title: `${title} | Elora Skin`,
       description,
       images: [imageUrl],
     },

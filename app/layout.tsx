@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import { Inter } from "next/font/google";
+import {
+  Inter,
+  Playfair_Display,
+  Poppins,
+  Cormorant_Garamond,
+} from "next/font/google";
 import BackgroundEffects from "@/components/BackgroundEffects";
 import AIAssistantWidget from "@/components/AIAssistantWidget";
 import FloatingWhatsAppButton from "@/components/FloatingWhatsAppButton";
@@ -16,14 +21,36 @@ import {
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
+
+// Elora Skin brand type system (loaded via next/font, exposed as CSS variables).
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
+  style: ["normal", "italic"],
+  variable: "--font-playfair",
+  display: "swap",
+});
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
+  variable: "--font-poppins",
+  display: "swap",
+});
+const cormorant = Cormorant_Garamond({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  style: ["italic"],
+  variable: "--font-cormorant",
+  display: "swap",
+});
 const SITE_DESCRIPTION =
-  "All In One ofrece un catalogo de tecnologia premium con disponibilidad real y una experiencia de compra segura.";
+  "Elora Skin ofrece skincare premium con disponibilidad real y una experiencia de compra segura.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://allinonestore.lat"),
   title: {
-    default: "All In One",
-    template: "%s | All In One",
+    default: "Elora Skin",
+    template: "%s | Elora Skin",
   },
   description: SITE_DESCRIPTION,
   alternates: {
@@ -44,21 +71,21 @@ export const metadata: Metadata = {
     google: "hiKxUIqm2HusZgwphFrn-WHSSMrphwm0QK9X3Uug9Og",
   },
   openGraph: {
-    title: "All In One",
+    title: "Elora Skin",
     description: SITE_DESCRIPTION,
     url: "https://allinonestore.lat",
-    siteName: "All In One",
+    siteName: "Elora Skin",
     type: "website",
     images: [
       {
         url: "/producto-real.png",
-        alt: "All In One Store",
+        alt: "Elora Skin",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "All In One",
+    title: "Elora Skin",
     description: SITE_DESCRIPTION,
     images: ["/producto-real.png"],
   },
@@ -78,7 +105,9 @@ export default function RootLayout({
 
   return (
     <html lang="es">
-      <body className={`${inter.className} relative overflow-x-hidden`}>
+      <body
+        className={`${inter.className} ${playfair.variable} ${poppins.variable} ${cormorant.variable} relative overflow-x-hidden`}
+      >
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: organizationJsonLd }}

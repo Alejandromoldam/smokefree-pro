@@ -32,7 +32,7 @@ export function buildOrganizationSchema(siteUrl: string) {
     "@context": "https://schema.org",
     "@type": "Organization",
     "@id": `${siteUrl}/#organization`,
-    name: "All In One",
+    name: "Elora Skin",
     url: siteUrl,
     logo: `${siteUrl}/producto-real.png`,
   };
@@ -43,7 +43,7 @@ export function buildWebsiteSchema(siteUrl: string) {
     "@context": "https://schema.org",
     "@type": "WebSite",
     "@id": `${siteUrl}/#website`,
-    name: "All In One",
+    name: "Elora Skin",
     url: siteUrl,
     inLanguage: "es",
     potentialAction: {
@@ -82,7 +82,7 @@ export function buildProductSchema(input: ProductSchemaInput) {
     ...(input.category ? { category: input.category } : {}),
     brand: {
       "@type": "Brand",
-      name: "All In One",
+      name: "Elora Skin",
     },
     offers: {
       "@type": "Offer",
@@ -95,7 +95,7 @@ export function buildProductSchema(input: ProductSchemaInput) {
       itemCondition: "https://schema.org/NewCondition",
       seller: {
         "@type": "Organization",
-        name: "All In One",
+        name: "Elora Skin",
       },
     },
   };

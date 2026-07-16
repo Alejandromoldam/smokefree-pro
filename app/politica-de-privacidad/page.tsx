@@ -3,23 +3,23 @@ import LegalPageShell from "@/components/LegalPageShell";
 
 const PAGE_TITLE = "Politica de privacidad";
 const PAGE_DESCRIPTION =
-  "Conoce como All In One recopila, usa y protege tu informacion personal durante la navegacion y compra.";
+  "Conoce como Elora Skin recopila, usa y protege tu informacion personal durante la navegacion y compra.";
 
 export const metadata: Metadata = {
-  title: `${PAGE_TITLE} | All In One Store`,
+  title: `${PAGE_TITLE} | Elora Skin`,
   description: PAGE_DESCRIPTION,
   alternates: {
     canonical: "https://allinonestore.lat/politica-de-privacidad",
   },
   openGraph: {
-    title: `${PAGE_TITLE} | All In One Store`,
+    title: `${PAGE_TITLE} | Elora Skin`,
     description: PAGE_DESCRIPTION,
     url: "https://allinonestore.lat/politica-de-privacidad",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: `${PAGE_TITLE} | All In One Store`,
+    title: `${PAGE_TITLE} | Elora Skin`,
     description: PAGE_DESCRIPTION,
   },
 };
@@ -28,7 +28,7 @@ export default function PrivacyPolicyPage() {
   return (
     <LegalPageShell
       title={PAGE_TITLE}
-      subtitle="En All In One Store tratamos tu informacion con responsabilidad y con enfoque en seguridad, transparencia y experiencia de compra."
+      subtitle="En Elora Skin tratamos tu informacion con responsabilidad y con enfoque en seguridad, transparencia y experiencia de compra."
       updatedAt="31/05/2026"
     >
       <section className="space-y-3">

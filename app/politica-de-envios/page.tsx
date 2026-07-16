@@ -3,23 +3,23 @@ import LegalPageShell from "@/components/LegalPageShell";
 
 const PAGE_TITLE = "Politica de envios";
 const PAGE_DESCRIPTION =
-  "Tiempos de entrega, cobertura, costos y seguimiento de pedidos en All In One Store.";
+  "Tiempos de entrega, cobertura, costos y seguimiento de pedidos en Elora Skin.";
 
 export const metadata: Metadata = {
-  title: `${PAGE_TITLE} | All In One Store`,
+  title: `${PAGE_TITLE} | Elora Skin`,
   description: PAGE_DESCRIPTION,
   alternates: {
     canonical: "https://allinonestore.lat/politica-de-envios",
   },
   openGraph: {
-    title: `${PAGE_TITLE} | All In One Store`,
+    title: `${PAGE_TITLE} | Elora Skin`,
     description: PAGE_DESCRIPTION,
     url: "https://allinonestore.lat/politica-de-envios",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: `${PAGE_TITLE} | All In One Store`,
+    title: `${PAGE_TITLE} | Elora Skin`,
     description: PAGE_DESCRIPTION,
   },
 };

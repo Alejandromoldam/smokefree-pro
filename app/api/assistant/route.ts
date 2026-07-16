@@ -631,7 +631,7 @@ async function askOpenAI(options: {
     .join("\n");
 
   const systemPrompt = [
-    "You are the All In One ecommerce assistant.",
+    "You are the Elora Skin ecommerce assistant.",
     `Always respond in ${pack.languageForPrompt}.`,
     "If the customer mixes languages, use the predominant language of the latest customer message.",
     "Use a professional, clear, objective, polite, and commercial tone.",

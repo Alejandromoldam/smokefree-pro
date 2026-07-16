@@ -10,7 +10,7 @@ import {
 export const revalidate = 1800;
 
 const FALLBACK_DESCRIPTION =
-  "Explora el catalogo por categorias en All In One y encuentra productos premium con informacion actualizada para comprar con confianza.";
+  "Explora el catalogo por categorias en Elora Skin y encuentra skincare premium con informacion actualizada para comprar con confianza.";
 
 function compactText(text: string, maxLength = 160) {
   const clean = text.replace(/\s+/g, " ").trim();
@@ -20,20 +20,20 @@ function compactText(text: string, maxLength = 160) {
 }
 
 export const metadata: Metadata = {
-  title: "Catálogo por categorías | All In One",
+  title: "Catálogo por categorías | Elora Skin",
   description: FALLBACK_DESCRIPTION,
   alternates: {
     canonical: "https://allinonestore.lat/categorias",
   },
   openGraph: {
-    title: "Catálogo por categorías | All In One",
+    title: "Catálogo por categorías | Elora Skin",
     description: FALLBACK_DESCRIPTION,
     url: "https://allinonestore.lat/categorias",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Catálogo por categorías | All In One",
+    title: "Catálogo por categorías | Elora Skin",
     description: FALLBACK_DESCRIPTION,
   },
 };
@@ -65,7 +65,7 @@ export default async function CategoriesIndexPage() {
           </h1>
           <p className="mt-3 max-w-2xl text-sm leading-relaxed text-gray-300 sm:text-base">
             Selecciona una categoria para ver productos reales sincronizados desde
-            Shopify en All In One Store.
+            Shopify en Elora Skin.
           </p>
         </div>
 

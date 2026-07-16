@@ -3,32 +3,32 @@ import LegalPageShell from "@/components/LegalPageShell";
 
 const PAGE_TITLE = "Contacto";
 const PAGE_DESCRIPTION =
-  "Canales oficiales de contacto de All In One Store para soporte comercial y postventa.";
+  "Canales oficiales de contacto de Elora Skin para soporte comercial y postventa.";
 
 function buildWhatsappUrl(number: string) {
   const cleaned = number.replace(/[^0-9]/g, "");
   const message = encodeURIComponent(
-    "Hola, estoy viendo la tienda All In One y necesito ayuda con un producto."
+    "Hola, estoy viendo la tienda Elora Skin y necesito ayuda con un producto."
   );
   if (!cleaned) return "#";
   return `https://wa.me/${cleaned}?text=${message}`;
 }
 
 export const metadata: Metadata = {
-  title: `${PAGE_TITLE} | All In One Store`,
+  title: `${PAGE_TITLE} | Elora Skin`,
   description: PAGE_DESCRIPTION,
   alternates: {
     canonical: "https://allinonestore.lat/contacto",
   },
   openGraph: {
-    title: `${PAGE_TITLE} | All In One Store`,
+    title: `${PAGE_TITLE} | Elora Skin`,
     description: PAGE_DESCRIPTION,
     url: "https://allinonestore.lat/contacto",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: `${PAGE_TITLE} | All In One Store`,
+    title: `${PAGE_TITLE} | Elora Skin`,
     description: PAGE_DESCRIPTION,
   },
 };

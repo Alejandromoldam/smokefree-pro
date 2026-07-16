@@ -39,7 +39,7 @@ type ChatMessage = {
 };
 
 const INITIAL_ASSISTANT_TEXT =
-  "\u{1F44B} Hola, soy el Asistente All In One.\n\nPuedo ayudarte con productos, precios, disponibilidad, env\u00EDos y recomendaciones personalizadas.\n\n\u2728 Respuestas r\u00E1pidas y asistencia en tiempo real.";
+  "\u{1F44B} Hola, soy el Asistente Elora Skin.\n\nPuedo ayudarte con productos, precios, disponibilidad, env\u00EDos y recomendaciones personalizadas.\n\n\u2728 Respuestas r\u00E1pidas y asistencia en tiempo real.";
 
 function formatMoney(amount: string, currencyCode: string) {
   const numeric = Number(amount);
@@ -234,7 +234,7 @@ export default function AIAssistantWidget() {
           <div className="assistant-header">
             <div>
               <p className="assistant-eyebrow">Asistente IA</p>
-              <p className="assistant-title">Asistente All In One</p>
+              <p className="assistant-title">Asistente Elora Skin</p>
             </div>
             <button
               type="button"
@@ -352,10 +352,10 @@ export default function AIAssistantWidget() {
         type="button"
         className="assistant-launcher"
         onClick={toggleAssistant}
-        aria-label="Abrir asistente All In One"
+        aria-label="Abrir asistente Elora Skin"
       >
         <span className="assistant-launcher-dot" aria-hidden="true" />
-        <span className="assistant-launcher-label">Asistente All In One</span>
+        <span className="assistant-launcher-label">Asistente Elora Skin</span>
       </button>
     </div>
   );

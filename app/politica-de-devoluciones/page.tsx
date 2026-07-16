@@ -3,23 +3,23 @@ import LegalPageShell from "@/components/LegalPageShell";
 
 const PAGE_TITLE = "Politica de devoluciones";
 const PAGE_DESCRIPTION =
-  "Condiciones y proceso para solicitar devoluciones, cambios o reembolsos en All In One Store.";
+  "Condiciones y proceso para solicitar devoluciones, cambios o reembolsos en Elora Skin.";
 
 export const metadata: Metadata = {
-  title: `${PAGE_TITLE} | All In One Store`,
+  title: `${PAGE_TITLE} | Elora Skin`,
   description: PAGE_DESCRIPTION,
   alternates: {
     canonical: "https://allinonestore.lat/politica-de-devoluciones",
   },
   openGraph: {
-    title: `${PAGE_TITLE} | All In One Store`,
+    title: `${PAGE_TITLE} | Elora Skin`,
     description: PAGE_DESCRIPTION,
     url: "https://allinonestore.lat/politica-de-devoluciones",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: `${PAGE_TITLE} | All In One Store`,
+    title: `${PAGE_TITLE} | Elora Skin`,
     description: PAGE_DESCRIPTION,
   },
 };

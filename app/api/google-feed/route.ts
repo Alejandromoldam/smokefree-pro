@@ -111,7 +111,7 @@ function cleanText(value: string, maxLength = 5000) {
     .trim();
 
   if (!normalized) {
-    return "Consulta la ficha de producto para mas detalles en All In One.";
+    return "Consulta la ficha de producto para mas detalles en Elora Skin.";
   }
 
   if (normalized.length <= maxLength) {
@@ -258,9 +258,9 @@ function buildFeedXml(products: FeedProduct[], publicDomain: string) {
   return `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:g="http://base.google.com/ns/1.0">
   <channel>
-    <title>All In One Product Feed</title>
+    <title>Elora Skin Product Feed</title>
     <link>${escapeXml(publicDomain)}</link>
-    <description>Feed de productos dinamico para Google Merchant Center de All In One.</description>
+    <description>Feed de productos dinamico para Google Merchant Center de Elora Skin.</description>
     ${itemXml}
   </channel>
 </rss>`;
@@ -455,7 +455,7 @@ export async function GET() {
         imageLink,
         availability: product.availableForSale ? "in stock" : "out of stock",
         price: `${priceAmount} ${priceCurrency}`,
-        brand: "All In One",
+        brand: "Elora Skin",
         condition: "new",
         productType: productType || inferred.productType,
         googleProductCategory: googleProductCategory || inferred.googleProductCategory,
